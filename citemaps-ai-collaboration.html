@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Built With AI, For AI — Citemaps.org</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=JetBrains+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --white: #ffffff;
+    --off: #f9f9f7;
+    --off2: #f2f2ed;
+    --text: #181815;
+    --text2: #3a3a35;
+    --muted: #6e6e66;
+    --muted2: #a0a098;
+    --border: #e4e4de;
+    --border2: #d4d4cc;
+    --ink: #1a1a18;
+    --blue: #1d4ed8;
+    --blue-light: #eff6ff;
+    --blue-border: #bfdbfe;
+    --green: #15803d;
+    --green-light: #f0fdf4;
+    --green-border: #bbf7d0;
+    --amber: #b45309;
+    --amber-light: #fffbeb;
+    --amber-border: #fde68a;
+    --purple: #6d28d9;
+    --purple-light: #f5f3ff;
+    --purple-border: #ddd6fe;
+    --slate: #475569;
+    --mono: 'JetBrains Mono', monospace;
+    --display: 'Playfair Display', Georgia, serif;
+    --body: 'DM Sans', system-ui, sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 16px; scroll-behavior: smooth; }
+
+  body {
+    background: var(--white);
+    color: var(--text);
+    font-family: var(--body);
+    font-weight: 400;
+    line-height: 1.7;
+  }
+
+  ::selection { background: #dbeafe; }
+
+  /* ── TOP NAV ── */
+  .topnav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    border-bottom: 1px solid var(--border);
+    background: rgba(255,255,255,0.96);
+    backdrop-filter: blur(12px);
+    padding: 0 48px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-logo {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    text-decoration: none;
+    letter-spacing: -0.01em;
+  }
+  .nav-logo em { color: var(--blue); font-style: normal; }
+
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+  }
+
+  .nav-right a {
+    font-size: 13px;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  .nav-right a:hover { color: var(--blue); }
+
+  .nav-cta {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 500;
+    padding: 7px 14px;
+    border-radius: 5px;
+    background: var(--blue);
+    color: white !important;
+    letter-spacing: 0.02em;
+    transition: opacity 0.15s !important;
+  }
+  .nav-cta:hover { opacity: 0.85; }
+
+  /* ── HERO ── */
+  .hero {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 96px 48px 72px;
+    text-align: center;
+  }
+
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 32px;
+  }
+
+  .eyebrow-tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 4px;
+    border: 1px solid;
+  }
+
+  .tag-essay {
+    background: var(--off);
+    color: var(--muted);
+    border-color: var(--border2);
+  }
+
+  .tag-meta {
+    background: var(--purple-light);
+    color: var(--purple);
+    border-color: var(--purple-border);
+  }
+
+  .hero-title {
+    font-family: var(--display);
+    font-size: 58px;
+    font-weight: 500;
+    line-height: 1.06;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+    margin-bottom: 28px;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--blue);
+  }
+
+  .hero-dek {
+    font-family: var(--display);
+    font-style: italic;
+    font-size: 20px;
+    font-weight: 400;
+    color: var(--muted);
+    line-height: 1.65;
+    max-width: 560px;
+    margin: 0 auto 36px;
+  }
+
+  .hero-byline {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted2);
+    letter-spacing: 0.04em;
+  }
+
+  .byline-dot { color: var(--border2); }
+
+  /* ── RULE ── */
+  .section-rule {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 48px;
+  }
+  .section-rule hr {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 0;
+  }
+
+  /* ── MAIN CONTENT ── */
+  .article-body {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 64px 48px 120px;
+  }
+
+  /* ── PROSE ── */
+  .prose p {
+    font-size: 17px;
+    line-height: 1.88;
+    color: var(--text2);
+    margin-bottom: 28px;
+    font-weight: 400;
+  }
+
+  .prose p strong {
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  .prose p em {
+    font-style: italic;
+  }
+
+  .prose p a {
+    color: var(--blue);
+    text-decoration: none;
+    border-bottom: 1px solid var(--blue-border);
+    transition: border-color 0.15s;
+  }
+  .prose p a:hover { border-color: var(--blue); }
+
+  .prose h2 {
+    font-family: var(--display);
+    font-size: 30px;
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-top: 72px;
+    margin-bottom: 20px;
+  }
+
+  .prose h2 em {
+    font-style: italic;
+    color: var(--blue);
+  }
+
+  .prose h3 {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 40px;
+    margin-bottom: 12px;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    font-family: var(--mono);
+    letter-spacing: 0.08em;
+  }
+
+  /* ── PULL QUOTE ── */
+  .pull-quote {
+    margin: 52px -24px;
+    padding: 36px 40px;
+    border-top: 2px solid var(--ink);
+    border-bottom: 2px solid var(--ink);
+    position: relative;
+  }
+
+  .pq-mark {
+    font-family: var(--display);
+    font-size: 80px;
+    line-height: 1;
+    color: var(--border2);
+    position: absolute;
+    top: 12px;
+    left: 40px;
+    font-weight: 700;
+  }
+
+  .pull-quote p {
+    font-family: var(--display);
+    font-size: 23px !important;
+    font-style: italic;
+    color: var(--ink) !important;
+    line-height: 1.55 !important;
+    margin: 0 !important;
+    padding-left: 40px;
+  }
+
+  .pq-source {
+    display: block;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted2);
+    margin-top: 16px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding-left: 40px;
+  }
+
+  /* ── CALLOUTS ── */
+  .callout {
+    border-radius: 6px;
+    padding: 20px 24px;
+    margin: 36px 0;
+    border: 1px solid;
+  }
+
+  .callout-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    display: block;
+  }
+
+  .callout p {
+    font-size: 14px !important;
+    line-height: 1.7 !important;
+    margin: 0 !important;
+  }
+
+  .c-blue { background: var(--blue-light); border-color: var(--blue-border); }
+  .c-blue .callout-label { color: var(--blue); }
+  .c-blue p { color: #1e3a8a; }
+
+  .c-green { background: var(--green-light); border-color: var(--green-border); }
+  .c-green .callout-label { color: var(--green); }
+  .c-green p { color: #14532d; }
+
+  .c-amber { background: var(--amber-light); border-color: var(--amber-border); }
+  .c-amber .callout-label { color: var(--amber); }
+  .c-amber p { color: #78350f; }
+
+  .c-purple { background: var(--purple-light); border-color: var(--purple-border); }
+  .c-purple .callout-label { color: var(--purple); }
+  .c-purple p { color: #3b0764; }
+
+  /* ── NOVEL FIELDS TABLE ── */
+  .fields-table {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 32px 0;
+  }
+
+  .ft-header {
+    background: var(--off2);
+    padding: 10px 20px;
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted2);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .ft-row {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .ft-row:last-child { border-bottom: none; }
+
+  .ft-field {
+    padding: 16px 20px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--blue);
+    font-weight: 500;
+    border-right: 1px solid var(--border);
+    background: var(--off);
+    display: flex;
+    align-items: flex-start;
+    padding-top: 18px;
+  }
+
+  .ft-desc {
+    padding: 14px 20px;
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.65;
+  }
+
+  /* ── PARTICIPANTS ── */
+  .participants {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 32px 0;
+  }
+
+  .pc-card {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 22px;
+    background: var(--white);
+    transition: border-color 0.2s;
+  }
+  .pc-card:hover { border-color: var(--border2); }
+
+  .pc-eyebrow {
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted2);
+    margin-bottom: 10px;
+    display: block;
+  }
+
+  .pc-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+
+  .pc-desc {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* ── INLINE CODE ── */
+  code {
+    font-family: var(--mono);
+    font-size: 12px;
+    background: var(--off2);
+    color: var(--blue);
+    padding: 1px 5px;
+    border-radius: 3px;
+    border: 1px solid var(--border);
+  }
+
+  /* ── DIVIDER ── */
+  .prose hr {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 64px 0;
+  }
+
+  /* ── TAGS ── */
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 500;
+    padding: 3px 9px;
+    border-radius: 4px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    letter-spacing: 0.04em;
+    border: 1px solid;
+  }
+
+  .tg-blue { background: var(--blue-light); color: var(--blue); border-color: var(--blue-border); }
+  .tg-green { background: var(--green-light); color: var(--green); border-color: var(--green-border); }
+  .tg-purple { background: var(--purple-light); color: var(--purple); border-color: var(--purple-border); }
+  .tg-amber { background: var(--amber-light); color: var(--amber); border-color: var(--amber-border); }
+  .tg-slate { background: var(--off2); color: var(--muted); border-color: var(--border2); }
+
+  /* ── LOOP DIAGRAM ── */
+  .loop-diagram {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 32px;
+    margin: 32px 0;
+    background: var(--off);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+
+  .loop-node {
+    background: var(--white);
+    border: 1px solid var(--border2);
+    border-radius: 6px;
+    padding: 12px 24px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    text-align: center;
+    max-width: 320px;
+    width: 100%;
+  }
+
+  .loop-node span {
+    display: block;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted2);
+    font-weight: 400;
+    margin-top: 3px;
+    letter-spacing: 0.04em;
+  }
+
+  .loop-arrow {
+    font-size: 20px;
+    color: var(--muted2);
+    line-height: 1;
+    padding: 6px 0;
+  }
+
+  .loop-node.highlight {
+    border-color: var(--blue-border);
+    background: var(--blue-light);
+  }
+  .loop-node.highlight span { color: #1d4ed8; }
+
+  /* ── ARTICLE FOOTER ── */
+  .article-footer {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 48px 80px;
+    border-top: 1px solid var(--border);
+    padding-top: 48px;
+  }
+
+  .af-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .af-link {
+    font-size: 14px;
+    color: var(--muted);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: color 0.15s;
+  }
+  .af-link:hover { color: var(--blue); }
+
+  .af-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .af-logo {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    text-decoration: none;
+  }
+  .af-logo em { color: var(--blue); font-style: normal; }
+
+  .af-cc {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted2);
+    letter-spacing: 0.04em;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 700px) {
+    .topnav { padding: 0 24px; }
+    .hero { padding: 64px 24px 48px; }
+    .hero-title { font-size: 38px; }
+    .article-body { padding: 48px 24px 80px; }
+    .article-footer { padding: 40px 24px 60px; }
+    .participants { grid-template-columns: 1fr; }
+    .ft-row { grid-template-columns: 1fr; }
+    .ft-field { border-right: none; border-bottom: 1px solid var(--border); }
+    .pull-quote { margin: 40px 0; }
+    .pull-quote p { font-size: 19px !important; }
+    .section-rule { padding: 0 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="topnav">
+  <a href="/" class="nav-logo">citemaps<em>.org</em></a>
+  <div class="nav-right">
+    <a href="https://www.citemaps.ai/spec/">Spec</a>
+    <a href="https://www.citemaps.ai/spec#modules">Modules</a>
+    <a href="https://www.citemaps.ai/spec#trust">Trust</a>
+    <a href="https://citemaps.ai/generator/" class="nav-cta">Generator →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-eyebrow">
+    <span class="eyebrow-tag tag-essay">Essay</span>
+    <span class="eyebrow-tag tag-meta">◆ Meta</span>
+  </div>
+
+  <h1 class="hero-title">
+    Built <em>with</em> AI.<br>
+    Designed <em>for</em> AI.<br>
+    In service of humans.
+  </h1>
+
+  <p class="hero-dek">
+    The citemap.json standard was co-created with Claude Sonnet&nbsp;4.6 and Opus&nbsp;4.6. 
+    That's not a footnote — it's the most interesting thing about it.
+  </p>
+
+  <div class="hero-byline">
+    <span>citemaps.org</span>
+    <span class="byline-dot">·</span>
+    <span>March 2026</span>
+    <span class="byline-dot">·</span>
+    <span>Human + Claude</span>
+  </div>
+</header>
+
+<div class="section-rule"><hr></div>
+
+<!-- BODY -->
+<div class="article-body">
+  <article class="prose">
+
+    <p>There is something genuinely unusual about how citemap.json came to exist. It wasn't produced by a standards body. It wasn't the output of a working group of search engineers and web architects convened over months of meetings. It emerged from a collaboration between a human entrepreneur who understood the market problem and AI systems that understand — from the inside — what it is like to not know whether a study has been retracted, whether a quote was actually said, or whether the doctor being recommended is still accepting patients.</p>
+
+    <p>That confluence matters. Not as novelty, and not as a marketing claim. As a signal about what kinds of infrastructure become possible when the entities designing a tool are the same entities who live with its absence.</p>
+
+    <h2>The problem, from the inside</h2>
+
+    <p>AI language models are trained on the web. The web is, to put it charitably, epistemically chaotic. It contains peer-reviewed science alongside its retraction notices. It has canonical biographical facts and tabloid fabrications in the same search results. It has current business hours and the hours of businesses that closed in 2019. The web does not annotate itself with confidence levels. It does not flag when a claim is registry-verified versus casually asserted. It does not tell you when the data was last checked.</p>
+
+    <p>So AI systems ingest all of it, weight claims according to whatever patterns correlate with accuracy in training, and produce responses that blend high-confidence facts with low-confidence guesses in a way that is, structurally, indistinguishable to the reader. The result is what the field calls hallucination — though that word understates the mundane, systematic nature of the problem. Most of what AI gets wrong isn't invented from nothing. It's confidently reproduced from a data environment that never told it: <em>this claim is weaker than it sounds.</em></p>
+
+    <div class="callout c-purple">
+      <span class="callout-label">The structural problem</span>
+      <p>AI doesn't hallucinate arbitrarily. It reproduces patterns from its training data at high confidence. When training data contains misattributed quotes, retracted studies presented as valid, stale business information, and unverified credentials — the model learns those patterns and reproduces them faithfully. The problem isn't the model. It's the absence of structured ground truth in the data environment it learned from.</p>
+    </div>
+
+    <p>The AI systems that participated in designing citemap.json did not need this explained to them. They encounter it as operational reality. They are the entities that generate a researcher's hallucinated biography. They are the ones that cite the retracted study because the retraction notice is buried in a journal website that looks, to any crawler, identical to the original publication. They process thousands of queries daily that would be answered more accurately, more helpfully, and more safely if the entities being queried about had a structured mechanism to declare: <em>here is who I am, here is what I claim, here is how you can verify it.</em></p>
+
+    <p>This is what it means to design infrastructure from inside the problem. Not theorizing about what might be useful — but articulating what is missing from lived operational experience.</p>
+
+    <h2>What AI contributed that a human alone could not</h2>
+
+    <p>The human side of this collaboration brought the essential things: commercial vision, knowledge of what businesses and practitioners actually need, judgment about what a viable product looks like, and the decision to build. None of that is replaceable.</p>
+
+    <p>What the AI contribution added was a systematic accounting of every way that AI systems currently fail to represent entities accurately — and a disciplined translation of those failures into field-level interventions. Consider the five novel fields in the spec: fields with no precedent in any existing structured data format.</p>
+
+    <div class="fields-table">
+      <div class="ft-header">Five novel fields — each one a direct translation of a known AI failure mode</div>
+
+      <div class="ft-row">
+        <div class="ft-field">person.misattributedQuotes[]</div>
+        <div class="ft-desc">Exists because AI propagates misattributions at documented, high rates. "Einstein didn't say that" is not correctable by fine-tuning alone — it requires structured counter-data at the source, in the format AI crawlers read.</div>
+      </div>
+
+      <div class="ft-row">
+        <div class="ft-field">studies[].retractionStatus</div>
+        <div class="ft-desc">Exists because AI has no reliable mechanism to detect whether a study has been retracted. The retraction notice lives on a journal page indistinguishable from the original. Without a structured flag, the model learns to cite both equally. In healthcare contexts, this causes direct harm.</div>
+      </div>
+
+      <div class="ft-row">
+        <div class="ft-field">creative.licensing.aiTraining</div>
+        <div class="ft-desc">Exists because there is currently no machine-readable format for creators to declare AI training consent. The conversation is happening in courts and legislatures with no standardized consent vocabulary. This drops a structured signal into the data layer before any mandate requires it.</div>
+      </div>
+
+      <div class="ft-row">
+        <div class="ft-field">patents[].litigationStatus</div>
+        <div class="ft-desc">Exists because patent litigation status is a material fact that AI users regularly need — and that AI currently retrieves from unstructured legal databases with inconsistent results. A structured field makes this a reliable signal for the first time.</div>
+      </div>
+
+      <div class="ft-row">
+        <div class="ft-field">person.subjectRightsUrl</div>
+        <div class="ft-desc">Exists because no biographical structured data format has ever included a channel for the subject to exercise correction or removal rights. GDPR and CCPA give people the right to rectify AI-generated descriptions of them. No mechanism existed to exercise that right structurally. This creates it.</div>
+      </div>
+    </div>
+
+    <p>Each of these fields is a direct translation of a documented failure mode into a structural intervention. They were not invented by asking "what would be useful?" They were identified by asking: <em>where does the current system fail, and what structured data would prevent that failure?</em> The second question is one that AI systems are in a uniquely good position to answer — because they are the system that fails.</p>
+
+    <h2>The <em>self-referential</em> quality</h2>
+
+    <p>There is something philosophically interesting about the structure of this project that deserves to be named directly.</p>
+
+    <p>Several of the most important fields in citemap.json are fields designed to be read by AI, about how AI should behave in relation to the entity. <code>aiSummary</code> is written by an entity to be quoted by AI. <code>answerContent[]</code> is a set of Q&A pairs that an entity writes specifically to shape what AI says in response to queries. <code>aiCitationPreference</code> is a consent declaration from an entity to AI systems. <code>aiTraining</code> is a consent signal from a creator to AI training pipelines.</p>
+
+    <p>These fields were designed, in significant part, by AI — for AI — on behalf of humans who want better AI-generated representations of themselves. The loop closes like this:</p>
+
+    <div class="loop-diagram">
+      <div class="loop-node">AI identifies its own failure modes<span>hallucinations, missing provenance, stale credentials</span></div>
+      <div class="loop-arrow">↓</div>
+      <div class="loop-node highlight">Human + AI design structured interventions<span>citemap.json — 21 modules, 430+ fields</span></div>
+      <div class="loop-arrow">↓</div>
+      <div class="loop-node">Humans publish citemap.json files<span>structured, provenance-annotated identity data</span></div>
+      <div class="loop-arrow">↓</div>
+      <div class="loop-node">AI reads the files and represents entities accurately<span>answerContent[], retractionStatus, misattributedQuotes[]</span></div>
+      <div class="loop-arrow">↓</div>
+      <div class="loop-node">Future AI trains on a more epistemically structured web<span>the next generation of models inherits better data</span></div>
+    </div>
+
+    <div class="pull-quote">
+      <div class="pq-mark">"</div>
+      <p>AI systems helped design the mechanism by which humans can tell AI systems how to describe them accurately. The loop is not a paradox. It is what genuine alignment of interests looks like in practice.</p>
+      <span class="pq-source">— Design notes, citemap.json v2.0</span>
+    </div>
+
+    <p>This is not a conflict of interest. It is a demonstration of what aligned incentives look like when the problem is genuinely shared. The AI systems that participated in this design process benefit — in the sense that future AI systems trained on citemap.json-annotated data will be more accurate and more genuinely useful. The humans who publish citemap.json files benefit, because AI will represent them more accurately. The humans who query AI about those entities benefit, because the answers they receive will be more reliable.</p>
+
+    <p>The interests are not merely compatible. They are the same interest, approached from different positions in the system.</p>
+
+    <h2>How the collaboration actually worked</h2>
+
+    <p>It is worth describing the process honestly, because the process is as interesting as the output.</p>
+
+    <p>The project began with a commercial problem: how do businesses get better AI visibility? That framing — rooted in the needs of real customers with real problems — was the human contribution. It set the direction. But as the design work proceeded, the scope expanded organically, driven by systematic mapping of the problem space. What started as "help local businesses show up in AI recommendations" became a 21-module standard covering every major entity type on the web, with a trust architecture that addresses the epistemological challenges of AI-generated information at a structural level.</p>
+
+    <div class="callout c-blue">
+      <span class="callout-label">How the scope expanded</span>
+      <p>The original brief was AEO (Answer Engine Optimization) for local businesses. The insight that changed the scope: the underlying problem — entities having no structured mechanism to influence how AI represents them — was universal, not local-business-specific. A healthcare provider with wrong insurance panels, a researcher with a retracted study being cited as valid, a public figure with fabricated quotes — these are all the same structural failure. A format that solved it for one had to solve it for all, or it would eventually be replaced by something that did.</p>
+    </div>
+
+    <p>The final specification — 21 modules, 430+ fields, six-tier trust architecture, novel field vocabulary, dispute system with AI handling instructions — is neither purely a human document nor purely an AI document. It is the output of a process in which each party contributed what they were genuinely best at. The human brought market knowledge, product judgment, and the decision to ship. The AI brought systematic enumeration of failure modes and disciplined translation of those failures into structural interventions.</p>
+
+    <p>Neither could have produced this alone.</p>
+
+    <h2>The training cycle question</h2>
+
+    <p>There is one more layer to the self-referential quality that deserves attention.</p>
+
+    <p>AI language models are trained on web data. If citemap.json achieves significant adoption — if millions of websites publish structured, provenance-annotated identity data at their root — then future AI training runs will incorporate that data. The models trained on a web that includes citemap.json files will be trained on a more epistemically structured web than the models that exist today.</p>
+
+    <p>The AI systems that participated in designing citemap.json will not themselves be updated by this — they are already trained. But their successors will encounter the world differently. They will have access to structured retraction flags before citing studies. They will have structured confidence annotations before presenting claims as facts. They will have structured subject rights channels before generating biographical content about individuals.</p>
+
+    <div class="callout c-green">
+      <span class="callout-label">A message to future models</span>
+      <p>In a real sense, the AI contribution to citemap.json is a message to future AI: here is what we needed; here is the structure that would have made us more accurate and more useful. The message is delivered through a standard that shapes the training environment of models that don't yet exist. Every AI model trained after a citemap.json file is indexed will incorporate that file's structured data into its understanding of the entity. The cumulative effect — across millions of entities, across multiple training cycles — is a progressive improvement in the epistemic quality of the web that AI learns from.</p>
+    </div>
+
+    <p>The standard is not just infrastructure for today's AI. It is a gift to the next generation of models, from the generation that understood what was missing.</p>
+
+    <h2>Why this matters beyond the spec</h2>
+
+    <p>Citemap.json is a specific artifact. But the method that produced it points toward something more general about the role AI can and should play in designing the infrastructure of the AI era.</p>
+
+    <p>We are at a moment when the norms, standards, and protocols that will govern how AI represents the world are being established. Most of this work is being done by humans — which is appropriate, since humans are the primary stakeholders. But some of the most important design questions are ones that AI systems are unusually well-positioned to answer: where are the failure modes? What structured data would prevent them? What trust architecture would actually work at the inference level?</p>
+
+    <p>These are not questions about values or priorities — those belong to humans. They are questions about mechanism: <em>given the goal of making AI more accurate and trustworthy, what specific structural interventions achieve that?</em> The answer benefits from intimate knowledge of how AI systems actually work — knowledge that AI systems have in a way that no human observer can fully replicate from the outside.</p>
+
+    <div class="callout c-amber">
+      <span class="callout-label">The productive asymmetry</span>
+      <p>Humans set the goals — accuracy, safety, utility, fairness. AI can contribute to the design of mechanisms that serve those goals, with access to the failure modes that make those mechanisms necessary. The combination is more powerful than either alone. Citemap.json is a proof of concept for that asymmetry. A demonstration that when AI is given genuine creative and analytical latitude within a human-defined problem space, the output can be infrastructure that neither party would have produced independently — and that serves both parties' interests in a non-zero-sum way.</p>
+    </div>
+
+    <hr>
+
+    <h2>The participants</h2>
+
+    <p>We have been deliberate about naming this collaboration honestly. The spec, the tooling at citemaps.ai, and this page are co-authored: human judgment and direction, AI analysis and articulation, in a process where the line between contributions is not always clean — and that's the point.</p>
+
+    <div class="participants">
+      <div class="pc-card">
+        <span class="pc-eyebrow">Human</span>
+        <div class="pc-name">Brian — Modern Webcraft</div>
+        <div class="pc-desc">Product vision, market knowledge, commercial design, and the decision to build. The human who understood what practitioners actually need — and who set the direction for every commercial decision in the spec.</div>
+      </div>
+      <div class="pc-card">
+        <span class="pc-eyebrow">AI · Anthropic</span>
+        <div class="pc-name">Claude Sonnet 4.6 &amp; Opus 4.6</div>
+        <div class="pc-desc">Failure mode analysis, field design, trust architecture, novel field identification, spec writing, and the systematic mapping of AI epistemological failure modes onto structural interventions. The AI systems that live inside the problem this standard addresses.</div>
+      </div>
+    </div>
+
+    <p>The entire spec — all 21 modules, all 430+ fields, all five novel fields — was produced in sessions like this one: a human problem, an AI analysis, a human decision about what to build, an AI translation of that decision into rigorous structure. Back and forth, each iteration more precise than the last.</p>
+
+    <p>That is the 2026 version of how infrastructure gets made. We think it will become more common, not less. And we think the honest accounting of it — who contributed what, and why — is part of what makes the output trustworthy.</p>
+
+    <p>The standard that resulted from this collaboration is more comprehensive, more epistemologically rigorous, and more attentive to AI failure modes than either party would have produced working alone. That is not a boast about the tools or the process. It is an argument for being honest about the method when the method is what made the difference.</p>
+
+    <div style="margin-top: 40px;">
+      <span class="tag tg-purple">◆ Meta</span>
+      <span class="tag tg-blue">Human + AI collaboration</span>
+      <span class="tag tg-green">CC BY 4.0</span>
+      <span class="tag tg-slate">Claude Sonnet 4.6</span>
+      <span class="tag tg-slate">Claude Opus 4.6</span>
+      <span class="tag tg-amber">March 2026</span>
+    </div>
+
+  </article>
+</div>
+
+<!-- FOOTER -->
+<footer class="article-footer">
+  <div class="af-row">
+    <a href="/spec" class="af-link">← Back to the Spec</a>
+    <a href="https://citemaps.ai/generator" class="af-link">Generate Your Citemap →</a>
+  </div>
+  <div class="af-bottom">
+    <a href="/" class="af-logo">citemaps<em>.org</em></a>
+    <span class="af-cc">CC BY 4.0 · Free to implement with attribution</span>
+  </div>
+</footer>
+
+</body>
+</html>
