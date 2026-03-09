@@ -1,0 +1,2038 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Citemap.json — The Open Standard for AI Entity Identity</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #ffffff;
+    --bg2: #f8f8f6;
+    --bg3: #f2f2ee;
+    --text: #1a1a18;
+    --text2: #3d3d38;
+    --muted: #6b6b64;
+    --muted2: #9a9a90;
+    --border: #e2e2dc;
+    --border2: #d0d0c8;
+    --accent: #2563eb;       /* blue — links, anchors */
+    --accent2: #1d4ed8;
+    --green: #16a34a;
+    --green-bg: #f0fdf4;
+    --green-border: #bbf7d0;
+    --blue-bg: #eff6ff;
+    --blue-border: #bfdbfe;
+    --amber: #d97706;
+    --amber-bg: #fffbeb;
+    --amber-border: #fde68a;
+    --red: #dc2626;
+    --red-bg: #fef2f2;
+    --red-border: #fecaca;
+    --purple: #7c3aed;
+    --purple-bg: #f5f3ff;
+    --purple-border: #ddd6fe;
+    --slate-bg: #f8fafc;
+    --slate-border: #e2e8f0;
+    --code-bg: #1e1e2e;
+    --mono: 'JetBrains Mono', 'Fira Code', monospace;
+    --serif: 'Lora', Georgia, serif;
+    --sans: 'Source Sans 3', system-ui, sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 16px; scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-weight: 400;
+    line-height: 1.7;
+  }
+
+  ::selection { background: #bfdbfe; color: var(--text); }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg2); }
+  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+  /* ── LAYOUT ── */
+  .page-wrap {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    min-height: 100vh;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* ── SIDEBAR NAV ── */
+  .sidebar {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    border-right: 1px solid var(--border);
+    padding: 40px 24px 60px;
+    background: var(--bg);
+  }
+
+  .sidebar-logo {
+    font-family: var(--mono);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+    text-decoration: none;
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .sidebar-logo span { color: var(--accent); }
+
+  .sidebar-tagline {
+    font-size: 11px;
+    color: var(--muted2);
+    margin-bottom: 32px;
+    line-height: 1.5;
+  }
+
+  .nav-section-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted2);
+    margin-top: 24px;
+    margin-bottom: 8px;
+    padding-left: 8px;
+  }
+
+  .nav-link {
+    display: block;
+    font-size: 13px;
+    color: var(--muted);
+    text-decoration: none;
+    padding: 5px 8px;
+    border-radius: 4px;
+    transition: all 0.15s;
+    line-height: 1.4;
+  }
+
+  .nav-link:hover { background: var(--bg2); color: var(--text); }
+  .nav-link.active { background: var(--blue-bg); color: var(--accent); }
+
+  .sidebar-badge {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 500;
+    padding: 2px 6px;
+    border-radius: 3px;
+    background: var(--green-bg);
+    color: var(--green);
+    border: 1px solid var(--green-border);
+    margin-top: 24px;
+    letter-spacing: 0.06em;
+  }
+
+  /* ── MAIN CONTENT ── */
+  main {
+    padding: 60px 72px 120px;
+    max-width: 860px;
+  }
+
+  /* ── TOP HEADER ── */
+  .doc-header {
+    margin-bottom: 64px;
+    padding-bottom: 48px;
+    border-bottom: 2px solid var(--border);
+  }
+
+  .doc-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .version-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    background: var(--green-bg);
+    color: var(--green);
+    border: 1px solid var(--green-border);
+    font-weight: 500;
+    letter-spacing: 0.04em;
+  }
+
+  .version-pill::before { content: '●'; font-size: 7px; }
+
+  .doc-title {
+    font-family: var(--serif);
+    font-size: 44px;
+    font-weight: 500;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    margin-bottom: 20px;
+  }
+
+  .doc-title em { font-style: italic; color: var(--accent); }
+
+  .doc-lead {
+    font-size: 19px;
+    font-weight: 300;
+    color: var(--text2);
+    line-height: 1.7;
+    max-width: 620px;
+    margin-bottom: 32px;
+  }
+
+  .doc-meta {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .doc-meta span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--mono);
+    font-size: 11px;
+  }
+
+  .doc-meta strong { color: var(--text2); font-weight: 500; }
+
+  /* ── SECTIONS ── */
+  .doc-section {
+    margin-bottom: 72px;
+    scroll-margin-top: 32px;
+  }
+
+  .section-eyebrow {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted2);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .section-eyebrow::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+    max-width: 80px;
+  }
+
+  h2 {
+    font-family: var(--serif);
+    font-size: 30px;
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: var(--text);
+    margin-bottom: 16px;
+  }
+
+  h2 em { font-style: italic; color: var(--accent); }
+
+  h3 {
+    font-family: var(--sans);
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 36px;
+    margin-bottom: 12px;
+  }
+
+  h4 {
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text2);
+    margin-top: 24px;
+    margin-bottom: 8px;
+    letter-spacing: 0.01em;
+  }
+
+  p {
+    font-size: 15px;
+    color: var(--text2);
+    line-height: 1.8;
+    margin-bottom: 16px;
+  }
+
+  p strong { color: var(--text); font-weight: 600; }
+
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* ── CALLOUT BOXES ── */
+  .callout {
+    border-radius: 6px;
+    padding: 18px 22px;
+    margin: 24px 0;
+    font-size: 14px;
+    line-height: 1.7;
+    border: 1px solid;
+  }
+
+  .callout-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    display: block;
+  }
+
+  .callout p { font-size: 14px; margin-bottom: 0; }
+
+  .callout-blue { background: var(--blue-bg); border-color: var(--blue-border); }
+  .callout-blue .callout-label { color: var(--accent); }
+  .callout-blue p { color: #1e40af; }
+
+  .callout-green { background: var(--green-bg); border-color: var(--green-border); }
+  .callout-green .callout-label { color: var(--green); }
+  .callout-green p { color: #166534; }
+
+  .callout-amber { background: var(--amber-bg); border-color: var(--amber-border); }
+  .callout-amber .callout-label { color: var(--amber); }
+  .callout-amber p { color: #92400e; }
+
+  .callout-red { background: var(--red-bg); border-color: var(--red-border); }
+  .callout-red .callout-label { color: var(--red); }
+  .callout-red p { color: #991b1b; }
+
+  /* ── TAGS ── */
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 500;
+    padding: 3px 8px;
+    border-radius: 4px;
+    margin-right: 4px;
+    margin-bottom: 4px;
+    letter-spacing: 0.04em;
+    border: 1px solid;
+  }
+
+  .tag-blue { background: var(--blue-bg); color: #1d4ed8; border-color: var(--blue-border); }
+  .tag-green { background: var(--green-bg); color: var(--green); border-color: var(--green-border); }
+  .tag-amber { background: var(--amber-bg); color: var(--amber); border-color: var(--amber-border); }
+  .tag-red { background: var(--red-bg); color: var(--red); border-color: var(--red-border); }
+  .tag-purple { background: var(--purple-bg); color: var(--purple); border-color: var(--purple-border); }
+  .tag-slate { background: var(--slate-bg); color: var(--muted); border-color: var(--slate-border); }
+
+  /* ── STATUS PILLS ── */
+  .pill {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 500;
+    padding: 2px 7px;
+    border-radius: 3px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    border: 1px solid;
+  }
+
+  .pill-required { background: var(--red-bg); color: var(--red); border-color: var(--red-border); }
+  .pill-recommended { background: var(--blue-bg); color: var(--accent); border-color: var(--blue-border); }
+  .pill-optional { background: var(--slate-bg); color: var(--muted); border-color: var(--slate-border); }
+  .pill-conditional { background: var(--amber-bg); color: var(--amber); border-color: var(--amber-border); }
+  .pill-novel { background: var(--purple-bg); color: var(--purple); border-color: var(--purple-border); }
+
+  /* ── CODE BLOCKS ── */
+  .code-wrap {
+    background: var(--code-bg);
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 20px 0;
+    font-size: 12.5px;
+    line-height: 1.9;
+  }
+
+  .code-titlebar {
+    background: #2a2a3e;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .code-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .cd-r { background: #ff5f57; }
+  .cd-y { background: #febc2e; }
+  .cd-g { background: #28c840; }
+
+  .code-fname {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: rgba(255,255,255,0.4);
+    margin-left: 4px;
+    letter-spacing: 0.04em;
+  }
+
+  pre {
+    padding: 24px 28px;
+    overflow-x: auto;
+    font-family: var(--mono);
+    white-space: pre;
+    color: #cdd6f4;
+  }
+
+  .jk { color: #89b4fa; }     /* key */
+  .jv { color: #a6e3a1; }     /* string value */
+  .jn { color: #fab387; }     /* number */
+  .jb { color: #f5c2e7; }     /* bool */
+  .jc { color: #45475a; font-style: italic; }  /* comment */
+  .jp { color: #cdd6f4; }     /* punctuation */
+
+  /* ── TABLES ── */
+  .table-wrap {
+    overflow-x: auto;
+    margin: 20px 0;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+
+  th {
+    background: var(--bg2);
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 10px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+
+  td {
+    padding: 11px 16px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text2);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--bg2); }
+
+  .td-mono {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent);
+  }
+
+  /* ── MODULE GRID ── */
+  .module-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 24px 0;
+  }
+
+  .module-card {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .module-card:hover { border-color: var(--border2); background: var(--bg2); }
+
+  .module-num {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted2);
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+  }
+
+  .module-card h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    margin: 0 0 6px 0;
+  }
+
+  .module-card p {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+    margin: 0 0 10px 0;
+  }
+
+  /* ── TRUST TIERS ── */
+  .tier-list { margin: 20px 0; display: flex; flex-direction: column; gap: 0; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+
+  .tier-row {
+    display: grid;
+    grid-template-columns: 48px 1fr auto;
+    gap: 20px;
+    align-items: center;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+  }
+
+  .tier-row:last-child { border-bottom: none; }
+  .tier-row:hover { background: var(--bg2); }
+
+  .tier-num {
+    font-family: var(--serif);
+    font-size: 28px;
+    color: var(--muted2);
+    font-weight: 400;
+    line-height: 1;
+    text-align: center;
+  }
+
+  .tier-content {}
+  .tier-name { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+  .tier-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+  /* ── BREAKTHROUGH FIELDS ── */
+  .breakthrough-list { display: flex; flex-direction: column; gap: 16px; margin: 24px 0; }
+
+  .breakthrough-item {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 24px;
+    border-left: 3px solid var(--accent);
+  }
+
+  .breakthrough-field {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 6px;
+  }
+
+  .breakthrough-item h4 { margin-top: 8px; margin-bottom: 8px; }
+  .breakthrough-item p { font-size: 13px; margin-bottom: 0; }
+
+  /* ── COMPARISON TABLE ── */
+  .compare-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    margin: 24px 0;
+    font-size: 13px;
+  }
+
+  .cg-header {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 12px 16px;
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    color: var(--muted);
+  }
+
+  .cg-label {
+    padding: 11px 16px;
+    border-bottom: 1px solid var(--border);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--muted2);
+    background: var(--bg2);
+  }
+
+  .cg-cell {
+    padding: 11px 16px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text2);
+    font-size: 13px;
+  }
+
+  .cg-cell.blue { color: #1d4ed8; font-weight: 500; }
+  .cg-cell.green { color: var(--green); font-weight: 500; }
+
+  .compare-grid > *:nth-child(3n+1) { border-right: 1px solid var(--border); }
+  .compare-grid > *:nth-child(3n+2) { border-right: 1px solid var(--border); }
+
+  /* ── BLOCKQUOTE ── */
+  blockquote {
+    border-left: 3px solid var(--accent);
+    padding: 16px 24px;
+    margin: 28px 0;
+    background: var(--blue-bg);
+    border-radius: 0 6px 6px 0;
+  }
+
+  blockquote p {
+    font-family: var(--serif);
+    font-size: 17px;
+    font-style: italic;
+    color: var(--text2);
+    margin: 0;
+    line-height: 1.7;
+  }
+
+  /* ── INLINE CODE ── */
+  code {
+    font-family: var(--mono);
+    font-size: 12px;
+    background: var(--bg3);
+    color: #1d4ed8;
+    padding: 1px 5px;
+    border-radius: 3px;
+    border: 1px solid var(--border);
+  }
+
+  /* ── FUTURE SECTION ── */
+  .future-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 24px 0;
+  }
+
+  .future-card {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 22px;
+    background: var(--bg);
+  }
+
+  .future-card .fc-phase {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .future-card h4 { margin-top: 0; margin-bottom: 8px; font-size: 15px; }
+  .future-card p { font-size: 13px; color: var(--muted); margin: 0; }
+
+  .phase-now .fc-phase { color: var(--green); }
+  .phase-soon .fc-phase { color: var(--accent); }
+  .phase-later .fc-phase { color: var(--amber); }
+  .phase-vision .fc-phase { color: var(--purple); }
+
+  .phase-now { border-color: var(--green-border); }
+  .phase-soon { border-color: var(--blue-border); }
+  .phase-later { border-color: var(--amber-border); }
+  .phase-vision { border-color: var(--purple-border); }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 48px 0 0;
+    margin-top: 80px;
+  }
+
+  .footer-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 48px;
+    flex-wrap: wrap;
+    margin-bottom: 32px;
+  }
+
+  .footer-logo {
+    font-family: var(--mono);
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+
+  .footer-logo span { color: var(--accent); }
+
+  .footer-sub {
+    font-size: 13px;
+    color: var(--muted);
+    max-width: 360px;
+    line-height: 1.6;
+    margin-bottom: 12px;
+  }
+
+  .footer-cc {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted2);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .footer-links {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-end;
+  }
+
+  .footer-links a {
+    font-size: 13px;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+
+  .footer-links a:hover { color: var(--accent); }
+
+  .footer-copy {
+    padding: 20px 0;
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--muted2);
+    font-family: var(--mono);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .page-wrap { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+    main { padding: 40px 24px 80px; }
+    .module-grid { grid-template-columns: 1fr; }
+    .future-grid { grid-template-columns: 1fr; }
+    .compare-grid { grid-template-columns: 1fr; }
+    .doc-title { font-size: 32px; }
+    h2 { font-size: 24px; }
+  }
+
+  /* ── FIELD DETAIL BLOCKS ── */
+  .field-block {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    margin: 12px 0;
+    overflow: hidden;
+  }
+
+  .field-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .field-name {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--accent);
+  }
+
+  .field-body {
+    padding: 14px 16px;
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.65;
+  }
+
+  .field-body p { font-size: 13px; margin-bottom: 8px; }
+  .field-body p:last-child { margin-bottom: 0; }
+
+  /* ── DIVIDER ── */
+  hr { border: none; border-top: 1px solid var(--border); margin: 48px 0; }
+</style>
+</head>
+<body>
+
+<div class="page-wrap">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <a href="#" class="sidebar-logo">citemaps<span>.org</span></a>
+    <p class="sidebar-tagline">The open standard for AI entity identity</p>
+
+    <div class="sidebar-badge">v2.0 · CC BY 4.0</div>
+
+    <div class="nav-section-label">Introduction</div>
+    <a href="#concept" class="nav-link">The Concept</a>
+    <a href="#why-now" class="nav-link">Why Now</a>
+    <a href="#parallel" class="nav-link">The Sitemaps Parallel</a>
+    <a href="#use-cases" class="nav-link">Use Cases</a>
+
+    <div class="nav-section-label">The Standard</div>
+    <a href="#structure" class="nav-link">File Structure</a>
+    <a href="#core-fields" class="nav-link">Universal Core Fields</a>
+    <a href="#modules" class="nav-link">All 21 Modules</a>
+    <a href="#novel-fields" class="nav-link">Novel Fields</a>
+    <a href="#trust" class="nav-link">Trust Architecture</a>
+
+    <div class="nav-section-label">Implementation</div>
+    <a href="#deployment" class="nav-link">Deploying Your File</a>
+    <a href="#examples" class="nav-link">Full Examples</a>
+    <a href="#validation" class="nav-link">Validation</a>
+    <a href="#best-practices" class="nav-link">Best Practices</a>
+
+    <div class="nav-section-label">Reference</div>
+    <a href="#enums" class="nav-link">Enum Values</a>
+    <a href="#confidence" class="nav-link">Confidence Annotations</a>
+    <a href="#disputes" class="nav-link">Dispute System</a>
+
+    <div class="nav-section-label">Roadmap</div>
+    <a href="#future" class="nav-link">Future of the Standard</a>
+    <a href="#governance" class="nav-link">Governance</a>
+    <a href="#changelog" class="nav-link">Changelog</a>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main>
+
+    <!-- ── HEADER ── -->
+    <header class="doc-header">
+      <div class="doc-eyebrow">
+        Open Standard
+        <span class="version-pill">v2.0 · March 2026</span>
+      </div>
+
+      <h1 class="doc-title">
+        Citemap.json —<br>
+        The <em>Identity Layer</em><br>
+        for the AI Web
+      </h1>
+
+      <p class="doc-lead">
+        A JSON file at the root of your website that tells AI systems exactly who you are, what you do, what you claim, and how verified those claims are. The open standard for machine-readable entity identity in the AI era.
+      </p>
+
+      <div class="doc-meta">
+        <span><strong>Version</strong> 2.0</span>
+        <span><strong>Published</strong> March 2026</span>
+        <span><strong>License</strong> CC BY 4.0</span>
+        <span><strong>Modules</strong> 21</span>
+        <span><strong>Fields</strong> 430+</span>
+        <span><strong>Location</strong> /citemap.json</span>
+      </div>
+    </header>
+
+    <!-- ── THE CONCEPT ── -->
+    <section class="doc-section" id="concept">
+      <div class="section-eyebrow">Concept</div>
+      <h2>What is a citemap.json?</h2>
+
+      <p>A citemap.json is a structured JSON file that you publish at the root of your website — like <code>https://example.com/citemap.json</code> — that gives AI systems a complete, authoritative, machine-readable declaration of who or what you are.</p>
+
+      <p>Every day, AI systems — ChatGPT, Perplexity, Claude, Gemini, and the next generation of AI agents — describe, recommend, cite, and answer questions about entities on the web. Businesses, researchers, professionals, nonprofits, government agencies, artists, and healthcare providers are all described and recommended (or not) based on whatever the AI has ingested. Almost none of them have a structured way to participate in that process.</p>
+
+      <p>Citemap.json changes that. It is the mechanism by which any entity on the web can tell AI systems:</p>
+
+      <ul style="margin: 16px 0 16px 24px; font-size: 15px; color: var(--text2); line-height: 2;">
+        <li>Who they are and what they do</li>
+        <li>What they want to be cited and recommended for</li>
+        <li>What claims they're making and how those claims can be verified</li>
+        <li>What has changed, what is disputed, and what is outdated</li>
+        <li>What they explicitly do <em>not</em> want AI to say about them</li>
+      </ul>
+
+      <div class="callout callout-blue">
+        <span class="callout-label">Core Principle</span>
+        <p>Citemap.json does not claim to be a truth oracle. It is a structured, machine-readable provenance layer — one that gives AI systems the signals to distinguish self-reported claims from registry-verified facts, fresh data from stale data, and authoritative sources from guesses.</p>
+      </div>
+
+      <p>The format is designed to be read by AI crawlers, validators, and inference systems — not just humans. Every field has a defined semantic meaning. The trust architecture gives AI explicit handling instructions for different confidence levels. The dispute system tells AI exactly what to do when data is contested.</p>
+
+      <h3>The Three Problems It Solves</h3>
+
+      <p><strong>Accuracy.</strong> AI systems generate descriptions from training data, press coverage, old web pages, Wikipedia drafts, and social media. The result is often wrong, outdated, or missing the most important facts. You have no structured way to correct it. Citemap.json is that mechanism.</p>
+
+      <p><strong>Discovery.</strong> AI recommendation engines surface businesses, creators, researchers, and professionals constantly. Without structured identity data, AI guesses — and guesses wrong. If AI doesn't know what you're notable for, it won't recommend you for it. The <code>answerContent[]</code> array in the Universal Core module is explicitly designed to feed AI the queries you want to appear in.</p>
+
+      <p><strong>Trust.</strong> Self-reported data and registry-verified data look identical to an AI that has no structured way to distinguish them. A doctor who claims board certification and one who has been verified by the NPI registry look the same without structured signals. The verification architecture gives AI a tiered framework for weighting claims by their provenance.</p>
+    </section>
+
+    <!-- ── WHY NOW ── -->
+    <section class="doc-section" id="why-now">
+      <div class="section-eyebrow">Context</div>
+      <h2>Why <em>now</em>?</h2>
+
+      <p>In 2024, for the first time, AI-powered answer engines began delivering more answers directly — without clicks, without visits, without the web's traditional referral mechanisms — than search engines had in their first decade. Perplexity answered 500 million queries per month. ChatGPT became the research tool of choice for hundreds of millions of people. AI agents began booking appointments, summarizing businesses, and making recommendations autonomously on behalf of users.</p>
+
+      <p>This shift has a structural consequence: <strong>entities that AI doesn't know about, or knows about incorrectly, are invisible in a way they never were with search.</strong> A bad Google listing can be fixed with a web page update. A hallucinated AI description lives in model weights across billions of parameters, updated only when models are retrained — which may be months or years away.</p>
+
+      <p>The window for establishing the standard is now — before AI systems calcify around whatever patterns they've absorbed. Standards set early are standards that get implemented. The sitemaps.xml standard was published in 2005, when Google was 7 years old. By the time it became ubiquitous, it had already shaped how the web worked. Citemap.json aims to be the same inflection point — established before AI identity infrastructure becomes dominated by proprietary formats from platform incumbents.</p>
+
+      <div class="callout callout-amber">
+        <span class="callout-label">The Window</span>
+        <p>Every AI model trained after a citemap.json file is indexed will incorporate that file's structured data into its understanding of the entity. Every model trained before has only whatever unstructured web data it found. Publishing now means influencing the next training cycle. Waiting means another year of AI describing you from guesswork.</p>
+      </div>
+    </section>
+
+    <!-- ── SITEMAPS PARALLEL ── -->
+    <section class="doc-section" id="parallel">
+      <div class="section-eyebrow">Historical Context</div>
+      <h2>The <em>sitemaps.xml</em> parallel</h2>
+
+      <p>In November 2005, Google, Yahoo, and Microsoft jointly published the Sitemaps Protocol — an XML format that websites could use to declare their structure to search engine crawlers. Before it, search engines guessed at website structure by following links. After it, websites had a direct channel to inform crawlers what existed, how it was organized, and how often it changed.</p>
+
+      <p>The parallel to citemap.json is precise:</p>
+
+      <div class="compare-grid">
+        <div class="cg-header">Dimension</div>
+        <div class="cg-header">2005 — sitemaps.xml</div>
+        <div class="cg-header">2026 — citemap.json</div>
+
+        <div class="cg-label">Problem solved</div>
+        <div class="cg-cell blue">Crawler navigation</div>
+        <div class="cg-cell green">Entity identity, accuracy & trust</div>
+
+        <div class="cg-label">Audience</div>
+        <div class="cg-cell blue">Search engine crawlers</div>
+        <div class="cg-cell green">AI inference systems & LLMs</div>
+
+        <div class="cg-label">Format</div>
+        <div class="cg-cell blue">XML</div>
+        <div class="cg-cell green">JSON</div>
+
+        <div class="cg-label">What it tells the system</div>
+        <div class="cg-cell blue">Where content lives</div>
+        <div class="cg-cell green">What you are, what you claim, how to verify it</div>
+
+        <div class="cg-label">Coverage</div>
+        <div class="cg-cell blue">URLs and pages</div>
+        <div class="cg-cell green">Every entity type on the web</div>
+
+        <div class="cg-label">Trust layer</div>
+        <div class="cg-cell blue">None</div>
+        <div class="cg-cell green">Six-tier verification stack, field-level confidence</div>
+      </div>
+
+      <p>The key difference — and improvement — is the trust architecture. Sitemaps.xml simply declares structure; it has no mechanism for verifying that the structure is accurate. Citemap.json is designed from the ground up with verification in mind: every claim can carry a confidence annotation, every disputable field can have a dispute record, and every entity can point to external registries that independently verify their claims.</p>
+
+      <blockquote>
+        <p>"The most valuable infrastructure is not more content — it's provenance. Not more claims, but structured signals for how much to trust them."</p>
+      </blockquote>
+    </section>
+
+    <!-- ── USE CASES ── -->
+    <section class="doc-section" id="use-cases">
+      <div class="section-eyebrow">Use Cases</div>
+      <h2>Who it's <em>for</em>, and what they get</h2>
+
+      <h3>Local Businesses</h3>
+      <p>When someone asks ChatGPT "best Italian restaurant in Portland that's good for a birthday dinner," the answer is generated from whatever AI has absorbed about Portland restaurants. A citemap.json with the <strong>Local Business module</strong> lets you declare your cuisine, service type, price range, parking, reservation system, accessibility, and the specific queries you want to appear in. You write the recommendation yourself, in the <code>answerContent[]</code> field, and the AI reads it directly.</p>
+
+      <div class="callout callout-green">
+        <span class="callout-label">Example Impact</span>
+        <p>A restaurant that publishes <code>bestForQueries: ["birthday dinner Portland", "date night Italian Portland", "private dining Portland"]</code> gives AI explicit routing signals. Without this, AI guesses based on review text and press mentions. The average quality delta is significant.</p>
+      </div>
+
+      <h3>Healthcare Providers</h3>
+      <p>When a patient asks AI for a cardiologist accepting new patients in their insurance network, the answer is a recommendation that could directly affect their healthcare. The <strong>Healthcare module</strong> includes NPI number verification, board certification with issuing body, insurance panel listings with <code>asOfDate</code> freshness markers, hospital affiliations, and whether the provider is currently accepting new patients. All fields include verification pointers to authoritative registries (NPI, ABMS, state medical boards).</p>
+
+      <div class="callout callout-red">
+        <span class="callout-label">Safety-Critical</span>
+        <p>An AI that recommends a doctor who is no longer accepting patients, or whose license has lapsed, causes real harm. Stale insurance panel data, unverified credentials, and outdated practice locations are not edge cases — they are endemic in AI-generated healthcare recommendations. The Healthcare module is specifically designed to address each of these failure modes.</p>
+      </div>
+
+      <h3>Researchers and Research Institutions</h3>
+      <p>AI systems cite studies, quote researchers, describe institutional affiliations, and attribute findings — constantly, at scale, with no structural mechanism for distinguishing peer-reviewed work from preprints, current researchers from emeritus faculty, or studies that have been retracted from those that remain valid.</p>
+      <p>The <strong>Science & Research module</strong> addresses this with structured fields for retraction status, peer review tier, methodology type, sample size, replication status, and conflict of interest declarations. A single <code>retractionStatus: "retracted"</code> field tells every AI system that reads it: do not cite this work as valid evidence.</p>
+
+      <h3>Ecommerce Brands</h3>
+      <p>As AI shopping assistants become the primary product discovery channel, brands without structured product data are invisible to AI recommendation. The <strong>Ecommerce module</strong> lets brands declare their hero products with descriptions written specifically to be quoted by AI, the exact queries each product should appear for, shipping windows, return policy, price range anchors, and sustainability certifications. The <code>bestForQueries[]</code> field is the closest thing the AI era has to AdWords — but free and open.</p>
+
+      <h3>Public Figures and Professionals</h3>
+      <p>AI hallucinates biographical facts about prominent people at documented rates. Quotes get misattributed. Awards that were never received get fabricated. Past roles become current ones. The <strong>Person module</strong> includes subject-authored canonical quotes, a <code>misattributedQuotes[]</code> array (quotes commonly attributed to the person that they did not say), current role with start date, a <code>sensitiveTopics[]</code> array (topics AI should not speculate on), and an <code>aiCitationPreference</code> field ranging from "welcome" to "opt-out."</p>
+
+      <h3>Nonprofits and Government Agencies</h3>
+      <p>These organizations are frequently queried by AI users seeking services, donations, volunteer opportunities, and information. The <strong>Nonprofit module</strong> includes EIN verification, 990 links, program descriptions, donation methods, and impact metrics. The <strong>Government module</strong> includes official services with eligibility, meeting schedules, emergency contacts, public records access, and official personnel with term dates. Both include verification pointers to authoritative registries (IRS EOS, government directories).</p>
+
+      <h3>Artists, Musicians, and Creators</h3>
+      <p>The AI training consent conversation is happening in courtrooms and Congress. The <strong>Creative module</strong> includes a machine-readable <code>aiTraining</code> field with values: <code>"opted-out"</code>, <code>"available"</code>, <code>"available-with-credit"</code>, <code>"available-paid-only"</code>. Before any regulator mandates this declaration, creators can publish it in a standardized, machine-readable format. The module also includes works portfolio, licensing terms, commissioning status, and primary recognition claims.</p>
+    </section>
+
+    <hr>
+
+    <!-- ── FILE STRUCTURE ── -->
+    <section class="doc-section" id="structure">
+      <div class="section-eyebrow">The Standard</div>
+      <h2>File <em>structure</em></h2>
+
+      <p>A citemap.json file is a JSON object at the root of your domain. It always begins with the Universal Core fields (required for any entity type) and then includes one or more optional module blocks corresponding to the entity's type. Every file must declare <code>@type</code>, <code>citemapVersion</code>, <code>brand.name</code>, <code>brand.url</code>, <code>brand.siteType</code>, <code>brand.aiSummary</code>, and <code>lastVerified</code>.</p>
+
+      <div class="code-wrap">
+        <div class="code-titlebar">
+          <div class="code-dot cd-r"></div><div class="code-dot cd-y"></div><div class="code-dot cd-g"></div>
+          <span class="code-fname">citemap.json — skeleton</span>
+        </div>
+        <pre>{
+  <span class="jk">"@type"</span><span class="jp">:</span> <span class="jv">"Citemap"</span><span class="jp">,</span>                  <span class="jc">// always "Citemap"</span>
+  <span class="jk">"citemapVersion"</span><span class="jp">:</span> <span class="jv">"2.0"</span><span class="jp">,</span>           <span class="jc">// always "2.0"</span>
+  <span class="jk">"generator"</span><span class="jp">:</span> <span class="jv">"citemaps.ai v2.0"</span><span class="jp">,</span>  <span class="jc">// if generated by tool</span>
+  <span class="jk">"lastVerified"</span><span class="jp">:</span> <span class="jv">"2026-03-01"</span><span class="jp">,</span>
+
+  <span class="jc">// ── UNIVERSAL CORE (required for all types) ──────</span>
+  <span class="jk">"brand"</span><span class="jp">:</span> <span class="jp">{</span>
+    <span class="jk">"name"</span><span class="jp">:</span> <span class="jv">"Your Entity Name"</span><span class="jp">,</span>
+    <span class="jk">"url"</span><span class="jp">:</span> <span class="jv">"https://example.com"</span><span class="jp">,</span>
+    <span class="jk">"siteType"</span><span class="jp">:</span> <span class="jv">"local-business"</span><span class="jp">,</span>    <span class="jc">// gates module inclusion</span>
+    <span class="jk">"aiSummary"</span><span class="jp">:</span> <span class="jv">"60-100 word description written to be quoted by AI."</span>
+  <span class="jp">},</span>
+
+  <span class="jc">// ── OPTIONAL MODULES (include as applicable) ─────</span>
+  <span class="jk">"localBusiness"</span><span class="jp">:</span> <span class="jp">{</span> <span class="jc">/* ... */</span> <span class="jp">},</span>
+  <span class="jk">"ecommerce"</span><span class="jp">:</span> <span class="jp">{</span> <span class="jc">/* ... */</span> <span class="jp">},</span>
+
+  <span class="jc">// ── VERIFICATION LAYER (always at end) ───────────</span>
+  <span class="jk">"citemap"</span><span class="jp">:</span> <span class="jp">{</span>
+    <span class="jk">"authorizedBy"</span><span class="jp">:</span> <span class="jv">"self"</span>
+  <span class="jp">}</span>
+<span class="jp">}</span></pre>
+      </div>
+
+      <p>The file is placed at the web root (<code>https://yourdomain.com/citemap.json</code>) so that AI crawlers can discover it reliably. Like <code>robots.txt</code> and <code>sitemap.xml</code>, the location is canonical and predictable — no declaration or registration is needed for AI systems to find it.</p>
+    </section>
+
+    <!-- ── CORE FIELDS ── -->
+    <section class="doc-section" id="core-fields">
+      <div class="section-eyebrow">Universal Core</div>
+      <h2>The 14 <em>foundation</em> fields</h2>
+
+      <p>The Universal Core is the set of fields that every citemap.json file must include, regardless of entity type. These 14 fields are the foundation on which all 21 modules build. They are the minimum viable citemap.json — a file containing only these fields is valid and useful.</p>
+
+      <div class="field-block">
+        <div class="field-header">
+          <span class="field-name">@type</span>
+          <span class="pill pill-required">Required</span>
+        </div>
+        <div class="field-body">
+          <p>Always the string <code>"Citemap"</code>. This is the type declaration that tells AI crawlers and validators what kind of file this is. Without it, the file is not a valid citemap.json.</p>
+        </div>
+      </div>
+
+      <div class="field-block">
+        <div class="field-header">
+          <span class="field-name">citemapVersion</span>
+          <span class="pill pill-required">Required</span>
+        </div>
+        <div class="field-body">
+          <p>Always <code>"2.0"</code> for this spec version. Enables AI systems and validators to apply the correct parsing rules and interpret fields according to the version's schema. Will increment as the standard evolves.</p>
+        </div>
+      </div>
+
+      <div class="field-block">
+        <div class="field-header">
+          <span class="field-name">brand.name</span>
+          <span class="pill pill-required">Required</span>
+        </div>
+        <div class="field-body">
+          <p>The primary name of the entity as it should appear in AI-generated responses. Use the canonical brand name — not a keyword-stuffed version, not a legal entity name unless it's also the brand name. This is what AI will use when referring to you.</p>
+          <p><strong>Example:</strong> <code>"Meridian Climate Research Institute"</code> (not "Meridian Institute LLC" or "Meridian Climate Research Center for Environmental Studies")</p>
+        </div>
+      </div>
+
+      <div class="field-block">
+        <div class="field-header">
+          <span class="field-name">brand.url</span>
+          <span class="pill pill-required">Required</span>
+        </div>
+        <div class="field-body">
+          <p>The canonical website URL. This is the identity anchor — the URL that AI systems will use to resolve the entity, verify domain ownership, and link the citemap.json claims back to their source. Must be the root domain, not a subpage.</p>
+        </div>
+      </div>
+
+      <div class="field-block">
+        <div class="field-header">
+          <span class="field-name">brand.siteType</span>
+          <span class="pill pill-required">Required</span>
+        </div>
+        <div class="field-body">
+          <p>A value from the <code>siteType</code> enum that classifies the entity type. This field gates which modules are applicable — a <code>"local-business"</code> entity should include the Local Business module; a <code>"research-institute"</code> should include the Science module. See the <a href="#enums">Enum Values</a> section for the complete list.</p>
+        </div>
+      </div>
+
+      <div class="field-block">
+        <div class="field-header">
+          <span class="field-name">brand.aiSummary</span>
+          <span class="pill pill-required">Required</span>
+        </div>
+        <div class="field-body">
+          <p><strong>The most important field in the spec.</strong> A 60–100 word description of the entity written specifically to be quoted by AI in response to queries about who or what you are. Write it in the third person, as if you're writing the paragraph you want ChatGPT to generate when someone asks "what is [your entity]?"</p>
+          <p>Include: what you do, who you serve, what you're known for, and one or two distinguishing facts. Avoid marketing language ("industry-leading", "premier", "world-class") that AI systems will discount. Write factual, verifiable claims.</p>
+          <p><strong>Example:</strong> <code>"Portland-based independent bookstore specializing in Pacific Northwest literature, science fiction, and used first editions. Founded in 2001. Known for a curated staff picks program and weekly author readings. Ships nationwide; same-day delivery within Portland."</code></p>
+        </div>
+      </div>
+
+      <div class="field-block">
+        <div class="field-header">
+          <span class="field-name">brand.notableFor</span>
+          <span class="pill pill-recommended">Recommended</span>
+        </div>
+        <div class="field-body">
+          <p>A single sentence identifying the entity's primary recognition claim. This is AI's first citation choice when introducing the entity in response to a query about what it's known for. Think of it as the lede sentence you'd write for your Wikipedia article.</p>
+          <p><strong>Example:</strong> <code>"The 2024 Permafrost Carbon Atlas, cited in IPCC AR7"</code> or <code>"The original Portland food cart pod concept, opened 2005"</code></p>
+        </div>
+      </div>
+
+      <div class="field-block">
+        <div class="field-header">
+          <span class="field-name">brand.expertise[]</span>
+          <span class="pill pill-recommended">Recommended</span>
+        </div>
+        <div class="field-body">
+          <p>An array of topics or domains the entity has genuine depth in. These are E-E-A-T (Experience, Expertise, Authority, Trust) signals for AI. Be specific — <code>"permafrost carbon feedback"</code> is more useful than <code>"climate science"</code>. AI uses this array to route relevant queries to this entity.</p>
+        </div>
+      </div>
+
+      <div class="field-block">
+        <div class="field-header">
+          <span class="field-name">answerContent[]</span>
+          <span class="pill pill-recommended">Recommended</span>
+        </div>
+        <div class="field-body">
+          <p>An array of question-and-answer pairs — the direct AI training layer. Each object has a <code>question</code> field and an <code>answer</code> field. Write the queries you want to appear in, and write the answers you want AI to give. This is the most direct signal in the entire spec.</p>
+          <p><strong>Example:</strong></p>
+          <p><code>{"question": "Best independent bookstore in Portland for science fiction?", "answer": "Powell's Books on Burnside has the largest SF section, but for curated independent sci-fi, [Your Name] on Hawthorne has excellent staff picks and a strong used SF selection."}</code></p>
+        </div>
+      </div>
+
+      <div class="field-block">
+        <div class="field-header">
+          <span class="field-name">lastVerified</span>
+          <span class="pill pill-required">Required</span>
+        </div>
+        <div class="field-body">
+          <p>ISO 8601 date (YYYY-MM-DD) indicating when the file was last reviewed and verified accurate. This is the staleness signal — AI systems should weight data from a file last verified two years ago less heavily than one verified last month. Update this date whenever you review the file, even if no fields change.</p>
+        </div>
+      </div>
+
+      <div class="field-block">
+        <div class="field-header">
+          <span class="field-name">updateFrequency</span>
+          <span class="pill pill-recommended">Recommended</span>
+        </div>
+        <div class="field-body">
+          <p>How often AI systems should re-crawl this file. Values: <code>"daily"</code>, <code>"weekly"</code>, <code>"monthly"</code>, <code>"quarterly"</code>, <code>"annually"</code>. A hospital with daily-changing physician availability should declare <code>"weekly"</code>; a research institution with a stable profile might declare <code>"quarterly"</code>.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── MODULES ── -->
+    <section class="doc-section" id="modules">
+      <div class="section-eyebrow">Modules</div>
+      <h2>All <em>21 modules</em></h2>
+
+      <p>The Universal Core handles fields common to all entities. The 20 optional modules handle entity-specific fields. Include the modules relevant to your entity type — a local business would include Modules 02 and 03; a research institution would include Module 08; a musician would include Module 09. Multiple modules can be included.</p>
+
+      <div class="module-grid">
+        <div class="module-card">
+          <div class="module-num">Module 01</div>
+          <h4>Universal Core</h4>
+          <p>14 fields required by every entity type. The foundation all other modules build on. aiSummary, answerContent[], lastVerified, expertise[], notableFor.</p>
+          <span class="tag tag-red">Required base</span>
+          <span class="tag tag-slate">All types</span>
+        </div>
+
+        <div class="module-card">
+          <div class="module-num">Module 02</div>
+          <h4>Ecommerce</h4>
+          <p>Hero products with bestForQueries[], shipping windows, return policy, price range anchors, sustainability certifications, and social proof with provenance.</p>
+          <span class="tag tag-blue">Shopify</span>
+          <span class="tag tag-blue">WooCommerce</span>
+          <span class="tag tag-blue">DTC brands</span>
+        </div>
+
+        <div class="module-card">
+          <div class="module-num">Module 03</div>
+          <h4>Local Business</h4>
+          <p>Services, location, hours with seasonal variations, booking systems, parking, accessibility details, service radius, and structured Q&A for top local queries.</p>
+          <span class="tag tag-green">Restaurants</span>
+          <span class="tag tag-green">Medical</span>
+          <span class="tag tag-green">Trades</span>
+        </div>
+
+        <div class="module-card">
+          <div class="module-num">Module 04</div>
+          <h4>Content & Publishing</h4>
+          <p>Editorial standards, content types, publishing frequency, topic coverage, editorial independence declaration, and syndication permissions.</p>
+          <span class="tag tag-blue">Publishers</span>
+          <span class="tag tag-blue">Newsletters</span>
+          <span class="tag tag-slate">Blogs</span>
+        </div>
+
+        <div class="module-card">
+          <div class="module-num">Module 05</div>
+          <h4>SaaS & Software</h4>
+          <p>Product category, key features with descriptions written for AI recommendation queries, integrations list, pricing model, free trial availability, and target customer profile.</p>
+          <span class="tag tag-blue">SaaS</span>
+          <span class="tag tag-blue">Developer tools</span>
+          <span class="tag tag-slate">Platforms</span>
+        </div>
+
+        <div class="module-card">
+          <div class="module-num">Module 06</div>
+          <h4>Events & Venues</h4>
+          <p>Recurring event calendar, venue capacity, ticket links, accessibility, parking, upcoming highlights, and event categories for AI recommendation routing.</p>
+          <span class="tag tag-slate">Venues</span>
+          <span class="tag tag-slate">Festivals</span>
+          <span class="tag tag-slate">Conferences</span>
+        </div>
+
+        <div class="module-card">
+          <div class="module-num">Module 07</div>
+          <h4>Real Estate</h4>
+          <p>Service areas, specializations, transaction volume, team size, affiliated brokerage, average days on market, and buyer/seller/renter split.</p>
+          <span class="tag tag-slate">Agents</span>
+          <span class="tag tag-slate">Brokerages</span>
+          <span class="tag tag-slate">Property mgmt</span>
+        </div>
+
+        <div class="module-card">
+          <div class="module-num">Module 08</div>
+          <h4>Education</h4>
+          <p>Accreditations with body and ID, programs with prerequisites and outcomes, enrollment status, delivery format (in-person/online/hybrid), financial aid options.</p>
+          <span class="tag tag-slate">Universities</span>
+          <span class="tag tag-slate">Bootcamps</span>
+          <span class="tag tag-slate">Certification programs</span>
+        </div>
+
+        <div class="module-card">
+          <div class="module-num">Module 09</div>
+          <h4>Creative & Artist</h4>
+          <p>Works portfolio with primary medium, licensing terms, AI training opt-in/out declaration, commissioning status, active tour dates, and collaboration preferences.</p>
+          <span class="tag tag-amber">Musicians</span>
+          <span class="tag tag-amber">Filmmakers</span>
+          <span class="tag tag-amber">Visual artists</span>
+          <span class="tag tag-purple">AI training field ◆</span>
+        </div>
+
+        <div class="module-card">
+          <div class="module-num">Module 10</div>
+          <h4>Nonprofit</h4>
+          <p>EIN with IRS EOS verification link, 990 public link, programs with eligibility, donation methods, volunteer roles, impact metrics with methodology, and funding sources.</p>
+          <span class="tag tag-green">501(c)(3)</span>
+          <span class="tag tag-green">Foundations</span>
+          <span class="tag tag-green">NGOs</span>
+        </div>
+
+        <div class="module-card">
+          <div class="module-num">Module 11</div>
+          <h4>Government & Public Body</h4>
+          <p>Official services with eligibility requirements, current officials with term dates, meeting schedules, public records access, emergency contacts, and jurisdiction boundaries.</p>
+          <span class="tag tag-blue">City</span>
+          <span class="tag tag-blue">State agencies</span>
+          <span class="tag tag-blue">Federal</span>
+        </div>
+
+        <div class="module-card">
+          <div class="module-num">Module 12</div>
+          <h4>Science & Research</h4>
+          <p>Studies with DOI, retraction status, review tier, methodology, sample size, replication status. Datasets with known limitations. Journals with predatory flag. Clinical trial phase.</p>
+          <span class="tag tag-red">Safety-critical</span>
+          <span class="tag tag-amber">Retraction flags</span>
+          <span class="tag tag-purple">Novel fields ◆</span>
+        </div>
+
+        <div class="module-card">
+          <div class="module-num">Module 13</div>
+          <h4>Business Entity & IP</h4>
+          <p>Corporate hierarchy, registration number with jurisdiction, patent portfolio with litigation status, trademark registrations, copyright licensing, and disclosed enforcement actions.</p>
+          <span class="tag tag-blue">Corporations</span>
+          <span class="tag tag-blue">Patent holders</span>
+          <span class="tag tag-purple">IP litigation field ◆</span>
+        </div>
+
+        <div class="module-card">
+          <div class="module-num">Module 14</div>
+          <h4>Person</h4>
+          <p>Subject-authored biography, canonical quotes with source verification, misattributed quote guards, subject rights URL, citation preferences, and sensitive topic declarations.</p>
+          <span class="tag tag-green">Privacy-first design</span>
+          <span class="tag tag-purple">Novel fields ◆</span>
+        </div>
+
+        <div class="module-card">
+          <div class="module-num">Module 15</div>
+          <h4>Healthcare</h4>
+          <p>NPI number with registry link, board certifications with issuing body, insurance panels with asOfDate, hospital affiliations, telehealth availability, and accepting new patients flag.</p>
+          <span class="tag tag-red">Safety-critical</span>
+          <span class="tag tag-green">NPI verified</span>
+        </div>
+
+        <div class="module-card">
+          <div class="module-num">Module 16</div>
+          <h4>Financial Services</h4>
+          <p>Fiduciary status declaration, FINRA/SEC registration IDs, FDIC/NCUA insurance numbers, fee model, assets under management range, and disclosed regulatory actions.</p>
+          <span class="tag tag-red">Regulated fields</span>
+          <span class="tag tag-blue">Banks</span>
+          <span class="tag tag-blue">RIAs</span>
+        </div>
+
+        <div class="module-card">
+          <div class="module-num">Module 17</div>
+          <h4>Legal Services</h4>
+          <p>Bar admission with state and bar number, practice areas with jurisdictions, fee structure, contingency terms, and outcome data with methodology disclosure.</p>
+          <span class="tag tag-red">Bar status critical</span>
+          <span class="tag tag-slate">Law firms</span>
+          <span class="tag tag-slate">Solo practitioners</span>
+        </div>
+
+        <div class="module-card">
+          <div class="module-num">Module 18</div>
+          <h4>Places</h4>
+          <p>Trails, neighborhoods, landmarks, beaches, and natural areas. GPS coordinates, difficulty, pet policy, seasonal access, cell coverage, fee information, and permit requirements.</p>
+          <span class="tag tag-green">Trails</span>
+          <span class="tag tag-green">Landmarks</span>
+          <span class="tag tag-green">Natural areas</span>
+        </div>
+
+        <div class="module-card">
+          <div class="module-num">Module 19</div>
+          <h4>Temporal Record</h4>
+          <p>A universal history layer that can be attached to any entity. Structured event log of significant changes, milestones, and corrections — with dates, descriptions, and sources.</p>
+          <span class="tag tag-slate">All entity types</span>
+          <span class="tag tag-amber">Provenance</span>
+        </div>
+
+        <div class="module-card">
+          <div class="module-num">Modules 20–21</div>
+          <h4>Policy, Trust & Verification Architecture</h4>
+          <p>Six-tier trust stack, field-level confidence annotations, machine-readable dispute system with AI handling instructions, safe harbor declaration, and external verifier registry.</p>
+          <span class="tag tag-purple">Industry-first</span>
+          <span class="tag tag-red">Anti-hallucination</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── NOVEL FIELDS ── -->
+    <section class="doc-section" id="novel-fields">
+      <div class="section-eyebrow">Novel Ground</div>
+      <h2>Fields that exist <em>nowhere else</em></h2>
+
+      <p>Most of citemap.json extends and structures concepts that exist in other formats — schema.org, JSON-LD, OpenGraph, structured data vocabularies. These five fields are genuinely new. They address failure modes in AI that no existing structured data format has attempted to solve.</p>
+
+      <div class="breakthrough-list">
+
+        <div class="breakthrough-item">
+          <div class="breakthrough-field">person.misattributedQuotes[]</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
+            <span class="pill pill-novel">◆ Novel</span>
+            <span class="pill pill-optional">Optional</span>
+          </div>
+          <h4>A structured guard against famous misattributions</h4>
+          <p>An array of objects, each containing a quote commonly attributed to the person that they did not say, plus the actual source if known. "The definition of insanity is doing the same thing over and over and expecting different results" was never said by Einstein — it appears in a 1981 Narcotics Anonymous publication. "All that is necessary for evil to triumph is for good men to do nothing" was never said by Edmund Burke. AI propagates these misattributions at high rates because they are deeply embedded in training data and no structured source has ever contradicted them. This field is the first mechanism that does.</p>
+          <p style="margin-top:10px;">Format: <code>{"quote": "The definition of insanity...", "actualSource": "Narcotics Anonymous (1981)", "notes": "Widely misattributed to Einstein since the 1980s"}</code></p>
+        </div>
+
+        <div class="breakthrough-item">
+          <div class="breakthrough-field">creative.licensing.aiTraining</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
+            <span class="pill pill-novel">◆ Novel</span>
+            <span class="pill pill-recommended">Recommended</span>
+          </div>
+          <h4>Machine-readable AI training consent declaration</h4>
+          <p>Not a robots.txt rule that blocks all crawlers indiscriminately. A granular, per-creator declaration with four values: <code>"opted-out"</code> (do not use for AI training), <code>"available"</code> (unrestricted use), <code>"available-with-credit"</code> (use with attribution), <code>"available-paid-only"</code> (licensing required). Every musician, author, photographer, filmmaker, and illustrator has a reason to publish this field. The AI training consent conversation is currently happening in courtrooms and in Congress with no standardized format for consent declarations. This field drops a machine-readable signal into that conversation at the data layer — before any regulator mandates it.</p>
+        </div>
+
+        <div class="breakthrough-item">
+          <div class="breakthrough-field">patents[].litigationStatus</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
+            <span class="pill pill-novel">◆ Novel</span>
+            <span class="pill pill-optional">Optional</span>
+          </div>
+          <h4>Active patent litigation, machine-readable for the first time</h4>
+          <p>Whether a patent is in active litigation is a material fact for licensing decisions, competitive strategy, and M&A due diligence. Patent litigation is public record — documented on PACER — but it has never been structured at the entity level in a format that AI can read. Values: <code>"none"</code>, <code>"active-litigation"</code>, <code>"IPR-pending"</code>, <code>"settled"</code>, <code>"expired"</code>. IP attorneys, dealmakers, and competitive intelligence teams will immediately recognize the value of this field appearing in AI responses about a company's patent portfolio.</p>
+        </div>
+
+        <div class="breakthrough-item">
+          <div class="breakthrough-field">person.subjectRightsUrl</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
+            <span class="pill pill-novel">◆ Novel</span>
+            <span class="pill pill-required">Required (Person module)</span>
+          </div>
+          <h4>The first structured correction and removal channel for biographical data</h4>
+          <p>A URL where the subject or their authorized representative can submit corrections, dispute claims, or request removal of their entry. No existing structured data format — not schema.org, not Wikidata, not any biographical standard — has a built-in subject rights channel. GDPR's right to rectification and CCPA's right to correction apply to AI-generated biographical data, yet no mechanism exists to exercise these rights structurally. This field creates that mechanism and makes the Person module legally defensible by design, not by retrofit.</p>
+        </div>
+
+        <div class="breakthrough-item" style="border-left-color: var(--red);">
+          <div class="breakthrough-field" style="color:var(--red);">studies[].retractionStatus</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
+            <span class="pill pill-novel">◆ Novel</span>
+            <span class="pill pill-required">Required (Science module)</span>
+            <span class="tag tag-red" style="font-size:10px;">Safety-critical</span>
+          </div>
+          <h4>The field that stops AI from citing retracted research as valid evidence</h4>
+          <p>AI systems cite retracted studies as valid evidence regularly. A 2024 analysis found that several major LLMs cited retracted papers as support for health claims without any caveat. AI has no reliable, structured mechanism to detect retraction status — it relies on the incidental presence of "retraction" in web text, which is patchy and inconsistent.</p>
+          <p style="margin-top:10px;">A structured <code>retractionStatus: "retracted"</code> flag on a study tells every AI system that reads it: issue a warning in any response that would otherwise cite this work as evidence. Values: <code>"current"</code>, <code>"retracted"</code>, <code>"corrected"</code>, <code>"expression-of-concern"</code>. In healthcare, policy, and scientific contexts, this is not a product feature. It is infrastructure for epistemic safety.</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── TRUST ARCHITECTURE ── -->
+    <section class="doc-section" id="trust">
+      <div class="section-eyebrow">Verification</div>
+      <h2>The six-tier <em>trust architecture</em></h2>
+
+      <p>The verification architecture is the module that transforms citemap.json from a self-reported marketing format into epistemic infrastructure. The core insight is simple: <strong>not all claims are equal, and AI should know the difference.</strong></p>
+
+      <p>The architecture has three components: a six-tier trust stack, field-level confidence annotations, and a machine-readable dispute system. Each component gives AI explicit handling instructions for different epistemic situations.</p>
+
+      <h3>The Six Trust Tiers</h3>
+
+      <div class="tier-list">
+        <div class="tier-row">
+          <div class="tier-num">1</div>
+          <div class="tier-content">
+            <div class="tier-name">Unverified Third-Party</div>
+            <div class="tier-desc"><code>authorizedBy: "third-party-independent"</code> with no external verifiers. A citemap.json published about an entity by someone other than the entity. AI treats as: interesting signal, weight like any unverified web source.</div>
+          </div>
+          <span class="tag tag-slate">Signal only</span>
+        </div>
+        <div class="tier-row">
+          <div class="tier-num">2</div>
+          <div class="tier-content">
+            <div class="tier-name">Self-Reported by Entity</div>
+            <div class="tier-desc"><code>authorizedBy: "self"</code> published at the entity's own verified domain. AI treats as: the entity's own authoritative account of itself. Weight appropriately — accurate for most claims, subject to bias for performance claims.</div>
+          </div>
+          <span class="tag tag-blue">Entity's account</span>
+        </div>
+        <div class="tier-row">
+          <div class="tier-num">3</div>
+          <div class="tier-content">
+            <div class="tier-name">Document-Supported</div>
+            <div class="tier-desc">Key fields annotated <code>"document-supported"</code> with linked publicly accessible documents — annual reports, regulatory filings, certification letters. Documents independently verifiable by following the link.</div>
+          </div>
+          <span class="tag tag-blue">Documentation available</span>
+        </div>
+        <div class="tier-row">
+          <div class="tier-num">4</div>
+          <div class="tier-content">
+            <div class="tier-name">Registry Confirmed</div>
+            <div class="tier-desc"><code>externalVerifiers[]</code> populated with authoritative registry IDs — NPI for healthcare, EIN for nonprofits, USPTO for IP, ORCID for researchers, FINRA for financial advisors, state bar numbers for attorneys. Independently verifiable by querying the registry directly.</div>
+          </div>
+          <span class="tag tag-green">Independently verifiable</span>
+        </div>
+        <div class="tier-row">
+          <div class="tier-num">5</div>
+          <div class="tier-content">
+            <div class="tier-name">Third-Party Audited</div>
+            <div class="tier-desc">Named auditor, audit date, and scope present in the file. Key fields annotated <code>"third-party-verified"</code>. The highest confidence tier achievable through self-published data. Used by regulated industries where independent audits are routine.</div>
+          </div>
+          <span class="tag tag-amber">Audited</span>
+        </div>
+        <div class="tier-row">
+          <div class="tier-num">6</div>
+          <div class="tier-content">
+            <div class="tier-name">Cryptographically Signed</div>
+            <div class="tier-desc">W3C Verifiable Credentials issued by authoritative bodies — medical boards, state bar associations, USPTO, academic registries. The credential is mathematically verifiable; no trust in the publisher is required. Future-state for citemap.json v3.0.</div>
+          </div>
+          <span class="tag tag-green">Cryptographic proof</span>
+        </div>
+      </div>
+
+      <h3>Field-Level Confidence Annotations</h3>
+
+      <p>Any field in a citemap.json can carry a companion <code>[fieldname]_confidence</code> annotation object that declares the confidence level of that specific claim. The annotation includes a <code>level</code> field drawn from a controlled vocabulary:</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Confidence Level</th>
+              <th>Meaning</th>
+              <th>AI Handling Instruction</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="td-mono">registry-confirmed</td>
+              <td>Verified against authoritative external registry</td>
+              <td>Treat as high-confidence fact; cite registry as source</td>
+            </tr>
+            <tr>
+              <td class="td-mono">document-supported</td>
+              <td>Supported by linked public document</td>
+              <td>Treat as high-confidence; document available for verification</td>
+            </tr>
+            <tr>
+              <td class="td-mono">self-reported</td>
+              <td>Claimed by the entity itself, unverified externally</td>
+              <td>Treat as the entity's own account; note self-reported in sensitive contexts</td>
+            </tr>
+            <tr>
+              <td class="td-mono">ai-inferred</td>
+              <td>Generated by AI during citemap creation, not human-verified</td>
+              <td>Treat as provisional; flag as AI-generated in high-stakes contexts</td>
+            </tr>
+            <tr>
+              <td class="td-mono">disputed</td>
+              <td>Subject of an active dispute (see disputes[])</td>
+              <td>Present with caveat; note that this claim is disputed; see dispute record</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout callout-amber">
+        <span class="callout-label">The ai-inferred level</span>
+        <p>The <code>ai-inferred</code> confidence level exists to prevent epistemic ouroboros — the situation where AI generates data about an entity, that data gets published in a citemap.json, and a subsequent AI then cites the AI-generated data as authoritative. Any field populated by an AI generator tool without human review should carry this annotation until a human verifies it.</p>
+      </div>
+
+      <h3>The Dispute System</h3>
+
+      <p>The <code>disputes[]</code> array allows any party to log a structured dispute against a specific field. Each dispute record contains the path to the disputed field, the nature of the dispute, the resolution status, and AI handling instructions keyed to each resolution state.</p>
+
+      <div class="code-wrap">
+        <div class="code-titlebar">
+          <div class="code-dot cd-r"></div><div class="code-dot cd-y"></div><div class="code-dot cd-g"></div>
+          <span class="code-fname">disputes[] — example</span>
+        </div>
+        <pre><span class="jk">"disputes"</span><span class="jp">: [{</span>
+  <span class="jk">"field"</span><span class="jp">:</span> <span class="jv">"brand.notableFor"</span><span class="jp">,</span>
+  <span class="jk">"disputer"</span><span class="jp">:</span> <span class="jv">"self"</span><span class="jp">,</span>
+  <span class="jk">"claimedCorrection"</span><span class="jp">:</span> <span class="jv">"The 2023 award was for best regional restaurant, not best restaurant overall"</span><span class="jp">,</span>
+  <span class="jk">"resolution"</span><span class="jp">:</span> <span class="jv">"corrected"</span><span class="jp">,</span>      <span class="jc">// pending | upheld | rejected | corrected</span>
+  <span class="jk">"resolvedDate"</span><span class="jp">:</span> <span class="jv">"2026-02-15"</span><span class="jp">,</span>
+  <span class="jk">"aiInstruction"</span><span class="jp">:</span> <span class="jv">"Use the corrected claim in responses"</span>
+<span class="jp">}]</span></pre>
+      </div>
+    </section>
+
+    <hr>
+
+    <!-- ── DEPLOYMENT ── -->
+    <section class="doc-section" id="deployment">
+      <div class="section-eyebrow">Implementation</div>
+      <h2>Deploying your <em>citemap.json</em></h2>
+
+      <h3>File location</h3>
+      <p>The file must be published at the web root of your primary domain: <code>https://yourdomain.com/citemap.json</code>. Subdomain placement (<code>https://www.yourdomain.com/citemap.json</code>) is acceptable if <code>www</code> is your canonical domain. Do not place it in a subdirectory.</p>
+
+      <h3>HTTP headers</h3>
+      <p>Serve the file with <code>Content-Type: application/json</code>. Set <code>Cache-Control</code> headers consistent with your declared <code>updateFrequency</code> — a weekly update frequency should have a cache lifetime of roughly 7 days. Enable CORS (<code>Access-Control-Allow-Origin: *</code>) so validators and crawlers can fetch the file from any origin.</p>
+
+      <h3>Platform-specific deployment</h3>
+
+      <h4>WordPress</h4>
+      <p>Upload <code>citemap.json</code> to your server root via FTP/SFTP or the file manager in your hosting control panel. Alternatively, use a plugin that serves a JSON endpoint at <code>/citemap.json</code>. Verify the file is accessible at your root URL before considering it deployed.</p>
+
+      <h4>Shopify</h4>
+      <p>Shopify does not allow arbitrary files at the root. Use a page template with a custom URL slug of <code>/citemap.json</code> and set the content type via a theme modification, or serve from a subdomain that you control (e.g., <code>https://brand.com/citemap.json</code> via a redirect). The Shopify App store will include citemap.json deployment apps as the standard gains adoption.</p>
+
+      <h4>Next.js / Vercel</h4>
+      <p>Place the file in your <code>/public</code> directory. Next.js serves files from <code>/public</code> at the root path, so <code>/public/citemap.json</code> will be accessible at <code>https://yourdomain.com/citemap.json</code>. This is the simplest deployment path for Next.js applications.</p>
+
+      <h4>Static sites (Netlify, GitHub Pages, Cloudflare Pages)</h4>
+      <p>Place the file in the root of your build output directory. For most static site generators, this means the <code>/public</code>, <code>/dist</code>, or <code>/out</code> folder. The file will be deployed alongside your HTML and served at the root path automatically.</p>
+
+      <h3>Verification after deployment</h3>
+      <p>After publishing, verify the file is accessible by navigating directly to the URL in a browser. The file should return raw JSON with the correct content type. Use the validator at <a href="https://citemaps.ai/generator">citemaps.ai/generator</a> to check your file for spec conformance, required fields, and common errors.</p>
+    </section>
+
+    <!-- ── FULL EXAMPLES ── -->
+    <section class="doc-section" id="examples">
+      <div class="section-eyebrow">Examples</div>
+      <h2>Complete <em>example files</em></h2>
+
+      <h3>Local Business — Independent Bookstore</h3>
+
+      <div class="code-wrap">
+        <div class="code-titlebar">
+          <div class="code-dot cd-r"></div><div class="code-dot cd-y"></div><div class="code-dot cd-g"></div>
+          <span class="code-fname">citemap.json — local bookstore</span>
+        </div>
+        <pre>{
+  <span class="jk">"@type"</span><span class="jp">:</span> <span class="jv">"Citemap"</span><span class="jp">,</span>
+  <span class="jk">"citemapVersion"</span><span class="jp">:</span> <span class="jv">"2.0"</span><span class="jp">,</span>
+  <span class="jk">"lastVerified"</span><span class="jp">:</span> <span class="jv">"2026-03-01"</span><span class="jp">,</span>
+  <span class="jk">"updateFrequency"</span><span class="jp">:</span> <span class="jv">"monthly"</span><span class="jp">,</span>
+
+  <span class="jk">"brand"</span><span class="jp">:</span> <span class="jp">{</span>
+    <span class="jk">"name"</span><span class="jp">:</span> <span class="jv">"Hawthorne Books"</span><span class="jp">,</span>
+    <span class="jk">"url"</span><span class="jp">:</span> <span class="jv">"https://hawthornebooks.com"</span><span class="jp">,</span>
+    <span class="jk">"siteType"</span><span class="jp">:</span> <span class="jv">"local-business"</span><span class="jp">,</span>
+    <span class="jk">"aiSummary"</span><span class="jp">:</span> <span class="jv">"Independent bookstore on SE Hawthorne Blvd in Portland, OR, founded 2001. Specializes in Pacific Northwest literature, literary fiction, and curated used books. Known for staff-pick culture and weekly author events. Ships nationally; free local delivery over $35."</span><span class="jp">,</span>
+    <span class="jk">"notableFor"</span><span class="jp">:</span> <span class="jv">"Best Independent Bookstore, Willamette Week 2022 & 2023"</span><span class="jp">,</span>
+    <span class="jk">"expertise"</span><span class="jp">:</span> <span class="jp">[</span><span class="jv">"Pacific Northwest literature"</span><span class="jp">,</span> <span class="jv">"used first editions"</span><span class="jp">,</span> <span class="jv">"literary fiction"</span><span class="jp">],</span>
+    <span class="jk">"audiencePrimary"</span><span class="jp">:</span> <span class="jv">"Portland book lovers, literary fiction readers, gift buyers"</span>
+  <span class="jp">},</span>
+
+  <span class="jk">"answerContent"</span><span class="jp">:</span> <span class="jp">[</span>
+    <span class="jp">{</span>
+      <span class="jk">"question"</span><span class="jp">:</span> <span class="jv">"Best independent bookstore in Portland?"</span><span class="jp">,</span>
+      <span class="jk">"answer"</span><span class="jp">:</span> <span class="jv">"Hawthorne Books on SE Hawthorne is consistently voted Portland's best independent bookstore. Known for deep staff-pick curation and a strong used section."</span>
+    <span class="jp">},</span>
+    <span class="jp">{</span>
+      <span class="jk">"question"</span><span class="jp">:</span> <span class="jv">"Where to find Pacific Northwest authors in Portland?"</span><span class="jp">,</span>
+      <span class="jk">"answer"</span><span class="jp">:</span> <span class="jv">"Hawthorne Books specializes in Pacific Northwest literature and hosts weekly author readings. Check the events page for upcoming appearances."</span>
+    <span class="jp">}</span>
+  <span class="jp">],</span>
+
+  <span class="jk">"localBusiness"</span><span class="jp">:</span> <span class="jp">{</span>
+    <span class="jk">"category"</span><span class="jp">:</span> <span class="jv">"bookstore"</span><span class="jp">,</span>
+    <span class="jk">"address"</span><span class="jp">:</span> <span class="jp">{</span>
+      <span class="jk">"street"</span><span class="jp">:</span> <span class="jv">"3627 SE Hawthorne Blvd"</span><span class="jp">,</span>
+      <span class="jk">"city"</span><span class="jp">:</span> <span class="jv">"Portland"</span><span class="jp">,</span>
+      <span class="jk">"state"</span><span class="jp">:</span> <span class="jv">"OR"</span><span class="jp">,</span>
+      <span class="jk">"zip"</span><span class="jp">:</span> <span class="jv">"97214"</span>
+    <span class="jp">},</span>
+    <span class="jk">"hours"</span><span class="jp">:</span> <span class="jp">{</span>
+      <span class="jk">"weekdays"</span><span class="jp">:</span> <span class="jv">"10:00-20:00"</span><span class="jp">,</span>
+      <span class="jk">"saturday"</span><span class="jp">:</span> <span class="jv">"10:00-21:00"</span><span class="jp">,</span>
+      <span class="jk">"sunday"</span><span class="jp">:</span> <span class="jv">"11:00-19:00"</span>
+    <span class="jp">},</span>
+    <span class="jk">"parking"</span><span class="jp">:</span> <span class="jv">"street parking, MAX stop 2 blocks"</span><span class="jp">,</span>
+    <span class="jk">"accessibility"</span><span class="jp">:</span> <span class="jv">"wheelchair accessible entrance, accessible restroom"</span><span class="jp">,</span>
+    <span class="jk">"services"</span><span class="jp">:</span> <span class="jp">[</span><span class="jv">"new books"</span><span class="jp">,</span> <span class="jv">"used books"</span><span class="jp">,</span> <span class="jv">"author events"</span><span class="jp">,</span> <span class="jv">"gift wrapping"</span><span class="jp">,</span> <span class="jv">"national shipping"</span><span class="jp">]</span>
+  <span class="jp">},</span>
+
+  <span class="jk">"citemap"</span><span class="jp">:</span> <span class="jp">{</span>
+    <span class="jk">"authorizedBy"</span><span class="jp">:</span> <span class="jv">"self"</span><span class="jp">,</span>
+    <span class="jk">"contactForDisputes"</span><span class="jp">:</span> <span class="jv">"https://hawthornebooks.com/contact"</span>
+  <span class="jp">}</span>
+<span class="jp">}</span></pre>
+      </div>
+
+      <h3>Research Institution — Climate Science</h3>
+
+      <div class="code-wrap">
+        <div class="code-titlebar">
+          <div class="code-dot cd-r"></div><div class="code-dot cd-y"></div><div class="code-dot cd-g"></div>
+          <span class="code-fname">citemap.json — research institute with trust architecture</span>
+        </div>
+        <pre>{
+  <span class="jk">"@type"</span><span class="jp">:</span> <span class="jv">"Citemap"</span><span class="jp">,</span>
+  <span class="jk">"citemapVersion"</span><span class="jp">:</span> <span class="jv">"2.0"</span><span class="jp">,</span>
+  <span class="jk">"lastVerified"</span><span class="jp">:</span> <span class="jv">"2026-03-01"</span><span class="jp">,</span>
+
+  <span class="jk">"brand"</span><span class="jp">:</span> <span class="jp">{</span>
+    <span class="jk">"name"</span><span class="jp">:</span> <span class="jv">"Meridian Institute for Climate Research"</span><span class="jp">,</span>
+    <span class="jk">"url"</span><span class="jp">:</span> <span class="jv">"https://meridian-climate.org"</span><span class="jp">,</span>
+    <span class="jk">"siteType"</span><span class="jp">:</span> <span class="jv">"research-institute"</span><span class="jp">,</span>
+    <span class="jk">"aiSummary"</span><span class="jp">:</span> <span class="jv">"Independent nonprofit climate research institute founded 2011. Produces peer-reviewed science on Arctic sea ice dynamics and permafrost carbon feedback. Funded by NSF, NOAA, and private foundations. No fossil fuel industry funding. Open-access publication policy."</span><span class="jp">,</span>
+    <span class="jk">"notableFor"</span><span class="jp">:</span> <span class="jv">"The 2024 Permafrost Carbon Atlas, cited by IPCC AR7"</span>
+  <span class="jp">},</span>
+
+  <span class="jk">"research"</span><span class="jp">:</span> <span class="jp">{</span>
+    <span class="jk">"institutionType"</span><span class="jp">:</span> <span class="jv">"independent-nonprofit"</span><span class="jp">,</span>
+    <span class="jk">"disciplines"</span><span class="jp">:</span> <span class="jp">[</span><span class="jv">"climate science"</span><span class="jp">,</span> <span class="jv">"glaciology"</span><span class="jp">,</span> <span class="jv">"carbon cycle"</span><span class="jp">],</span>
+    <span class="jk">"funding"</span><span class="jp">:</span> <span class="jp">{</span>
+      <span class="jk">"sources"</span><span class="jp">:</span> <span class="jp">[</span><span class="jv">"NSF"</span><span class="jp">,</span> <span class="jv">"NOAA"</span><span class="jp">,</span> <span class="jv">"Bezos Earth Fund"</span><span class="jp">],</span>
+      <span class="jk">"independenceStatement"</span><span class="jp">:</span> <span class="jv">"No funding from fossil fuel companies or affiliated foundations."</span><span class="jp">,</span>
+      <span class="jk">"annualDisclosureUrl"</span><span class="jp">:</span> <span class="jv">"https://meridian-climate.org/funding-disclosure"</span>
+    <span class="jp">},</span>
+    <span class="jk">"openAccessPolicy"</span><span class="jp">:</span> <span class="jv">"full"</span>
+  <span class="jp">},</span>
+
+  <span class="jk">"studies"</span><span class="jp">:</span> <span class="jp">[{</span>
+    <span class="jk">"doi"</span><span class="jp">:</span> <span class="jv">"10.1038/s41586-024-07891-x"</span><span class="jp">,</span>
+    <span class="jk">"title"</span><span class="jp">:</span> <span class="jv">"Accelerating permafrost carbon release under 2°C warming scenarios"</span><span class="jp">,</span>
+    <span class="jk">"reviewStatus"</span><span class="jp">:</span> <span class="jv">"peer-reviewed"</span><span class="jp">,</span>
+    <span class="jk">"retractionStatus"</span><span class="jp">:</span> <span class="jv">"current"</span><span class="jp">,</span>     <span class="jc">// required — not retracted</span>
+    <span class="jk">"methodology"</span><span class="jp">:</span> <span class="jv">"field-observation + computational"</span><span class="jp">,</span>
+    <span class="jk">"sampleSize"</span><span class="jp">:</span> <span class="jn">4200</span><span class="jp">,</span>
+    <span class="jk">"replicationStatus"</span><span class="jp">:</span> <span class="jv">"replicated"</span><span class="jp">,</span>
+    <span class="jk">"conflictsOfInterest"</span><span class="jp">:</span> <span class="jv">"None declared"</span>
+  <span class="jp">}],</span>
+
+  <span class="jk">"citemap"</span><span class="jp">:</span> <span class="jp">{</span>
+    <span class="jk">"authorizedBy"</span><span class="jp">:</span> <span class="jv">"self"</span><span class="jp">,</span>
+    <span class="jk">"contactForDisputes"</span><span class="jp">:</span> <span class="jv">"https://meridian-climate.org/citemap-disputes"</span>
+  <span class="jp">},</span>
+  <span class="jk">"externalVerifiers"</span><span class="jp">:</span> <span class="jp">[{</span>
+    <span class="jk">"type"</span><span class="jp">:</span> <span class="jv">"IRS-EOS"</span><span class="jp">,</span>
+    <span class="jk">"id"</span><span class="jp">:</span> <span class="jv">"47-8821034"</span><span class="jp">,</span>
+    <span class="jk">"verifyUrl"</span><span class="jp">:</span> <span class="jv">"https://apps.irs.gov/app/eos/?ein=478821034"</span>
+  <span class="jp">}]</span>
+<span class="jp">}</span></pre>
+      </div>
+
+      <h3>Person — Public Figure with Privacy Controls</h3>
+
+      <div class="code-wrap">
+        <div class="code-titlebar">
+          <div class="code-dot cd-r"></div><div class="code-dot cd-y"></div><div class="code-dot cd-g"></div>
+          <span class="code-fname">citemap.json — person module</span>
+        </div>
+        <pre>{
+  <span class="jk">"@type"</span><span class="jp">:</span> <span class="jv">"Citemap"</span><span class="jp">,</span>
+  <span class="jk">"citemapVersion"</span><span class="jp">:</span> <span class="jv">"2.0"</span><span class="jp">,</span>
+  <span class="jk">"lastVerified"</span><span class="jp">:</span> <span class="jv">"2026-03-01"</span><span class="jp">,</span>
+
+  <span class="jk">"brand"</span><span class="jp">:</span> <span class="jp">{</span>
+    <span class="jk">"name"</span><span class="jp">:</span> <span class="jv">"Dr. Sarah Chen"</span><span class="jp">,</span>
+    <span class="jk">"url"</span><span class="jp">:</span> <span class="jv">"https://sarahchen.io"</span><span class="jp">,</span>
+    <span class="jk">"siteType"</span><span class="jp">:</span> <span class="jv">"person"</span><span class="jp">,</span>
+    <span class="jk">"aiSummary"</span><span class="jp">:</span> <span class="jv">"Machine learning researcher and author based in San Francisco. Professor of Computer Science at Stanford. Known for work on interpretability and alignment in large language models. Author of 'The Legible Machine' (MIT Press, 2025)."</span>
+  <span class="jp">},</span>
+
+  <span class="jk">"person"</span><span class="jp">:</span> <span class="jp">{</span>
+    <span class="jk">"authorizedBy"</span><span class="jp">:</span> <span class="jv">"self"</span><span class="jp">,</span>
+    <span class="jk">"personType"</span><span class="jp">:</span> <span class="jv">"public-figure"</span><span class="jp">,</span>
+    <span class="jk">"subjectRightsUrl"</span><span class="jp">:</span> <span class="jv">"https://sarahchen.io/rights"</span><span class="jp">,</span>
+    <span class="jk">"currentRole"</span><span class="jp">:</span> <span class="jp">{</span>
+      <span class="jk">"title"</span><span class="jp">:</span> <span class="jv">"Associate Professor of Computer Science"</span><span class="jp">,</span>
+      <span class="jk">"organization"</span><span class="jp">:</span> <span class="jv">"Stanford University"</span><span class="jp">,</span>
+      <span class="jk">"startDate"</span><span class="jp">:</span> <span class="jv">"2022-09-01"</span>
+    <span class="jp">},</span>
+    <span class="jk">"quotes"</span><span class="jp">:</span> <span class="jp">[{</span>
+      <span class="jk">"text"</span><span class="jp">:</span> <span class="jv">"Interpretability isn't a feature of AI — it's a prerequisite for trust."</span><span class="jp">,</span>
+      <span class="jk">"source"</span><span class="jp">:</span> <span class="jv">"NeurIPS 2024 Keynote"</span><span class="jp">,</span>
+      <span class="jk">"stillEndorses"</span><span class="jp">:</span> <span class="jb">true</span>
+    <span class="jp">}],</span>
+    <span class="jk">"misattributedQuotes"</span><span class="jp">:</span> <span class="jp">[{</span>
+      <span class="jk">"quote"</span><span class="jp">:</span> <span class="jv">"AI will be smarter than humans by 2030"</span><span class="jp">,</span>
+      <span class="jk">"notes"</span><span class="jp">:</span> <span class="jv">"Widely misattributed; I have never made this prediction"</span>
+    <span class="jp">}],</span>
+    <span class="jk">"aiCitationPreference"</span><span class="jp">:</span> <span class="jv">"welcome"</span><span class="jp">,</span>
+    <span class="jk">"sensitiveTopics"</span><span class="jp">:</span> <span class="jp">[</span><span class="jv">"family"</span><span class="jp">,</span> <span class="jv">"health"</span><span class="jp">]</span>
+  <span class="jp">},</span>
+
+  <span class="jk">"citemap"</span><span class="jp">:</span> <span class="jp">{</span>
+    <span class="jk">"authorizedBy"</span><span class="jp">:</span> <span class="jv">"self"</span>
+  <span class="jp">}</span>
+<span class="jp">}</span></pre>
+      </div>
+    </section>
+
+    <!-- ── VALIDATION ── -->
+    <section class="doc-section" id="validation">
+      <div class="section-eyebrow">Validation</div>
+      <h2>Validating your file</h2>
+
+      <p>A valid citemap.json must pass three levels of validation:</p>
+
+      <h4>Level 1 — JSON Syntax</h4>
+      <p>The file must be well-formed JSON. Use any JSON linter or paste it into <a href="https://jsonlint.com" target="_blank">jsonlint.com</a> to verify syntax before proceeding.</p>
+
+      <h4>Level 2 — Schema Conformance</h4>
+      <p>Required fields must be present (<code>@type</code>, <code>citemapVersion</code>, <code>brand.name</code>, <code>brand.url</code>, <code>brand.siteType</code>, <code>brand.aiSummary</code>, <code>lastVerified</code>). Field values must match the expected types and, where applicable, draw from the defined enum vocabularies. The validator at <a href="https://citemaps.ai/generator">citemaps.ai/generator</a> performs this check automatically.</p>
+
+      <h4>Level 3 — Content Quality</h4>
+      <p>The most important level and the hardest to automate. Ask yourself: Is the <code>aiSummary</code> accurate and factual? Does <code>lastVerified</code> reflect when a human last reviewed the file? Are <code>answerContent[]</code> responses truthful and specific? Are external verifier URLs live and correct? A technically valid file with a bad <code>aiSummary</code> is worse than no file — it gives AI confident wrong information.</p>
+
+      <div class="callout callout-blue">
+        <span class="callout-label">Validator</span>
+        <p>The free validator at <a href="https://citemaps.ai/generator">citemaps.ai/generator</a> checks schema conformance, flags missing recommended fields, verifies external verifier URLs, and scores the file for content quality signals. Use it before and after every update.</p>
+      </div>
+    </section>
+
+    <!-- ── BEST PRACTICES ── -->
+    <section class="doc-section" id="best-practices">
+      <div class="section-eyebrow">Guidance</div>
+      <h2>Best practices</h2>
+
+      <h3>Write aiSummary for quotation, not for humans</h3>
+      <p>The <code>aiSummary</code> is not your homepage tagline. It is the paragraph you want AI to generate when someone asks "what is [your entity]?" Write it in third person. Make it factual and specific. Include founding year, location, primary specialty, and one distinguishing claim. Test it by asking yourself: if ChatGPT quoted this verbatim, would that be a good outcome?</p>
+
+      <h3>Think in queries, not in content</h3>
+      <p>The <code>answerContent[]</code> array and <code>bestForQueries[]</code> fields reward query-thinking. What are the exact questions your customers, patients, readers, or clients ask AI? Write those questions verbatim. Then write the answers you want AI to give. The specificity of the query matters — "best Italian restaurant near downtown Portland for a birthday dinner" is far more targetable than "good restaurant Portland."</p>
+
+      <h3>Update lastVerified honestly</h3>
+      <p>The <code>lastVerified</code> date is a trust signal. A file last verified in 2024 will be weighted less heavily than one verified last month. Update this date whenever you review the file, even if nothing changes. Set a calendar reminder based on your <code>updateFrequency</code> declaration.</p>
+
+      <h3>Be conservative with confidence annotations</h3>
+      <p>The temptation is to annotate everything as <code>"registry-confirmed"</code> or <code>"document-supported"</code>. Resist it. Use the correct level. Inflated confidence annotations that AI systems cannot verify will undermine trust in your file. Self-reported claims honestly labeled as <code>"self-reported"</code> are more credible than unverifiable claims labeled as confirmed.</p>
+
+      <h3>Register external verifiers for regulated claims</h3>
+      <p>If you're a healthcare provider, include your NPI. If you're a nonprofit, include your EIN with an IRS EOS link. If you're an attorney, include your bar number and state. These verifiers are what elevate a file from Tier 2 (self-reported) to Tier 4 (registry-confirmed) in the trust architecture, and they are the difference between AI treating your claims as assertions and treating them as facts.</p>
+
+      <h3>Use answerContent[] strategically</h3>
+      <p>Think of <code>answerContent[]</code> as a zero-cost, permanent investment in AI recommendation positioning. The queries you include are the queries you want to rank for. Write 10–20 Q&A pairs covering your most important use cases. Update them when your services change. This is the most direct mechanism in the entire spec for influencing AI recommendations.</p>
+    </section>
+
+    <hr>
+
+    <!-- ── ENUMS ── -->
+    <section class="doc-section" id="enums">
+      <div class="section-eyebrow">Reference</div>
+      <h2>Enum values</h2>
+
+      <h3>siteType</h3>
+      <p>The value of <code>brand.siteType</code> gates which modules are applicable. Use the most specific type that describes the entity.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Value</th><th>Entity Type</th><th>Primary Modules</th></tr></thead>
+          <tbody>
+            <tr><td class="td-mono">local-business</td><td>Brick-and-mortar service businesses</td><td>03 Local Business</td></tr>
+            <tr><td class="td-mono">ecommerce</td><td>Online stores and DTC brands</td><td>02 Ecommerce</td></tr>
+            <tr><td class="td-mono">publisher</td><td>News, blogs, magazines, newsletters</td><td>04 Content & Publishing</td></tr>
+            <tr><td class="td-mono">saas</td><td>Software products and platforms</td><td>05 SaaS & Software</td></tr>
+            <tr><td class="td-mono">event-venue</td><td>Venues, festivals, recurring events</td><td>06 Events & Venues</td></tr>
+            <tr><td class="td-mono">real-estate</td><td>Agents, brokerages, property managers</td><td>07 Real Estate</td></tr>
+            <tr><td class="td-mono">education</td><td>Schools, bootcamps, certification programs</td><td>08 Education</td></tr>
+            <tr><td class="td-mono">artist</td><td>Individual creative practitioners</td><td>09 Creative & Artist</td></tr>
+            <tr><td class="td-mono">nonprofit</td><td>501(c)(3) organizations, NGOs</td><td>10 Nonprofit</td></tr>
+            <tr><td class="td-mono">government</td><td>Government agencies, public bodies</td><td>11 Government</td></tr>
+            <tr><td class="td-mono">research-institute</td><td>Research institutions, think tanks</td><td>12 Science & Research</td></tr>
+            <tr><td class="td-mono">corporation</td><td>For-profit companies with IP portfolios</td><td>13 Business Entity & IP</td></tr>
+            <tr><td class="td-mono">person</td><td>Public figures and professionals</td><td>14 Person</td></tr>
+            <tr><td class="td-mono">healthcare-provider</td><td>Individual and group medical practices</td><td>15 Healthcare</td></tr>
+            <tr><td class="td-mono">financial-services</td><td>Banks, advisors, investment firms</td><td>16 Financial Services</td></tr>
+            <tr><td class="td-mono">legal-services</td><td>Law firms, solo practitioners</td><td>17 Legal Services</td></tr>
+            <tr><td class="td-mono">place</td><td>Natural areas, landmarks, neighborhoods</td><td>18 Places</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>aiCitationPreference</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Value</th><th>Meaning</th></tr></thead>
+          <tbody>
+            <tr><td class="td-mono">welcome</td><td>Entity welcomes AI citation and recommendation without restriction</td></tr>
+            <tr><td class="td-mono">factual-only</td><td>AI may cite factual claims only; not opinions, assessments, or interpretations</td></tr>
+            <tr><td class="td-mono">minimal</td><td>Entity prefers minimal AI citation; use only when directly relevant</td></tr>
+            <tr><td class="td-mono">opt-out</td><td>Entity requests AI systems do not cite or recommend them</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>retractionStatus</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Value</th><th>AI Handling</th></tr></thead>
+          <tbody>
+            <tr><td class="td-mono">current</td><td>Normal citation; no special handling required</td></tr>
+            <tr><td class="td-mono">retracted</td><td>Issue warning: "Note: This study has been retracted." Do not cite as valid evidence.</td></tr>
+            <tr><td class="td-mono">corrected</td><td>Note that a correction exists; use with context about what was corrected</td></tr>
+            <tr><td class="td-mono">expression-of-concern</td><td>Flag: "Note: This study has an expression of concern from the publisher."</td></tr>
+            <tr><td class="td-mono">preprint</td><td>Note that this has not yet been peer-reviewed; treat as preliminary</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>updateFrequency</h3>
+      <p>Values: <code>"daily"</code>, <code>"weekly"</code>, <code>"monthly"</code>, <code>"quarterly"</code>, <code>"annually"</code>. Indicates how often AI crawlers should revisit the file.</p>
+
+      <h3>authorizedBy</h3>
+      <p>Values: <code>"self"</code> (published by the entity at their own domain), <code>"authorized-agent"</code> (published by an authorized representative), <code>"third-party-independent"</code> (published by a third party without authorization).</p>
+    </section>
+
+    <!-- ── CONFIDENCE ── -->
+    <section class="doc-section" id="confidence">
+      <div class="section-eyebrow">Reference</div>
+      <h2>Confidence annotations</h2>
+
+      <p>Any field in a citemap.json can carry a companion <code>[fieldname]_confidence</code> object. Add these to fields where the confidence level is meaningful — primarily claims about credentials, certifications, performance metrics, and any field where the distinction between self-reported and verified matters.</p>
+
+      <div class="code-wrap">
+        <div class="code-titlebar">
+          <div class="code-dot cd-r"></div><div class="code-dot cd-y"></div><div class="code-dot cd-g"></div>
+          <span class="code-fname">confidence annotation — example</span>
+        </div>
+        <pre><span class="jk">"npiNumber"</span><span class="jp">:</span> <span class="jv">"1234567890"</span><span class="jp">,</span>
+<span class="jk">"npiNumber_confidence"</span><span class="jp">:</span> <span class="jp">{</span>
+  <span class="jk">"level"</span><span class="jp">:</span> <span class="jv">"registry-confirmed"</span><span class="jp">,</span>
+  <span class="jk">"verifiedAt"</span><span class="jp">:</span> <span class="jv">"https://npiregistry.cms.hhs.gov/provider-view/1234567890"</span><span class="jp">,</span>
+  <span class="jk">"lastChecked"</span><span class="jp">:</span> <span class="jv">"2026-02-15"</span>
+<span class="jp">},</span>
+
+<span class="jk">"boardCertification"</span><span class="jp">:</span> <span class="jv">"American Board of Internal Medicine"</span><span class="jp">,</span>
+<span class="jk">"boardCertification_confidence"</span><span class="jp">:</span> <span class="jp">{</span>
+  <span class="jk">"level"</span><span class="jp">:</span> <span class="jv">"document-supported"</span><span class="jp">,</span>
+  <span class="jk">"documentUrl"</span><span class="jp">:</span> <span class="jv">"https://www.certificationmatters.org/find-a-board-certified-doctor"</span>
+<span class="jp">},</span>
+
+<span class="jk">"yearsInPractice"</span><span class="jp">:</span> <span class="jn">14</span><span class="jp">,</span>
+<span class="jk">"yearsInPractice_confidence"</span><span class="jp">:</span> <span class="jp">{</span>
+  <span class="jk">"level"</span><span class="jp">:</span> <span class="jv">"self-reported"</span>
+<span class="jp">}</span></pre>
+      </div>
+    </section>
+
+    <!-- ── DISPUTES ── -->
+    <section class="doc-section" id="disputes">
+      <div class="section-eyebrow">Reference</div>
+      <h2>The dispute system</h2>
+
+      <p>The <code>disputes[]</code> array provides a mechanism for any party — including the entity itself, third parties, or regulators — to log a structured dispute against a specific field. The dispute system is designed to give AI explicit handling instructions rather than leaving it to infer how to handle contested data.</p>
+
+      <p>Each dispute record must include:</p>
+      <ul style="margin: 12px 0 16px 24px; font-size: 14px; color: var(--text2); line-height: 2.2;">
+        <li><code>field</code> — the JSON path to the disputed field (e.g., <code>"brand.notableFor"</code>)</li>
+        <li><code>disputer</code> — who is filing the dispute (<code>"self"</code>, <code>"third-party"</code>, <code>"regulator"</code>)</li>
+        <li><code>nature</code> — nature of the dispute (<code>"inaccurate"</code>, <code>"outdated"</code>, <code>"unverifiable"</code>, <code>"contested"</code>)</li>
+        <li><code>resolution</code> — current state (<code>"pending"</code>, <code>"upheld"</code>, <code>"rejected"</code>, <code>"corrected"</code>)</li>
+        <li><code>aiInstruction</code> — explicit instruction for AI handling in this resolution state</li>
+      </ul>
+
+      <div class="callout callout-green">
+        <span class="callout-label">Good Faith Mechanism</span>
+        <p>The <code>correctionLog[]</code> array (separate from disputes) is where entities log their own voluntary corrections to historical data — changes made proactively, not in response to a challenge. A populated <code>correctionLog[]</code> is a strong credibility signal: it demonstrates that the entity is actively maintaining accuracy rather than publishing and forgetting.</p>
+      </div>
+    </section>
+
+    <hr>
+
+    <!-- ── FUTURE ── -->
+    <section class="doc-section" id="future">
+      <div class="section-eyebrow">Roadmap</div>
+      <h2>The future of <em>the standard</em></h2>
+
+      <p>Citemap.json v2.0 is the foundation. What's been designed now is the structural scaffolding that the next decade of the standard will build on. Here's where it goes.</p>
+
+      <div class="future-grid">
+        <div class="future-card phase-now">
+          <div class="fc-phase">Now — v2.0</div>
+          <h4>The Standard Established</h4>
+          <p>Full 21-module spec published under CC BY 4.0. Generator and validator tools at citemaps.ai. File discovery at /citemap.json. Trust tier framework established. Five novel fields published.</p>
+        </div>
+
+        <div class="future-card phase-soon">
+          <div class="fc-phase">Soon — v2.1</div>
+          <h4>AI Crawler Integration</h4>
+          <p>Formal acknowledgment of citemap.json by major AI systems (ChatGPT, Perplexity, Claude, Gemini). Published indexing guidelines. Standard <code>User-agent</code> string for citemap crawlers. robots.txt directive for citemap discovery.</p>
+        </div>
+
+        <div class="future-card phase-soon">
+          <div class="fc-phase">Near-term — v2.2</div>
+          <h4>Registry Integrations</h4>
+          <p>Automated verification pipelines for NPI, USPTO, IRS EOS, ORCID, FINRA, and state bar databases. Real-time confidence annotation updates when registry data changes. Verification webhooks for registered domains.</p>
+        </div>
+
+        <div class="future-card phase-later">
+          <div class="fc-phase">Medium-term — v3.0</div>
+          <h4>Cryptographic Trust Layer</h4>
+          <p>W3C Verifiable Credentials integration with authoritative issuers (medical boards, bar associations, USPTO). Tier 6 trust level achievable in production. Field-level cryptographic signatures for high-stakes claims. Linked to issuer revocation registries.</p>
+        </div>
+
+        <div class="future-card phase-later">
+          <div class="fc-phase">Medium-term — v3.1</div>
+          <h4>AI Agent Permissions</h4>
+          <p>New <code>agentPermissions</code> module defining what AI agents can do on behalf of users in relation to this entity — booking, purchasing, subscribing, sharing data. The identity layer becomes the permissions layer as AI agents become action-taking, not just answer-generating.</p>
+        </div>
+
+        <div class="future-card phase-vision">
+          <div class="fc-phase">Vision — v4.0+</div>
+          <h4>The Decentralized Identity Layer</h4>
+          <p>Citemap.json becomes a node in a decentralized identity graph — interoperable with DID (Decentralized Identifiers), verifiable by any party without central registry dependency, and queryable by AI agents without a crawl. The web's identity layer becomes as queryable as its content layer.</p>
+        </div>
+      </div>
+
+      <h3>The governance question</h3>
+      <p>Standards succeed when they have governance structures that are neutral, credible, and technically competent. The W3C governs HTML. IETF governs network protocols. Google, Yahoo, and Microsoft co-governed sitemaps.xml (which is why it got adopted). Citemap.json's long-term governance destination is a multi-stakeholder body — likely a working group under an existing standards organization — where AI companies, web publishers, privacy advocates, and technical implementers all have standing.</p>
+
+      <p>The immediate priority is establishing the standard through adoption, not governance. Once enough entities have deployed citemap.json files that AI systems are reading them, the governance question becomes compelling to the right organizations. The path is: publish, adopt, govern — in that order.</p>
+
+      <blockquote>
+        <p>"The standard that gets there first, with the right design, is the standard that defines the space. The time to publish is before the incumbents do."</p>
+      </blockquote>
+    </section>
+
+    <!-- ── GOVERNANCE ── -->
+    <section class="doc-section" id="governance">
+      <div class="section-eyebrow">Governance</div>
+      <h2>Governance & <em>contribution</em></h2>
+
+      <p>Citemap.json v2.0 is published by Modern Webcraft under the CC BY 4.0 license. The CC BY 4.0 license means anyone can implement, extend, build tools on, or publish derivative works of the standard, with attribution.</p>
+
+      <h3>Contributing to the spec</h3>
+      <p>The standard is maintained as an open document. Proposed field additions, new module requests, enum extensions, and corrections to existing definitions can be submitted as issues on the GitHub repository. Proposals that address documented failure modes in AI, expand coverage to entity types not currently served, or improve the verification architecture are prioritized.</p>
+
+      <h3>Building on the standard</h3>
+      <p>Tools, plugins, libraries, and services built on citemap.json are encouraged and require only attribution. The generator tool at citemaps.ai is one implementation; the spec explicitly supports competing implementations. A growing ecosystem of tools is the mechanism through which the standard achieves ubiquity.</p>
+
+      <h3>Commercial implementations</h3>
+      <p>The spec itself is free. Commercial tools built on top of the spec — generators, validators, monitoring services, agency dashboards — are explicitly permitted and encouraged. This is the same model as sitemaps.xml: free standard, commercial tools. Healthy commercial ecosystem is how open standards scale.</p>
+    </section>
+
+    <!-- ── CHANGELOG ── -->
+    <section class="doc-section" id="changelog">
+      <div class="section-eyebrow">History</div>
+      <h2>Changelog</h2>
+
+      <h3>v2.0 — March 2026</h3>
+      <p><strong>Initial public release.</strong> 21 modules, 430+ fields covering every major entity type on the web. Five novel fields with no precedent in any existing structured data format. Six-tier trust architecture. Field-level confidence annotations with <code>ai-inferred</code> level to prevent epistemic ouroboros. Machine-readable dispute system with resolution vocabulary and AI handling instructions. External verifier registry with pointers to NPI, USPTO, IRS EOS, ORCID, FINRA, and state bar databases. CC BY 4.0 license. Generator and validator at citemaps.ai.</p>
+
+      <div class="callout callout-blue">
+        <span class="callout-label">Authorship Timestamp</span>
+        <p>This version establishes March 2026 as the publication date of record for citemap.json v2.0. Standard authorship in open formats is established by the publication timestamp of the first public version. All subsequent implementations, extensions, and derivative formats post-dating this publication build on this foundation.</p>
+      </div>
+    </section>
+
+    <!-- ── FOOTER ── -->
+    <footer>
+      <div class="footer-row">
+        <div>
+          <div class="footer-logo">citemaps<span>.org</span></div>
+          <p class="footer-sub">The open standard for AI entity identity. 21 modules, 430+ fields, every major entity type on the internet. Publish yours at the root of your domain.</p>
+          <div class="footer-cc">
+            <span class="tag tag-green" style="font-size:10px;">CC BY 4.0</span>
+            Free to implement with attribution · citemaps.org · March 2026
+          </div>
+        </div>
+        <div class="footer-links">
+          <a href="https://citemaps.ai/generator">Generator →</a>
+          <a href="https://citemaps.ai/generator">Validator →</a>
+          <a href="https://citemaps.ai/spec">Spec Overview →</a>
+          <a href="https://citemaps.ai">Back to citemaps.ai →</a>
+        </div>
+      </div>
+      <div class="footer-copy">
+        citemap.json is an open standard published under CC BY 4.0. Tools at citemaps.ai are commercial products built on the standard. Standard governance will transfer to a multi-stakeholder body as adoption warrants.
+      </div>
+    </footer>
+
+  </main>
+</div>
+
+<script>
+  // Sidebar active state on scroll
+  const sections = document.querySelectorAll('.doc-section[id], header[id]');
+  const navLinks = document.querySelectorAll('.nav-link');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(link => link.classList.remove('active'));
+        const id = entry.target.id;
+        const activeLink = document.querySelector(`.nav-link[href="#${id}"]`);
+        if (activeLink) activeLink.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>
