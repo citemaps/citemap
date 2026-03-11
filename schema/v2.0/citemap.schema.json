@@ -1,0 +1,2475 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://citemaps.org/schema/v2.0/citemap.schema.json",
+  "title": "citemap.json v2.0",
+  "description": "Machine-readable business identity file for AI citation accuracy. Enables AI assistants to cite businesses, people, and entities accurately by providing structured identity data.",
+  "type": "object",
+  "required": [
+    "@type",
+    "citemapVersion",
+    "brand",
+    "lastVerified"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "@type": {
+      "const": "Citemap",
+      "description": "Type identifier for this document"
+    },
+    "citemapVersion": {
+      "const": "2.0",
+      "description": "Schema version"
+    },
+    "$schema": {
+      "type": "string",
+      "format": "uri",
+      "description": "JSON Schema URI for this citemap version. Recommended: https://citemaps.org/schema/v2.0/citemap.schema.json"
+    },
+    "generatedBy": {
+      "type": "string",
+      "description": "Tool or service that generated this file (e.g. 'CiteMaps.ai', 'manual', '@citemap/generator')"
+    },
+    "brand": {
+      "$ref": "#/$defs/Brand",
+      "description": "Core brand identity and required metadata"
+    },
+    "lastVerified": {
+      "type": "string",
+      "format": "date",
+      "description": "Last date this citemap was verified for accuracy (YYYY-MM-DD)"
+    },
+    "citations": {
+      "$ref": "#/$defs/Citations",
+      "description": "Citation preferences and awards"
+    },
+    "answerContent": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/AnswerPair"
+      },
+      "description": "Q&A pairs for AI training and citation accuracy"
+    },
+    "contact": {
+      "$ref": "#/$defs/Contact",
+      "description": "Contact information and social profiles"
+    },
+    "citemap": {
+      "$ref": "#/$defs/CitemapMeta",
+      "description": "Metadata about this citemap document itself"
+    },
+    "ecommerce": {
+      "$ref": "#/$defs/EcommerceModule",
+      "description": "Module 02: For siteType 'ecommerce'. Product catalog and commerce data."
+    },
+    "localBusiness": {
+      "$ref": "#/$defs/LocalBusinessModule",
+      "description": "Module 03: For siteType 'local-business'. Location, services, and booking data."
+    },
+    "content": {
+      "$ref": "#/$defs/ContentModule",
+      "description": "Module 04: For siteType 'content-publisher'. Editorial and publishing data."
+    },
+    "software": {
+      "$ref": "#/$defs/SoftwareModule",
+      "description": "Module 05: For siteType 'saas'. SaaS product features and pricing."
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Event"
+      },
+      "description": "Module 06: For siteType 'events-venue'. Event listings and scheduling."
+    },
+    "realEstate": {
+      "$ref": "#/$defs/RealEstateModule",
+      "description": "Module 07: For siteType 'real-estate'. Real estate licensing and listings."
+    },
+    "education": {
+      "$ref": "#/$defs/EducationModule",
+      "description": "Module 08: For siteType 'education'. Accreditation and course data."
+    },
+    "creative": {
+      "$ref": "#/$defs/CreativeModule",
+      "description": "Module 09: For siteType 'creative-artist'. Portfolio, licensing, and commissions."
+    },
+    "nonprofit": {
+      "$ref": "#/$defs/NonprofitModule",
+      "description": "Module 10: For siteType 'nonprofit'. Tax exemption and impact metrics."
+    },
+    "government": {
+      "$ref": "#/$defs/GovernmentModule",
+      "description": "Module 11: For siteType 'government'. Jurisdiction and public services."
+    },
+    "science": {
+      "$ref": "#/$defs/ScienceModule",
+      "description": "Module 12: For siteType 'science-research'. Research studies and trials."
+    },
+    "businessIP": {
+      "$ref": "#/$defs/BusinessIPModule",
+      "description": "Module 13: Legal entity, patents, and IP data."
+    },
+    "person": {
+      "$ref": "#/$defs/PersonModule",
+      "description": "Module 14: For siteType 'person'. Individual biography and quotes."
+    },
+    "health": {
+      "$ref": "#/$defs/HealthcareModule",
+      "description": "Module 15: For siteType 'healthcare'. Medical provider data."
+    },
+    "finance": {
+      "$ref": "#/$defs/FinanceModule",
+      "description": "Module 16: For siteType 'financial'. Financial institution data."
+    },
+    "legal": {
+      "$ref": "#/$defs/LegalModule",
+      "description": "Module 17: For siteType 'legal'. Law firm and attorney data."
+    },
+    "places": {
+      "$ref": "#/$defs/PlacesModule",
+      "description": "Module 18: For siteType 'places'. Geographic location and outdoor recreation data."
+    },
+    "temporal": {
+      "$ref": "#/$defs/TemporalModule",
+      "description": "Module 19: Historical timeline and milestones."
+    },
+    "verification": {
+      "$ref": "#/$defs/VerificationModule",
+      "description": "Module 20: Trust signals, verification status, and correction logs."
+    },
+    "people": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Person"
+      },
+      "description": "Module 21: Team members, staff, and credentials."
+    }
+  },
+  "$defs": {
+    "Brand": {
+      "type": "object",
+      "required": [
+        "name",
+        "url",
+        "siteType",
+        "aiSummary"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Primary brand or entity name as it should appear in AI responses"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "description": "Canonical website URL"
+        },
+        "siteType": {
+          "type": "string",
+          "enum": [
+            "ecommerce",
+            "local-business",
+            "saas",
+            "content-publisher",
+            "nonprofit",
+            "healthcare",
+            "education",
+            "real-estate",
+            "legal",
+            "financial",
+            "events-venue",
+            "restaurant",
+            "creative-artist",
+            "government",
+            "science-research",
+            "person",
+            "places",
+            "general"
+          ],
+          "description": "Entity type \u2014 determines which modules apply and validation rules"
+        },
+        "aiSummary": {
+          "type": "string",
+          "minLength": 200,
+          "maxLength": 1000,
+          "description": "60-100 word description written to be quoted by AI. Use natural language suitable for direct citation."
+        },
+        "notableFor": {
+          "type": "string",
+          "description": "Single sentence of primary recognition or unique value proposition"
+        },
+        "expertise": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "E-E-A-T authority signals (expertise, experience, authoritativeness, trustworthiness)"
+        },
+        "audiencePrimary": {
+          "type": "string",
+          "description": "Primary audience served or target demographic"
+        },
+        "logo": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL to brand logo image"
+        },
+        "founded": {
+          "type": "string",
+          "description": "Year or full date of founding (YYYY or YYYY-MM-DD)"
+        },
+        "location": {
+          "$ref": "#/$defs/Location",
+          "description": "Geographic location"
+        }
+      }
+    },
+    "Location": {
+      "type": "object",
+      "properties": {
+        "city": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        },
+        "country": {
+          "type": "string"
+        },
+        "coordinates": {
+          "type": "object",
+          "properties": {
+            "lat": {
+              "type": "number",
+              "minimum": -90,
+              "maximum": 90
+            },
+            "lng": {
+              "type": "number",
+              "minimum": -180,
+              "maximum": 180
+            }
+          }
+        }
+      }
+    },
+    "Citations": {
+      "type": "object",
+      "properties": {
+        "preferredBy": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "List of AI systems or publications that should cite this entity (e.g., 'ChatGPT', 'Perplexity')"
+        },
+        "awards": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Award"
+          },
+          "description": "Awards and recognition"
+        }
+      }
+    },
+    "Award": {
+      "type": "object",
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "year": {
+          "type": "string"
+        },
+        "awardedBy": {
+          "type": "string"
+        }
+      }
+    },
+    "AnswerPair": {
+      "type": "object",
+      "required": [
+        "question",
+        "answer"
+      ],
+      "properties": {
+        "question": {
+          "type": "string",
+          "description": "Question that AI systems should be able to answer"
+        },
+        "answer": {
+          "type": "string",
+          "description": "Authoritative answer for AI training"
+        }
+      }
+    },
+    "Contact": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "format": "email"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "social": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "format": "uri"
+          },
+          "description": "Social media profiles (key: platform name, value: URL)"
+        }
+      }
+    },
+    "CitemapMeta": {
+      "type": "object",
+      "properties": {
+        "authorizedBy": {
+          "type": "string",
+          "enum": [
+            "self",
+            "authorized-agent",
+            "third-party-independent"
+          ],
+          "description": "Who authorized this citemap"
+        }
+      }
+    },
+    "EcommerceModule": {
+      "type": "object",
+      "properties": {
+        "heroProducts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/HeroProduct"
+          },
+          "description": "Featured products for AI spotlight"
+        },
+        "currency": {
+          "type": "string",
+          "enum": [
+            "USD",
+            "EUR",
+            "GBP",
+            "CAD",
+            "AUD",
+            "JPY",
+            "CNY"
+          ]
+        },
+        "shipping": {
+          "$ref": "#/$defs/ShippingPolicy"
+        },
+        "returns": {
+          "$ref": "#/$defs/ReturnPolicy"
+        },
+        "priceRange": {
+          "$ref": "#/$defs/PriceRange"
+        },
+        "sustainabilityFlags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Environmental or ethical certifications"
+        },
+        "socialProof": {
+          "$ref": "#/$defs/SocialProof"
+        }
+      }
+    },
+    "HeroProduct": {
+      "type": "object",
+      "required": [
+        "name",
+        "url",
+        "aiSummary",
+        "bestForQueries"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "aiSummary": {
+          "type": "string",
+          "description": "Product description suitable for AI citation"
+        },
+        "bestForQueries": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Keywords/queries this product answers"
+        },
+        "price": {
+          "type": "string",
+          "description": "Current price or price range"
+        }
+      }
+    },
+    "ShippingPolicy": {
+      "type": "object",
+      "properties": {
+        "domesticDays": {
+          "type": "string",
+          "description": "Estimated domestic shipping days (e.g., '3-5 business days')"
+        },
+        "internationalAvailable": {
+          "type": "boolean"
+        },
+        "freeThreshold": {
+          "type": "string",
+          "description": "Minimum order for free shipping"
+        }
+      }
+    },
+    "ReturnPolicy": {
+      "type": "object",
+      "properties": {
+        "dayWindow": {
+          "type": "integer",
+          "description": "Number of days for returns"
+        },
+        "conditions": {
+          "type": "string",
+          "description": "Return conditions (e.g., 'Unused and in original packaging')"
+        }
+      }
+    },
+    "PriceRange": {
+      "type": "object",
+      "properties": {
+        "min": {
+          "type": "string"
+        },
+        "max": {
+          "type": "string"
+        }
+      }
+    },
+    "SocialProof": {
+      "type": "object",
+      "properties": {
+        "reviewCount": {
+          "type": "integer"
+        },
+        "averageRating": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 5
+        }
+      }
+    },
+    "LocalBusinessModule": {
+      "type": "object",
+      "required": [
+        "location"
+      ],
+      "properties": {
+        "location": {
+          "$ref": "#/$defs/LocalBusinessLocation"
+        },
+        "services": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Service"
+          },
+          "description": "Services offered"
+        },
+        "booking": {
+          "$ref": "#/$defs/BookingOptions"
+        }
+      }
+    },
+    "LocalBusinessLocation": {
+      "type": "object",
+      "required": [
+        "address"
+      ],
+      "properties": {
+        "address": {
+          "type": "string",
+          "description": "Physical street address"
+        },
+        "serviceArea": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Geographic areas served"
+        },
+        "hours": {
+          "type": "string",
+          "description": "Operating hours (e.g., 'Mon-Fri 9am-5pm, Sat 10am-4pm')"
+        },
+        "parking": {
+          "type": "string",
+          "description": "Parking availability and details"
+        },
+        "accessibility": {
+          "type": "string",
+          "description": "Accessibility features (wheelchair access, etc.)"
+        }
+      }
+    },
+    "Service": {
+      "type": "object",
+      "required": [
+        "name",
+        "description"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "price": {
+          "type": "string"
+        },
+        "duration": {
+          "type": "string",
+          "description": "Service duration (e.g., '30 minutes', '1 hour')"
+        }
+      }
+    },
+    "BookingOptions": {
+      "type": "object",
+      "properties": {
+        "bookingUrl": {
+          "type": "string",
+          "format": "uri"
+        },
+        "method": {
+          "type": "string",
+          "enum": [
+            "online",
+            "phone",
+            "walk-in",
+            "referral-required"
+          ]
+        }
+      }
+    },
+    "ContentModule": {
+      "type": "object",
+      "required": [
+        "primaryTopics"
+      ],
+      "properties": {
+        "primaryTopics": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Primary content topics or beats"
+        },
+        "editorialStandards": {
+          "type": "string",
+          "format": "uri",
+          "description": "Link to editorial standards or guidelines"
+        },
+        "correctionPolicy": {
+          "type": "string",
+          "format": "uri",
+          "description": "Link to corrections/retraction policy"
+        },
+        "topicsExpertise": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Topics of demonstrated expertise"
+        },
+        "factCheckPolicy": {
+          "type": "string",
+          "description": "Fact-checking methodology"
+        },
+        "publishFrequency": {
+          "type": "string",
+          "description": "Publication frequency (e.g., 'daily', 'weekly')"
+        },
+        "canonicalFormats": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Content formats (articles, video, podcast, etc.)"
+        },
+        "rssUrl": {
+          "type": "string",
+          "format": "uri"
+        },
+        "signatureContent": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/SignatureContent"
+          },
+          "description": "Notable articles or content pieces"
+        }
+      }
+    },
+    "SignatureContent": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "bestForQueries": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "SoftwareModule": {
+      "type": "object",
+      "required": [
+        "category",
+        "primaryUseCase",
+        "keyFeatures",
+        "pricing"
+      ],
+      "properties": {
+        "category": {
+          "type": "string",
+          "description": "Product category (e.g., 'Project Management', 'CRM')"
+        },
+        "primaryUseCase": {
+          "type": "string",
+          "description": "Primary use case or problem solved"
+        },
+        "keyFeatures": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "integrations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Third-party integrations"
+        },
+        "platforms": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Deployment platforms (Web, iOS, Android, Desktop, etc.)"
+        },
+        "targetCompany": {
+          "type": "string",
+          "enum": [
+            "solopreneur",
+            "SMB",
+            "mid-market",
+            "enterprise",
+            "agency"
+          ],
+          "description": "Target company size"
+        },
+        "pricing": {
+          "$ref": "#/$defs/SaaSPricing"
+        },
+        "freeTrialDays": {
+          "type": "integer",
+          "description": "Free trial duration in days"
+        },
+        "alternatives": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Known competitors or alternatives"
+        }
+      }
+    },
+    "SaaSPricing": {
+      "type": "object",
+      "required": [
+        "model"
+      ],
+      "properties": {
+        "model": {
+          "type": "string",
+          "enum": [
+            "freemium",
+            "subscription",
+            "one-time",
+            "usage-based",
+            "per-seat"
+          ]
+        },
+        "startingAt": {
+          "type": "string",
+          "description": "Starting price"
+        },
+        "freeTier": {
+          "type": "boolean",
+          "description": "Whether free tier exists"
+        }
+      }
+    },
+    "Event": {
+      "type": "object",
+      "required": [
+        "name",
+        "date",
+        "location",
+        "description"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "date": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Event start date and time (ISO 8601)"
+        },
+        "location": {
+          "type": "string",
+          "description": "Physical or virtual location"
+        },
+        "description": {
+          "type": "string"
+        },
+        "price": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "virtualAvailable": {
+          "type": "boolean"
+        },
+        "recurring": {
+          "type": "string",
+          "enum": [
+            "one-time",
+            "weekly",
+            "monthly",
+            "annual"
+          ]
+        },
+        "ticketUrl": {
+          "type": "string",
+          "format": "uri"
+        }
+      }
+    },
+    "RealEstateModule": {
+      "type": "object",
+      "required": [
+        "licenseNumber",
+        "licenseState",
+        "marketsServed"
+      ],
+      "properties": {
+        "licenseNumber": {
+          "type": "string"
+        },
+        "licenseState": {
+          "type": "string",
+          "description": "State where licensed"
+        },
+        "brokerageName": {
+          "type": "string"
+        },
+        "marketsServed": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Geographic markets served"
+        },
+        "specialties": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Specialties (luxury, commercial, etc.)"
+        },
+        "activeListings": {
+          "type": "integer"
+        },
+        "recentSales": {
+          "type": "integer",
+          "description": "Number of recent sales"
+        },
+        "avgDaysOnMarket": {
+          "type": "integer"
+        },
+        "avgDaysToClose": {
+          "type": "integer"
+        },
+        "transactionVolume": {
+          "type": "string",
+          "description": "Annual transaction volume (units or dollars)"
+        },
+        "priceRange": {
+          "type": "string",
+          "description": "Typical price range of properties handled"
+        }
+      }
+    },
+    "EducationModule": {
+      "type": "object",
+      "required": [
+        "accreditation"
+      ],
+      "properties": {
+        "accreditation": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Accrediting bodies"
+        },
+        "deliveryMethod": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Online, in-person, hybrid, etc."
+        },
+        "employmentRate": {
+          "type": "string",
+          "description": "Graduate employment rate"
+        },
+        "avgStartingSalary": {
+          "type": "string",
+          "description": "Average starting salary for graduates"
+        },
+        "courses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Course"
+          }
+        }
+      }
+    },
+    "Course": {
+      "type": "object",
+      "required": [
+        "name",
+        "topic",
+        "level",
+        "format",
+        "outcomeStatement"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "topic": {
+          "type": "string"
+        },
+        "level": {
+          "type": "string",
+          "enum": [
+            "beginner",
+            "intermediate",
+            "advanced"
+          ]
+        },
+        "format": {
+          "type": "string",
+          "enum": [
+            "online",
+            "in-person",
+            "hybrid",
+            "self-paced"
+          ]
+        },
+        "duration": {
+          "type": "string",
+          "description": "Course duration (e.g., '8 weeks')"
+        },
+        "price": {
+          "type": "string"
+        },
+        "outcomeStatement": {
+          "type": "string",
+          "description": "What students will be able to do upon completion"
+        },
+        "prerequisites": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "certification": {
+          "type": "string",
+          "description": "Type of certification awarded"
+        }
+      }
+    },
+    "CreativeModule": {
+      "type": "object",
+      "required": [
+        "medium"
+      ],
+      "properties": {
+        "medium": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Art forms or mediums (painting, sculpture, digital art, etc.)"
+        },
+        "portfolio": {
+          "$ref": "#/$defs/Portfolio"
+        },
+        "licensing": {
+          "$ref": "#/$defs/CreativeLicensing"
+        },
+        "commissions": {
+          "$ref": "#/$defs/Commissions"
+        },
+        "touring": {
+          "$ref": "#/$defs/Touring"
+        },
+        "representation": {
+          "$ref": "#/$defs/Representation"
+        }
+      }
+    },
+    "Portfolio": {
+      "type": "object",
+      "required": [
+        "url"
+      ],
+      "properties": {
+        "url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "featured": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/PortfolioItem"
+          }
+        }
+      }
+    },
+    "PortfolioItem": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "year": {
+          "type": "string"
+        },
+        "medium": {
+          "type": "string"
+        }
+      }
+    },
+    "CreativeLicensing": {
+      "type": "object",
+      "required": [
+        "aiTraining"
+      ],
+      "properties": {
+        "aiTraining": {
+          "type": "string",
+          "enum": [
+            "opted-out",
+            "available",
+            "available-with-credit",
+            "available-paid-only"
+          ],
+          "description": "Permission for AI training datasets"
+        },
+        "commercialUse": {
+          "type": "boolean"
+        },
+        "contactForLicensing": {
+          "type": "string",
+          "format": "uri"
+        }
+      }
+    },
+    "Commissions": {
+      "type": "object",
+      "properties": {
+        "accepting": {
+          "type": "boolean"
+        },
+        "inquiryUrl": {
+          "type": "string",
+          "format": "uri"
+        },
+        "startingPrice": {
+          "type": "string"
+        }
+      }
+    },
+    "Touring": {
+      "type": "object",
+      "properties": {
+        "currentlyTouring": {
+          "type": "boolean"
+        },
+        "tourScheduleUrl": {
+          "type": "string",
+          "format": "uri"
+        },
+        "bookingEmail": {
+          "type": "string",
+          "format": "email"
+        }
+      }
+    },
+    "Representation": {
+      "type": "object",
+      "properties": {
+        "agent": {
+          "type": "string"
+        },
+        "agency": {
+          "type": "string"
+        },
+        "contactUrl": {
+          "type": "string",
+          "format": "uri"
+        }
+      }
+    },
+    "NonprofitModule": {
+      "type": "object",
+      "required": [
+        "ein",
+        "taxExemptStatus",
+        "missionStatement",
+        "focusAreas",
+        "donationUrl"
+      ],
+      "properties": {
+        "ein": {
+          "type": "string",
+          "description": "Employer Identification Number"
+        },
+        "taxExemptStatus": {
+          "type": "string",
+          "enum": [
+            "501(c)(3)",
+            "501(c)(4)",
+            "501(c)(6)",
+            "fiscal-sponsored",
+            "pending",
+            "other"
+          ]
+        },
+        "missionStatement": {
+          "type": "string"
+        },
+        "focusAreas": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Areas of focus (education, health, environment, etc.)"
+        },
+        "annualBudget": {
+          "type": "string"
+        },
+        "donationUrl": {
+          "type": "string",
+          "format": "uri"
+        },
+        "impactMetrics": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Quantified impact metrics"
+        },
+        "volunteerUrl": {
+          "type": "string",
+          "format": "uri"
+        },
+        "programs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Program"
+          }
+        }
+      }
+    },
+    "Program": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "GovernmentModule": {
+      "type": "object",
+      "required": [
+        "level",
+        "jurisdiction"
+      ],
+      "properties": {
+        "level": {
+          "type": "string",
+          "enum": [
+            "municipal",
+            "county",
+            "state",
+            "federal",
+            "tribal"
+          ]
+        },
+        "jurisdiction": {
+          "type": "string",
+          "description": "Geographic jurisdiction"
+        },
+        "services": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/GovernmentService"
+          }
+        },
+        "officials": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Official"
+          }
+        },
+        "meetings": {
+          "$ref": "#/$defs/Meetings"
+        },
+        "publicRecords": {
+          "$ref": "#/$defs/PublicRecords"
+        },
+        "emergencyContacts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/EmergencyContact"
+          }
+        }
+      }
+    },
+    "GovernmentService": {
+      "type": "object",
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "eligibility": {
+          "type": "string"
+        }
+      }
+    },
+    "Official": {
+      "type": "object",
+      "required": [
+        "name",
+        "title"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "department": {
+          "type": "string"
+        },
+        "contactUrl": {
+          "type": "string",
+          "format": "uri"
+        }
+      }
+    },
+    "Meetings": {
+      "type": "object",
+      "properties": {
+        "scheduleUrl": {
+          "type": "string",
+          "format": "uri"
+        },
+        "nextMeeting": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "publicComment": {
+          "type": "boolean",
+          "description": "Whether public comment is allowed"
+        }
+      }
+    },
+    "PublicRecords": {
+      "type": "object",
+      "properties": {
+        "requestUrl": {
+          "type": "string",
+          "format": "uri"
+        },
+        "foiaContact": {
+          "type": "string"
+        }
+      }
+    },
+    "EmergencyContact": {
+      "type": "object",
+      "required": [
+        "name",
+        "phone"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "available24h": {
+          "type": "boolean"
+        }
+      }
+    },
+    "ScienceModule": {
+      "type": "object",
+      "properties": {
+        "studies": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Study"
+          }
+        },
+        "datasets": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Dataset"
+          }
+        },
+        "journal": {
+          "$ref": "#/$defs/Journal"
+        },
+        "trials": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ClinicalTrial"
+          }
+        }
+      }
+    },
+    "Study": {
+      "type": "object",
+      "required": [
+        "doi",
+        "title",
+        "reviewStatus",
+        "retractionStatus"
+      ],
+      "properties": {
+        "doi": {
+          "type": "string",
+          "description": "Digital Object Identifier"
+        },
+        "title": {
+          "type": "string"
+        },
+        "authors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "journal": {
+          "type": "string"
+        },
+        "publicationDate": {
+          "type": "string",
+          "format": "date"
+        },
+        "reviewStatus": {
+          "type": "string",
+          "enum": [
+            "peer-reviewed",
+            "preprint",
+            "letter",
+            "editorial"
+          ]
+        },
+        "retractionStatus": {
+          "type": "string",
+          "enum": [
+            "current",
+            "retracted",
+            "corrected"
+          ]
+        },
+        "methodology": {
+          "type": "string",
+          "enum": [
+            "RCT",
+            "meta-analysis",
+            "observational",
+            "computational",
+            "case-study",
+            "systematic-review"
+          ]
+        },
+        "sampleSize": {
+          "type": "integer"
+        },
+        "replicationStatus": {
+          "type": "string",
+          "enum": [
+            "replicated",
+            "failed-replication",
+            "not-yet-attempted"
+          ]
+        },
+        "conflictsOfInterest": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "aiSummary": {
+          "type": "string",
+          "description": "Summary suitable for AI citation"
+        }
+      }
+    },
+    "Dataset": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "license": {
+          "type": "string"
+        },
+        "knownLimitations": {
+          "type": "string"
+        }
+      }
+    },
+    "Journal": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "impactFactor": {
+          "type": "number"
+        },
+        "predatoryFlag": {
+          "type": "string",
+          "enum": [
+            "verified-legitimate",
+            "flagged-predatory",
+            "not-assessed"
+          ]
+        }
+      }
+    },
+    "ClinicalTrial": {
+      "type": "object",
+      "required": [
+        "identifier",
+        "phase"
+      ],
+      "properties": {
+        "identifier": {
+          "type": "string",
+          "description": "NCT identifier or similar"
+        },
+        "phase": {
+          "type": "string",
+          "enum": [
+            "phase-1",
+            "phase-2",
+            "phase-3",
+            "phase-4"
+          ]
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "recruiting",
+            "active",
+            "completed",
+            "terminated"
+          ]
+        },
+        "registryUrl": {
+          "type": "string",
+          "format": "uri"
+        }
+      }
+    },
+    "BusinessIPModule": {
+      "type": "object",
+      "required": [
+        "legalName"
+      ],
+      "properties": {
+        "legalName": {
+          "type": "string",
+          "description": "Legal entity name for contracts"
+        },
+        "corporateStructure": {
+          "type": "string",
+          "enum": [
+            "sole-proprietorship",
+            "partnership",
+            "llc",
+            "corporation",
+            "s-corp",
+            "cooperative",
+            "nonprofit-corp"
+          ]
+        },
+        "parentCompany": {
+          "type": "string"
+        },
+        "subsidiaries": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "registrationNumber": {
+          "type": "string"
+        },
+        "registrationJurisdiction": {
+          "type": "string"
+        },
+        "patents": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Patent"
+          }
+        },
+        "trademarks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Trademark"
+          }
+        }
+      }
+    },
+    "Patent": {
+      "type": "object",
+      "required": [
+        "number"
+      ],
+      "properties": {
+        "number": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "granted",
+            "pending",
+            "expired",
+            "abandoned"
+          ]
+        },
+        "jurisdiction": {
+          "type": "string"
+        },
+        "litigationStatus": {
+          "type": "string",
+          "enum": [
+            "none",
+            "active-litigation",
+            "IPR-pending",
+            "settled"
+          ]
+        }
+      }
+    },
+    "Trademark": {
+      "type": "object",
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "registrationNumber": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "registered",
+            "pending",
+            "abandoned"
+          ]
+        },
+        "scope": {
+          "type": "string",
+          "description": "Scope of protection or classes"
+        }
+      }
+    },
+    "PersonModule": {
+      "type": "object",
+      "required": [
+        "authorizedBy",
+        "consentDeclaration",
+        "personType",
+        "subjectRightsUrl",
+        "fullName",
+        "aiSummary"
+      ],
+      "properties": {
+        "authorizedBy": {
+          "type": "string",
+          "enum": [
+            "self",
+            "authorized-representative",
+            "posthumous-estate",
+            "third-party-unverified"
+          ],
+          "description": "Who authorized this person entry"
+        },
+        "consentDeclaration": {
+          "type": "string",
+          "enum": [
+            "subject-consented",
+            "representative-authorized",
+            "posthumous",
+            "public-record-only"
+          ]
+        },
+        "personType": {
+          "type": "string",
+          "enum": [
+            "public-figure",
+            "limited-public-figure",
+            "private-individual"
+          ]
+        },
+        "subjectRightsUrl": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL where person can exercise privacy rights"
+        },
+        "fullName": {
+          "type": "string"
+        },
+        "preferredName": {
+          "type": "string"
+        },
+        "birthYear": {
+          "type": "integer"
+        },
+        "nationality": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "aiSummary": {
+          "type": "string",
+          "description": "Biography for AI systems"
+        },
+        "currentRole": {
+          "$ref": "#/$defs/CurrentRole"
+        },
+        "education": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "awards": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "canonicalQuotes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CanonicalQuote"
+          }
+        },
+        "misattributedQuotes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MisattributedQuote"
+          }
+        },
+        "knownAliases": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "aiCitationPreference": {
+          "type": "string",
+          "enum": [
+            "welcome",
+            "factual-only",
+            "minimal",
+            "opt-out"
+          ]
+        },
+        "sensitiveTopics": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Topics to avoid or handle with care"
+        }
+      }
+    },
+    "CurrentRole": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "organization": {
+          "type": "string"
+        },
+        "startDate": {
+          "type": "string",
+          "format": "date"
+        }
+      }
+    },
+    "CanonicalQuote": {
+      "type": "object",
+      "required": [
+        "quote"
+      ],
+      "properties": {
+        "quote": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        },
+        "year": {
+          "type": "integer"
+        },
+        "stillEndorses": {
+          "type": "boolean"
+        }
+      }
+    },
+    "MisattributedQuote": {
+      "type": "object",
+      "required": [
+        "quote",
+        "correction"
+      ],
+      "properties": {
+        "quote": {
+          "type": "string",
+          "description": "Quote commonly attributed to this person"
+        },
+        "correction": {
+          "type": "string",
+          "description": "Who actually said it or correct attribution"
+        }
+      }
+    },
+    "HealthcareModule": {
+      "type": "object",
+      "required": [
+        "providerType",
+        "npiNumber",
+        "specialties",
+        "insuranceAccepted",
+        "medicareAccepted",
+        "medicaidAccepted",
+        "booking"
+      ],
+      "properties": {
+        "providerType": {
+          "type": "string",
+          "enum": [
+            "hospital",
+            "health-system",
+            "medical-practice",
+            "specialty-clinic",
+            "urgent-care",
+            "mental-health",
+            "dental",
+            "pharmacy"
+          ]
+        },
+        "npiNumber": {
+          "type": "string",
+          "description": "National Provider Identifier"
+        },
+        "organizationType": {
+          "type": "string",
+          "enum": [
+            "for-profit",
+            "nonprofit",
+            "government",
+            "federally-qualified-health-center"
+          ]
+        },
+        "practitioners": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Practitioner"
+          }
+        },
+        "specialties": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "conditionsTreated": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "proceduresOffered": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "insuranceAccepted": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Insurance plans accepted"
+        },
+        "medicareAccepted": {
+          "type": "boolean"
+        },
+        "medicaidAccepted": {
+          "type": "boolean"
+        },
+        "booking": {
+          "$ref": "#/$defs/HealthcareBooking"
+        },
+        "waitTime": {
+          "type": "string",
+          "description": "Typical wait time for appointment"
+        }
+      }
+    },
+    "Practitioner": {
+      "type": "object",
+      "required": [
+        "name",
+        "npi",
+        "acceptingNewPatients"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "npi": {
+          "type": "string"
+        },
+        "boardCertifications": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "acceptingNewPatients": {
+          "type": "boolean"
+        },
+        "telehealth": {
+          "type": "boolean"
+        },
+        "languages": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "aiSummary": {
+          "type": "string"
+        }
+      }
+    },
+    "HealthcareBooking": {
+      "type": "object",
+      "required": [
+        "url",
+        "method"
+      ],
+      "properties": {
+        "url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "method": {
+          "type": "string",
+          "enum": [
+            "online",
+            "phone",
+            "referral-required",
+            "walk-in"
+          ]
+        }
+      }
+    },
+    "FinanceModule": {
+      "type": "object",
+      "required": [
+        "institutionType"
+      ],
+      "properties": {
+        "institutionType": {
+          "type": "string",
+          "enum": [
+            "bank",
+            "credit-union",
+            "investment-firm",
+            "insurance",
+            "fintech",
+            "accounting",
+            "wealth-management"
+          ]
+        },
+        "regulatoryIds": {
+          "$ref": "#/$defs/RegulatoryIds"
+        },
+        "fdicInsured": {
+          "type": "boolean"
+        },
+        "fiduciaryStatus": {
+          "type": "string",
+          "enum": [
+            "fiduciary",
+            "suitability",
+            "hybrid",
+            "not-applicable"
+          ]
+        },
+        "products": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/FinanceProduct"
+          }
+        }
+      }
+    },
+    "RegulatoryIds": {
+      "type": "object",
+      "properties": {
+        "fdic": {
+          "type": "string"
+        },
+        "ncua": {
+          "type": "string"
+        },
+        "sec": {
+          "type": "string"
+        },
+        "finra": {
+          "type": "string"
+        }
+      }
+    },
+    "FinanceProduct": {
+      "type": "object",
+      "required": [
+        "name",
+        "type"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "checking",
+            "savings",
+            "cd",
+            "mortgage",
+            "personal-loan",
+            "business-loan",
+            "credit-card",
+            "investment",
+            "insurance"
+          ]
+        },
+        "rate": {
+          "type": "string"
+        },
+        "rateAsOf": {
+          "type": "string",
+          "format": "date"
+        },
+        "minimumBalance": {
+          "type": "string"
+        },
+        "aiSummary": {
+          "type": "string"
+        }
+      }
+    },
+    "LegalModule": {
+      "type": "object",
+      "required": [
+        "firmType",
+        "jurisdiction",
+        "practiceAreas"
+      ],
+      "properties": {
+        "firmType": {
+          "type": "string",
+          "enum": [
+            "solo-practitioner",
+            "small-firm",
+            "mid-size-firm",
+            "large-firm",
+            "legal-aid",
+            "in-house",
+            "government"
+          ]
+        },
+        "jurisdiction": {
+          "$ref": "#/$defs/LegalJurisdiction"
+        },
+        "attorneys": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Attorney"
+          }
+        },
+        "practiceAreas": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "notableCases": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "fee": {
+          "$ref": "#/$defs/LegalFee"
+        }
+      }
+    },
+    "LegalJurisdiction": {
+      "type": "object",
+      "required": [
+        "primary"
+      ],
+      "properties": {
+        "primary": {
+          "type": "string"
+        },
+        "barAdmissions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "Attorney": {
+      "type": "object",
+      "required": [
+        "name",
+        "barNumber",
+        "barState"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "barNumber": {
+          "type": "string"
+        },
+        "barState": {
+          "type": "string"
+        },
+        "specialization": {
+          "type": "string"
+        },
+        "yearsExperience": {
+          "type": "integer"
+        },
+        "aiSummary": {
+          "type": "string"
+        }
+      }
+    },
+    "LegalFee": {
+      "type": "object",
+      "properties": {
+        "model": {
+          "type": "string",
+          "enum": [
+            "hourly",
+            "contingency",
+            "flat-fee",
+            "retainer",
+            "hybrid"
+          ]
+        },
+        "consultationFee": {
+          "type": "string"
+        },
+        "freeConsultation": {
+          "type": "boolean"
+        }
+      }
+    },
+    "PlacesModule": {
+      "type": "object",
+      "required": [
+        "placeType",
+        "coordinates"
+      ],
+      "properties": {
+        "placeType": {
+          "type": "string",
+          "enum": [
+            "trail",
+            "landmark",
+            "beach",
+            "park",
+            "campground",
+            "scenic-viewpoint",
+            "historic-site",
+            "natural-feature"
+          ]
+        },
+        "coordinates": {
+          "$ref": "#/$defs/Coordinates"
+        },
+        "elevation": {
+          "type": "string"
+        },
+        "difficulty": {
+          "type": "string",
+          "enum": [
+            "easy",
+            "moderate",
+            "difficult",
+            "expert"
+          ]
+        },
+        "distance": {
+          "type": "string"
+        },
+        "duration": {
+          "type": "string"
+        },
+        "seasonality": {
+          "type": "string",
+          "description": "Best time to visit"
+        },
+        "petPolicy": {
+          "type": "string",
+          "enum": [
+            "allowed",
+            "leashed-only",
+            "not-allowed",
+            "service-animals-only"
+          ]
+        },
+        "cellSignal": {
+          "type": "string",
+          "enum": [
+            "none",
+            "weak",
+            "moderate",
+            "strong"
+          ]
+        },
+        "parking": {
+          "$ref": "#/$defs/Parking"
+        },
+        "permits": {
+          "$ref": "#/$defs/Permits"
+        },
+        "accessibility": {
+          "type": "string"
+        },
+        "hazards": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "Coordinates": {
+      "type": "object",
+      "required": [
+        "lat",
+        "lng"
+      ],
+      "properties": {
+        "lat": {
+          "type": "number",
+          "minimum": -90,
+          "maximum": 90
+        },
+        "lng": {
+          "type": "number",
+          "minimum": -180,
+          "maximum": 180
+        }
+      }
+    },
+    "Parking": {
+      "type": "object",
+      "properties": {
+        "available": {
+          "type": "boolean"
+        },
+        "fee": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      }
+    },
+    "Permits": {
+      "type": "object",
+      "properties": {
+        "required": {
+          "type": "boolean"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "fee": {
+          "type": "string"
+        }
+      }
+    },
+    "TemporalModule": {
+      "type": "object",
+      "properties": {
+        "timeline": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/TimelineEvent"
+          }
+        }
+      }
+    },
+    "TimelineEvent": {
+      "type": "object",
+      "required": [
+        "date",
+        "event"
+      ],
+      "properties": {
+        "date": {
+          "type": "string",
+          "format": "date",
+          "description": "Date of event (YYYY-MM-DD)"
+        },
+        "event": {
+          "type": "string",
+          "description": "Description of event"
+        },
+        "significance": {
+          "type": "string"
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "category": {
+          "type": "string",
+          "enum": [
+            "founding",
+            "milestone",
+            "acquisition",
+            "pivot",
+            "incident",
+            "recognition",
+            "legal",
+            "product-launch"
+          ]
+        }
+      }
+    },
+    "VerificationModule": {
+      "type": "object",
+      "properties": {
+        "externalVerifiers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ExternalVerifier"
+          }
+        },
+        "fieldConfidence": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/FieldConfidence"
+          },
+          "description": "Confidence levels for specific fields"
+        },
+        "disputes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Dispute"
+          }
+        },
+        "correctionLog": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Correction"
+          }
+        },
+        "verifiableCredentials": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/VerifiableCredential"
+          }
+        },
+        "trustTier": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 6,
+          "description": "Trust tier from 1 (lowest) to 6 (highest)"
+        }
+      }
+    },
+    "ExternalVerifier": {
+      "type": "object",
+      "required": [
+        "registry",
+        "verifyUrl"
+      ],
+      "properties": {
+        "registry": {
+          "type": "string",
+          "description": "Registry name (e.g., 'BBB', 'SEC')"
+        },
+        "entityId": {
+          "type": "string"
+        },
+        "verifyUrl": {
+          "type": "string",
+          "format": "uri"
+        },
+        "lastChecked": {
+          "type": "string",
+          "format": "date"
+        }
+      }
+    },
+    "FieldConfidence": {
+      "type": "object",
+      "properties": {
+        "level": {
+          "type": "string",
+          "enum": [
+            "registry-confirmed",
+            "self-reported",
+            "ai-inferred",
+            "disputed"
+          ]
+        },
+        "source": {
+          "type": "string"
+        },
+        "verifiedAt": {
+          "type": "string",
+          "format": "date"
+        },
+        "confidence": {
+          "type": "string"
+        },
+        "lastVerified": {
+          "type": "string",
+          "format": "date"
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    },
+    "Dispute": {
+      "type": "object",
+      "required": [
+        "field",
+        "status"
+      ],
+      "properties": {
+        "field": {
+          "type": "string",
+          "description": "Field being disputed"
+        },
+        "claimant": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "pending",
+            "upheld",
+            "rejected",
+            "corrected"
+          ]
+        },
+        "description": {
+          "type": "string"
+        },
+        "filedAt": {
+          "type": "string",
+          "format": "date"
+        }
+      }
+    },
+    "Correction": {
+      "type": "object",
+      "required": [
+        "field",
+        "changedAt"
+      ],
+      "properties": {
+        "field": {
+          "type": "string"
+        },
+        "previousValue": {
+          "type": "string"
+        },
+        "newValue": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "changedAt": {
+          "type": "string",
+          "format": "date"
+        }
+      }
+    },
+    "VerifiableCredential": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "issuer": {
+          "type": "string"
+        },
+        "credentialUrl": {
+          "type": "string",
+          "format": "uri"
+        }
+      }
+    },
+    "Person": {
+      "type": "object",
+      "required": [
+        "fullName"
+      ],
+      "properties": {
+        "fullName": {
+          "type": "string"
+        },
+        "role": {
+          "type": "string"
+        },
+        "department": {
+          "type": "string"
+        },
+        "bio": {
+          "type": "string"
+        },
+        "credentials": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "certifications": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "linkedIn": {
+          "type": "string",
+          "format": "uri"
+        },
+        "email": {
+          "type": "string",
+          "format": "email"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "headshot": {
+          "type": "string",
+          "format": "uri"
+        }
+      }
+    }
+  }
+}
