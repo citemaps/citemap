@@ -1,0 +1,39 @@
+{
+  "name": "@citemap/cli",
+  "version": "0.2.0",
+  "description": "Command-line tool for validating citemap.json files",
+  "type": "module",
+  "bin": {
+    "citemap": "./dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format cjs --dts",
+    "dev": "node --loader ts-node/esm src/index.ts",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "citemap",
+    "cli",
+    "validator",
+    "ai",
+    "citation"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/citemaps/citemap"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "@citemap/validator": "^0.2.0"
+  },
+  "devDependencies": {
+    "tsup": "^8.0.0",
+    "typescript": "^5.4.0"
+  }
+}

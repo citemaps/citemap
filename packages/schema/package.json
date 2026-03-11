@@ -1,0 +1,41 @@
+{
+  "name": "@citemap/schema",
+  "version": "0.2.0",
+  "description": "JSON Schema and TypeScript types for citemap.json v2.0",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./schema.json": "./src/citemap.schema.json"
+  },
+  "files": [
+    "dist",
+    "src/citemap.schema.json"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format cjs,esm --dts",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "citemap",
+    "aeo",
+    "ai-visibility",
+    "json-schema",
+    "structured-data"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/citemaps/citemap"
+  },
+  "homepage": "https://citemaps.org",
+  "devDependencies": {
+    "tsup": "^8.0.0",
+    "typescript": "^5.4.0"
+  }
+}

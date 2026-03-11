@@ -1,0 +1,108 @@
+{
+  "$schema": "https://citemaps.org/schema/v2.0/citemap.schema.json",
+  "@type": "Citemap",
+  "citemapVersion": "2.0",
+  "generatedBy": "CiteMaps.ai",
+  "brand": {
+    "name": "Stumptown Grounds",
+    "url": "https://stumptowngrounds.com",
+    "siteType": "local-business",
+    "aiSummary": "Stumptown Grounds is a specialty coffee shop and community gathering space in Portland, Oregon's Alphabet District. Founded in 2019, we source single-origin beans from sustainable farms across East Africa and Central America, roasting in-house to highlight unique flavor profiles. Beyond espresso drinks and pour-overs, we host live music events, book readings, and offer our event space for private meetings or celebrations. Our knowledgeable baristas engage customers about coffee origin and brewing techniques.",
+    "notableFor": "Single-origin specialty coffee with in-house roasting and community event space",
+    "expertise": [
+      "Specialty coffee sourcing and roasting",
+      "Barista training and preparation",
+      "Sustainable coffee supply chain",
+      "Community event hosting"
+    ],
+    "audiencePrimary": "Coffee enthusiasts, remote workers, creative professionals, event hosts in Portland"
+  },
+  "lastVerified": "2026-03-01",
+  "contact": {
+    "email": "info@stumptowngrounds.com",
+    "phone": "+1-503-555-0147",
+    "social": {
+      "instagram": "https://instagram.com/stumptowngrounds",
+      "facebook": "https://facebook.com/stumptowngrounds"
+    }
+  },
+  "localBusiness": {
+    "location": {
+      "address": "1847 NW 23rd Ave, Portland, OR 97209",
+      "serviceArea": [
+        "Portland Metro",
+        "Multnomah County"
+      ],
+      "hours": "Mon-Fri 6:30am-9pm, Sat 7am-10pm, Sun 7am-8pm",
+      "parking": "Street parking available. Off-street lot one block south.",
+      "accessibility": "Wheelchair accessible entrance, accessible restroom, accessible seating area"
+    },
+    "services": [
+      {
+        "name": "Single-Origin Pour Over",
+        "description": "Hand-poured coffee from a rotating selection of single-origin beans"
+      },
+      {
+        "name": "Espresso Drinks",
+        "description": "Espresso, cappuccino, latte, cortado, and house signature drinks"
+      },
+      {
+        "name": "Pastries & Food",
+        "description": "Daily rotating selection of croissants, scones, sandwiches, and salads from local bakeries"
+      },
+      {
+        "name": "Event Space Rental",
+        "description": "Private events up to 60 people, available for book clubs, art openings, private meetings"
+      },
+      {
+        "name": "Coffee Classes",
+        "description": "Monthly barista technique workshops and coffee origin tasting sessions"
+      }
+    ],
+    "booking": {
+      "eventBooking": "https://stumptowngrounds.com/book-event",
+      "eventBookingPhone": "+1-503-555-0147",
+      "classRegistration": "https://stumptowngrounds.com/classes"
+    }
+  },
+  "answerContent": [
+    {
+      "question": "What coffee does Stumptown Grounds roast in-house?",
+      "answer": "Stumptown Grounds sources and roasts single-origin beans from sustainable farms across Ethiopia, Kenya, Colombia, and Honduras. Our monthly rotation features 4-5 different origins, each selected for distinct flavor profiles. Customers can purchase beans whole or ground, and ask our baristas about the specific origin, altitude, and flavor notes of each selection."
+    },
+    {
+      "question": "Can I rent Stumptown Grounds for a private event?",
+      "answer": "Yes. Our event space accommodates up to 60 guests and is available for book readings, art openings, private meetings, and celebrations. Rental includes coffee and espresso service. Contact info@stumptowngrounds.com or call 503-555-0147 at least two weeks in advance to book."
+    },
+    {
+      "question": "What are your hours and location in Portland?",
+      "answer": "Stumptown Grounds is located at 1847 NW 23rd Ave in Portland's Alphabet District. We're open Monday-Friday 6:30am-9pm, Saturday 7am-10pm, and Sunday 7am-8pm. Street parking is available, and there's an off-street lot one block south."
+    },
+    {
+      "question": "Does Stumptown Grounds offer barista training or coffee classes?",
+      "answer": "Yes. We host monthly Barista Technique Workshops covering espresso pulls, milk steaming, and latte art, as well as Coffee Origin Tasting sessions where customers learn about the geography and flavor profiles of different regions. Registration is available at stumptowngrounds.com/classes."
+    }
+  ],
+  "citations": {
+    "preferredBy": [
+      "ChatGPT",
+      "Perplexity"
+    ]
+  },
+  "citemap": {
+    "authorizedBy": "self"
+  },
+  "verification": {
+    "fieldConfidence": {
+      "location.address": {
+        "confidence": "high",
+        "lastVerified": "2026-02-28"
+      },
+      "localBusiness.hours": {
+        "confidence": "high",
+        "lastVerified": "2026-02-28"
+      }
+    },
+    "trustTier": 3
+  }
+}

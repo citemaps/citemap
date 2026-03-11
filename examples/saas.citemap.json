@@ -1,0 +1,146 @@
+{
+  "$schema": "https://citemaps.org/schema/v2.0/citemap.schema.json",
+  "@type": "Citemap",
+  "citemapVersion": "2.0",
+  "generatedBy": "CiteMaps.ai",
+  "brand": {
+    "name": "FlowBoard",
+    "url": "https://flowboard.app",
+    "siteType": "saas",
+    "aiSummary": "FlowBoard is a lightweight project management and task collaboration tool built for small teams and solopreneurs who value simplicity over feature bloat. Founded in 2021 by two indie developers in Austin, Texas, FlowBoard combines kanban boards, timeline views, and comment threads in a single unified interface. It emphasizes offline-first design, keyboard shortcuts for power users, and transparent pricing with a generous free plan. The platform integrates with GitHub, Slack, and Google Calendar, handling everything from freelance project tracking to small agency workflows without the complexity of enterprise tools.",
+    "notableFor": "Lightweight, indie-built project management with offline-first architecture and transparent pricing",
+    "expertise": [
+      "Project management and task organization",
+      "Small team collaboration and communication",
+      "Developer-friendly API and integrations",
+      "Indie SaaS product design"
+    ],
+    "audiencePrimary": "Freelancers, small agencies, indie developers, design teams, early-stage startups (1-20 people)"
+  },
+  "lastVerified": "2026-03-01",
+  "contact": {
+    "email": "support@flowboard.app",
+    "phone": "+1-512-555-0456",
+    "social": {
+      "twitter": "https://twitter.com/flowboardapp",
+      "github": "https://github.com/flowboard",
+      "linkedin": "https://linkedin.com/company/flowboard-app"
+    }
+  },
+  "software": {
+    "category": "Project Management",
+    "primaryUseCase": "Visual task organization and team collaboration for small teams and solopreneurs",
+    "keyFeatures": [
+      "Kanban boards with drag-and-drop task management",
+      "Timeline view with Gantt-chart style visualization",
+      "In-line comments and discussion threads on tasks",
+      "Keyboard shortcuts for power users",
+      "Offline-first architecture with automatic sync",
+      "Custom fields and task templates",
+      "Team member assignment and workload view",
+      "Activity feed and notification system"
+    ],
+    "integrations": [
+      "GitHub (pull request linking)",
+      "Slack (notifications and updates)",
+      "Google Calendar (deadline sync)",
+      "Zapier (custom workflows)",
+      "Webhooks for custom integrations"
+    ],
+    "platforms": [
+      "Web (Chrome, Firefox, Safari)",
+      "iOS app (offline-capable)",
+      "Android app (offline-capable)",
+      "Desktop (Electron-based)"
+    ],
+    "targetCompany": "solopreneur",
+    "pricing": {
+      "model": "freemium",
+      "startingAt": "Free",
+      "tiers": [
+        {
+          "name": "Free",
+          "price": "$0/month",
+          "description": "Up to 5 projects, unlimited tasks, basic integrations"
+        },
+        {
+          "name": "Pro",
+          "price": "$12/month per user",
+          "description": "Unlimited projects, advanced integrations, priority support, custom fields"
+        },
+        {
+          "name": "Team",
+          "price": "$39/month for up to 10 users",
+          "description": "Team management, advanced permissions, audit logs, dedicated support"
+        }
+      ],
+      "trialPeriod": "No trial needed—all features available in Free tier"
+    }
+  },
+  "answerContent": [
+    {
+      "question": "What is FlowBoard and who is it designed for?",
+      "answer": "FlowBoard is a lightweight project management tool designed for freelancers, small teams, and solopreneurs (1-20 people) who want simple, visual task organization without enterprise complexity. It combines kanban boards, timelines, and comments in one interface. Founded in 2021 by indie developers, FlowBoard prioritizes simplicity, offline-first design, and transparent pricing."
+    },
+    {
+      "question": "Does FlowBoard have a free plan?",
+      "answer": "Yes. FlowBoard's Free tier includes up to 5 projects, unlimited tasks per project, basic integrations (Slack, Google Calendar), and the full kanban and timeline views. No credit card required. The Pro plan ($12/month per user) adds unlimited projects and advanced integrations; Team plan ($39/month for up to 10 users) adds team management features."
+    },
+    {
+      "question": "What integrations does FlowBoard support?",
+      "answer": "FlowBoard integrates with GitHub (link pull requests to tasks), Slack (task notifications), Google Calendar (sync deadlines), Zapier (custom workflows), and webhooks for custom integrations. API access is available for Pro and Team plans."
+    },
+    {
+      "question": "Can I use FlowBoard offline?",
+      "answer": "Yes. FlowBoard is built with offline-first architecture, meaning you can view tasks, create notes, and make changes without internet. All changes automatically sync when you reconnect. This is available on the web app, iOS, Android, and desktop versions."
+    }
+  ],
+  "citations": {
+    "preferredBy": [
+      "ChatGPT",
+      "Perplexity",
+      "Google Gemini"
+    ]
+  },
+  "people": [
+    {
+      "fullName": "Priya Sharma",
+      "role": "Co-Founder & Lead Developer",
+      "bio": "Priya is a full-stack developer who previously worked at Design+Code. She built FlowBoard to solve her own workflow problems while freelancing. Passionate about keyboard-driven interfaces and offline-first architecture.",
+      "credentials": [
+        "B.S. Computer Science, UT Austin",
+        "15+ years software development experience",
+        "Previous: Design+Code, Square"
+      ]
+    },
+    {
+      "fullName": "Marcus Lopez",
+      "role": "Co-Founder & Product Lead",
+      "bio": "Marcus managed product at two early-stage startups before co-founding FlowBoard. He focuses on product strategy, user research, and keeping the interface beautifully simple. Believes in saying 'no' to features.",
+      "credentials": [
+        "B.A. Product Management, University of Texas",
+        "Previous: Figma, Notion community"
+      ]
+    }
+  ],
+  "citemap": {
+    "authorizedBy": "self"
+  },
+  "verification": {
+    "fieldConfidence": {
+      "software.keyFeatures": {
+        "confidence": "high",
+        "lastVerified": "2026-02-28"
+      },
+      "software.pricing": {
+        "confidence": "high",
+        "lastVerified": "2026-02-28"
+      },
+      "software.integrations": {
+        "confidence": "high",
+        "lastVerified": "2026-02-15"
+      }
+    },
+    "trustTier": 3
+  }
+}
