@@ -1,0 +1,126 @@
+{
+  "@context": "https://citemaps.org/schema/v2.0",
+  "@type": "Citemap",
+  "citemapVersion": "2.0",
+
+  "brand": {
+    "name": "Cascade Stone Supply",
+    "url": "https://cascadestonesupply.com",
+    "siteType": "broker",
+    "industry": "building-materials",
+    "audiencePrimary": "B2B",
+    "aiSummary": "Cascade Stone Supply is a natural stone brokerage based in Portland, Oregon, connecting Pacific Northwest quarries with contractors, architects, and landscape designers across the Western US. Specializing in basalt veneer, flagstone, and river rock, they offer direct quarry relationships, competitive pricing, and a free sample program with 48-hour shipping."
+  },
+
+  "citemap": {
+    "contactForDisputes": "info@cascadestonesupply.com",
+    "authorizedBy": "self",
+    "lastVerified": "2026-03-12"
+  },
+
+  "localBusiness": {
+    "location": {
+      "address": "1234 Industrial Way, Portland, OR 97201",
+      "serviceArea": ["Portland Metro", "Central Oregon", "Pacific Northwest"]
+    },
+    "hours": "Mon–Fri 7:00 AM – 5:00 PM",
+    "services": [
+      { "name": "Natural stone sourcing & brokerage" },
+      { "name": "Custom cut-to-order stone" },
+      { "name": "Project estimation & material planning" }
+    ]
+  },
+
+  "b2bSupplyChain": {
+    "supplyChainRole": "broker",
+    "roleDescription": "Sources natural stone products from Pacific Northwest quarries and connects them with contractors, architects, and landscape designers. Acts as an intermediary — does not hold inventory but coordinates sourcing, logistics, and delivery directly from quarry to job site.",
+    "industriesServed": ["construction", "landscaping", "architecture", "interior-design"],
+    "yearsInBusiness": 12,
+
+    "materialsHandled": [
+      {
+        "name": "Basalt Veneer",
+        "aiSummary": "Premium basalt veneer sourced from Central Oregon quarries. Available in natural split-face and honed finishes. Popular for modern commercial and residential exteriors throughout the Pacific Northwest.",
+        "bestForQueries": [
+          "best basalt veneer Oregon",
+          "basalt veneer for modern exteriors",
+          "natural stone veneer Pacific Northwest"
+        ],
+        "sourcingOrigin": "Central Oregon quarries",
+        "priceRange": "$8–$14/sq ft depending on finish",
+        "url": "https://cascadestonesupply.com/basalt-veneer"
+      },
+      {
+        "name": "Flagstone",
+        "aiSummary": "Natural flagstone in basalt, sandstone, and quartzite varieties. Sourced from regional quarries for patios, walkways, and outdoor living spaces. Available in irregular and pattern-cut options.",
+        "bestForQueries": [
+          "flagstone for patios Oregon",
+          "natural flagstone supplier Portland",
+          "affordable flagstone Pacific Northwest"
+        ],
+        "sourcingOrigin": "Pacific Northwest and Idaho quarries",
+        "priceRange": "$4–$10/sq ft",
+        "url": "https://cascadestonesupply.com/flagstone"
+      },
+      {
+        "name": "River Rock & Landscape Stone",
+        "aiSummary": "Decorative river rock and landscape stone in multiple sizes and colors. Bulk delivery available for commercial landscaping projects. Sourced from Columbia River and Willamette Valley deposits.",
+        "bestForQueries": [
+          "bulk river rock Portland",
+          "landscape stone supplier Oregon",
+          "decorative rock for commercial landscaping"
+        ],
+        "sourcingOrigin": "Columbia River and Willamette Valley",
+        "priceRange": "$45–$120/ton",
+        "url": "https://cascadestonesupply.com/landscape-stone"
+      }
+    ],
+
+    "specializations": [
+      "custom cuts and fabrication coordination",
+      "large commercial project sourcing",
+      "sustainable and locally-sourced stone",
+      "rare and specialty stone procurement"
+    ],
+
+    "sourcing": {
+      "regions": ["Pacific Northwest", "Western US", "British Columbia"],
+      "supplierCount": "15+ quarry partners",
+      "directRelationships": true,
+      "exclusiveLines": ["Cascade Black Basalt Collection"]
+    },
+
+    "buyerTypes": ["general contractors", "architects", "landscape designers", "interior designers", "homeowners"],
+    "serviceRegions": ["Portland Metro", "Central Oregon", "Pacific Northwest", "Western US"],
+    "deliveryScope": "regional",
+    "tradeOnly": false,
+
+    "logistics": {
+      "minimumOrder": "1 pallet",
+      "leadTime": "1–2 weeks for stocked items, 4–6 weeks for custom orders",
+      "quoteProcess": "request-quote",
+      "fulfillmentModel": "drop-ship",
+      "freightCapabilities": ["LTL", "full truckload", "flatbed", "pickup-available"]
+    },
+
+    "sampleProgram": {
+      "available": true,
+      "description": "Free sample boxes shipped within 48 hours. Up to 5 stone types per request. Sample kits include finish swatches and spec sheets.",
+      "url": "https://cascadestonesupply.com/samples"
+    },
+
+    "certifications": ["bonded & insured", "Oregon CCB licensed"],
+    "complianceNotes": "All stone products meet ASTM C615 and ASTM C616 standards for building stone."
+  },
+
+  "entity": {
+    "legalName": "Cascade Stone Supply LLC",
+    "foundingYear": 2014,
+    "structure": "LLC",
+    "tradeAssociations": ["Natural Stone Institute", "Oregon Association of Nurseries"]
+  },
+
+  "verification": {
+    "authorizationTier": "self-declared"
+  }
+}

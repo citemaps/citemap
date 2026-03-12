@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 22: B2B Supply Chain & Brokerage — CiteMap Spec Proposal</title>
+<style>
+  :root {
+    --green: #16a34a;
+    --green-light: #f0fdf4;
+    --green-border: #bbf7d0;
+    --gray-50: #f9fafb;
+    --gray-100: #f3f4f6;
+    --gray-200: #e5e7eb;
+    --gray-300: #d1d5db;
+    --gray-500: #6b7280;
+    --gray-600: #4b5563;
+    --gray-700: #374151;
+    --gray-800: #1f2937;
+    --gray-900: #111827;
+    --amber-50: #fffbeb;
+    --amber-border: #fde68a;
+    --blue-50: #eff6ff;
+    --blue-border: #bfdbfe;
+    --mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', 'Source Sans Pro', -apple-system, system-ui, sans-serif;
+    color: var(--gray-800);
+    background: #fff;
+    line-height: 1.65;
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 2.5rem 2rem 4rem;
+  }
+
+  /* Header */
+  .badge {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: var(--amber-50);
+    border: 1px solid var(--amber-border);
+    color: #92400e;
+    padding: 0.2rem 0.7rem;
+    border-radius: 3px;
+    margin-bottom: 0.5rem;
+  }
+
+  h1 {
+    font-size: 1.85rem;
+    font-weight: 700;
+    color: var(--gray-900);
+    margin-bottom: 0.3rem;
+    line-height: 1.25;
+  }
+
+  .subtitle {
+    font-family: var(--mono);
+    font-size: 0.82rem;
+    color: var(--gray-500);
+    margin-bottom: 0.15rem;
+  }
+
+  .meta {
+    font-size: 0.82rem;
+    color: var(--gray-500);
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--gray-200);
+  }
+
+  /* Sections */
+  h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--gray-900);
+    margin: 2.5rem 0 0.75rem;
+    padding-bottom: 0.35rem;
+    border-bottom: 2px solid var(--green);
+  }
+
+  h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--gray-700);
+    margin: 1.5rem 0 0.5rem;
+  }
+
+  p { margin-bottom: 0.85rem; color: var(--gray-700); }
+
+  /* Callout boxes */
+  .callout {
+    border-left: 3px solid var(--green);
+    background: var(--green-light);
+    padding: 1rem 1.25rem;
+    margin: 1.25rem 0;
+    border-radius: 0 4px 4px 0;
+    font-size: 0.92rem;
+  }
+  .callout.amber {
+    border-left-color: #f59e0b;
+    background: var(--amber-50);
+  }
+  .callout.blue {
+    border-left-color: #3b82f6;
+    background: var(--blue-50);
+  }
+  .callout p:last-child { margin-bottom: 0; }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0 1.25rem;
+    font-size: 0.88rem;
+  }
+  th {
+    background: var(--gray-100);
+    font-weight: 600;
+    text-align: left;
+    padding: 0.55rem 0.75rem;
+    border-bottom: 2px solid var(--gray-300);
+    color: var(--gray-700);
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 0.55rem 0.75rem;
+    border-bottom: 1px solid var(--gray-200);
+    vertical-align: top;
+    color: var(--gray-700);
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--gray-50); }
+
+  /* Field tables */
+  .field-table td:first-child {
+    font-family: var(--mono);
+    font-size: 0.82rem;
+    color: var(--green);
+    white-space: nowrap;
+    font-weight: 600;
+  }
+  .field-table td:nth-child(2) {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--gray-500);
+    white-space: nowrap;
+  }
+  .field-table .status-req {
+    font-weight: 700;
+    color: #dc2626;
+    font-size: 0.78rem;
+  }
+  .field-table .status-rec {
+    font-weight: 600;
+    color: #2563eb;
+    font-size: 0.78rem;
+  }
+  .field-table .status-opt {
+    color: var(--gray-500);
+    font-size: 0.78rem;
+  }
+  .sub-field td:first-child {
+    padding-left: 1.5rem;
+    color: var(--gray-600) !important;
+    font-weight: 400 !important;
+  }
+
+  /* Code block */
+  pre {
+    background: var(--gray-900);
+    color: #e5e7eb;
+    padding: 1.25rem 1.5rem;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    line-height: 1.55;
+    margin: 1rem 0 1.25rem;
+    border-left: 3px solid var(--green);
+  }
+  pre .key { color: #93c5fd; }
+  pre .str { color: #86efac; }
+  pre .bool { color: #fbbf24; }
+  pre .comment { color: #6b7280; font-style: italic; }
+
+  /* Lists */
+  ul, ol { margin: 0.5rem 0 1rem 1.5rem; color: var(--gray-700); }
+  li { margin-bottom: 0.35rem; }
+  li code {
+    font-family: var(--mono);
+    font-size: 0.82rem;
+    background: var(--gray-100);
+    padding: 0.1rem 0.35rem;
+    border-radius: 3px;
+    color: var(--green);
+  }
+
+  /* Inline code */
+  code {
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    background: var(--gray-100);
+    padding: 0.1rem 0.4rem;
+    border-radius: 3px;
+  }
+  pre code {
+    background: none;
+    padding: 0;
+    font-size: inherit;
+    border-radius: 0;
+  }
+
+  /* Summary table */
+  .summary-table th:not(:first-child),
+  .summary-table td:not(:first-child) { text-align: center; }
+  .summary-table tr:last-child { font-weight: 700; }
+  .summary-table tr:last-child td { border-top: 2px solid var(--gray-300); }
+
+  /* Footer */
+  .footer-card {
+    margin-top: 3rem;
+    padding: 1.25rem 1.5rem;
+    background: var(--gray-50);
+    border: 1px solid var(--gray-200);
+    border-radius: 6px;
+    font-size: 0.85rem;
+    color: var(--gray-500);
+    text-align: center;
+  }
+  .footer-card strong { color: var(--gray-700); }
+
+  @media (max-width: 640px) {
+    body { padding: 1.25rem 1rem 2rem; }
+    h1 { font-size: 1.5rem; }
+    table { font-size: 0.82rem; }
+    th, td { padding: 0.4rem 0.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="badge">Proposed</div>
+<h1>Module 22: B2B Supply Chain &amp; Brokerage</h1>
+<div class="subtitle">JSON key: <code>b2bSupplyChain</code> &nbsp;&middot;&nbsp; Applies to: siteType: "broker" | "distributor" | "wholesaler" | "manufacturer-rep"</div>
+<div class="meta">Status: Proposed Draft &nbsp;&middot;&nbsp; Date: 2026-03-12 &nbsp;&middot;&nbsp; Author: Brian Pofahl / CiteMaps.ai</div>
+
+<!-- Abstract -->
+<h2>Abstract</h2>
+<p>The existing CiteMap v2.0 spec covers businesses that make things (Ecommerce), serve people locally (Local Business), and operate as software (SaaS). But there's a significant category of business that sits between producers and consumers: brokers, distributors, wholesalers, and manufacturer representatives.</p>
+<p>When someone asks ChatGPT "Who can supply basalt veneer in Central Oregon?" or Perplexity "Find a natural stone broker near me," the answer depends on structured data that doesn't exist in the current spec. No existing module captures supply chain role, materials brokered, sourcing regions, buyer types, or order logistics.</p>
+<p>This proposal defines Module 22: B2B Supply Chain &amp; Brokerage, a new module designed for intermediary businesses that connect suppliers to buyers.</p>
+
+<!-- Who This Module Serves -->
+<h2>Who This Module Serves</h2>
+<p>This module applies to any business whose primary role is facilitating the movement of goods or services between producers and end buyers, rather than manufacturing or retailing directly.</p>
+
+<h3>Target Business Types</h3>
+<table>
+  <thead><tr><th>Business Type</th><th>Description</th><th>Example</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Broker</strong></td><td>Sources goods from suppliers on behalf of buyers; doesn't hold inventory</td><td>Cascade Stone Supply (natural stone)</td></tr>
+    <tr><td><strong>Distributor</strong></td><td>Buys in bulk from manufacturers, warehouses, and resells to retailers or contractors</td><td>ABC Supply Co. (roofing, siding)</td></tr>
+    <tr><td><strong>Wholesaler</strong></td><td>Purchases large quantities at discount, sells in smaller lots to trade buyers</td><td>Restaurant Depot (food service)</td></tr>
+    <tr><td><strong>Manufacturer Rep</strong></td><td>Represents one or more manufacturers in a territory; earns commission, doesn't take title</td><td>Regional building product reps</td></tr>
+    <tr><td><strong>Trading Company</strong></td><td>Facilitates import/export between international suppliers and domestic buyers</td><td>Pacific stone import/export</td></tr>
+    <tr><td><strong>Procurement Agent</strong></td><td>Acts on buyer's behalf to find suppliers, negotiate terms, manage logistics</td><td>Specialty materials sourcing firms</td></tr>
+  </tbody>
+</table>
+
+<!-- Why This Module Is Needed -->
+<h2>Why This Module Is Needed</h2>
+<p>Intermediary businesses have a fundamentally different relationship to the products they deal in compared to manufacturers or retailers. They need to describe what they broker, where they source from, who they sell to, and how the logistics work — none of which maps cleanly to existing modules.</p>
+
+<div class="callout amber">
+  <p><strong>The Gap in v2.0</strong> — A natural stone broker like Cascade Stone Supply can use Local Business (for their Bend, OR address) and Ecommerce (if they have WooCommerce). But neither module answers the questions AI actually gets asked: "Who brokers basalt in the Pacific Northwest?" "Where can I source stone for a commercial project in Oregon?" The missing fields are: supply chain role, materials brokered, sourcing regions, buyer types, and order logistics.</p>
+</div>
+
+<h3>Key AI Queries This Module Enables</h3>
+<ul>
+  <li><strong>"Who can supply [material] in [region]?"</strong> — Matches <code>supplyChainRole</code> + <code>materialsHandled</code> + <code>serviceRegions</code></li>
+  <li><strong>"Find a [material] broker near me"</strong> — Matches <code>supplyChainRole</code> + <code>materialsHandled</code> + Local Business location</li>
+  <li><strong>"Best wholesale supplier for [industry] in [state]"</strong> — Matches <code>supplyChainRole</code> + <code>industriesServed</code> + <code>serviceRegions</code></li>
+  <li><strong>"Does [company] ship nationally?"</strong> — Matches <code>logistics.deliveryScope</code> + <code>serviceRegions</code></li>
+  <li><strong>"Who has a sample program for [material]?"</strong> — Matches <code>sampleProgram</code> fields</li>
+  <li><strong>"What's the minimum order for [material]?"</strong> — Matches <code>logistics.minimumOrder</code></li>
+</ul>
+
+<!-- Field Reference -->
+<h2>Field Reference</h2>
+<p>All fields are namespaced under the <code>b2bSupplyChain</code> top-level key. Fields marked <span class="status-req" style="font-weight:700;color:#dc2626;">REQUIRED</span> are essential for AI discoverability.</p>
+
+<h3>1. Identity &amp; Role</h3>
+<p>Establishes what the business does in the supply chain and how AI should classify it when matching buyer queries.</p>
+<table class="field-table">
+  <thead><tr><th>Field</th><th>Type</th><th>Status</th><th>Description</th></tr></thead>
+  <tbody>
+    <tr><td>supplyChainRole</td><td>String (enum)</td><td class="status-req">REQUIRED</td><td>Primary role in the supply chain. Enum: "broker", "distributor", "wholesaler", "manufacturer-rep", "trading-company", "procurement-agent". This is the single most important field — it tells AI engines what kind of intermediary this business is.</td></tr>
+    <tr><td>roleDescription</td><td>String</td><td class="status-rec">RECOMMENDED</td><td>A 1–2 sentence plain-language description of how this business operates within the supply chain. AI engines use this as quotable context when explaining the business to users. 40–80 words ideal.</td></tr>
+    <tr><td>industriesServed</td><td>Array&lt;String&gt;</td><td class="status-req">REQUIRED</td><td>Industries this business supplies into. Examples: construction, landscaping, architecture, food-service, manufacturing. Drives matching for industry-specific queries.</td></tr>
+    <tr><td>yearsInBusiness</td><td>Number</td><td class="status-opt">OPTIONAL</td><td>How long the business has operated in this role. Builds trust signal for AI confidence scoring.</td></tr>
+  </tbody>
+</table>
+
+<h3>2. Materials &amp; Products Handled</h3>
+<p>Describes what the business brokers, distributes, or wholesales. These fields drive product-specific AI matching.</p>
+<table class="field-table">
+  <thead><tr><th>Field</th><th>Type</th><th>Status</th><th>Description</th></tr></thead>
+  <tbody>
+    <tr><td>materialsHandled</td><td>Array&lt;Object&gt;</td><td class="status-req">REQUIRED</td><td>The primary materials or product categories this business deals in. Each entry is a material object with sub-fields (see below). 3–10 entries recommended.</td></tr>
+    <tr class="sub-field"><td>.name</td><td>String</td><td class="status-req">REQUIRED</td><td>Material or product category name as it should appear in AI recommendations. Examples: Basalt Veneer, Flagstone, River Rock, Granite Countertops.</td></tr>
+    <tr class="sub-field"><td>.aiSummary</td><td>String</td><td class="status-rec">RECOMMENDED</td><td>40–60 word quotable description of this material offering. What makes this business's version notable? AI cites this when recommending.</td></tr>
+    <tr class="sub-field"><td>.bestForQueries</td><td>Array&lt;String&gt;</td><td class="status-rec">RECOMMENDED</td><td>Queries this material should match. Format: "best [material] for [use case]". Examples: "best basalt veneer for modern exteriors", "affordable flagstone for patios".</td></tr>
+    <tr class="sub-field"><td>.sourcingOrigin</td><td>String</td><td class="status-opt">OPTIONAL</td><td>Where this material is sourced from. Examples: Pacific Northwest quarries, Italian marble suppliers, domestic reclaimed sources.</td></tr>
+    <tr class="sub-field"><td>.priceRange</td><td>String</td><td class="status-opt">OPTIONAL</td><td>Typical price range or pricing model. Examples: $3–$8/sq ft, volume pricing available, quote-based.</td></tr>
+    <tr class="sub-field"><td>.url</td><td>URL</td><td class="status-opt">OPTIONAL</td><td>Direct link to the product/material page. AI can't cite a product without a URL.</td></tr>
+    <tr><td>specializations</td><td>Array&lt;String&gt;</td><td class="status-rec">RECOMMENDED</td><td>Niche expertise areas that differentiate this broker. Examples: custom cuts, rare stone, sustainable sourcing, large commercial projects.</td></tr>
+  </tbody>
+</table>
+
+<h3>3. Sourcing &amp; Supply Network</h3>
+<p>Describes where goods come from and how broad the supply network is. Critical for AI to match geographic sourcing queries.</p>
+<table class="field-table">
+  <thead><tr><th>Field</th><th>Type</th><th>Status</th><th>Description</th></tr></thead>
+  <tbody>
+    <tr><td>sourcing.regions</td><td>Array&lt;String&gt;</td><td class="status-rec">RECOMMENDED</td><td>Regions where materials are sourced from. Examples: Pacific Northwest, Midwest US, Central America, Mediterranean. Answers "Where does the stone come from?"</td></tr>
+    <tr><td>sourcing.supplierCount</td><td>String</td><td class="status-opt">OPTIONAL</td><td>Approximate number of active supplier relationships. Examples: 15+ quarry partners, 200+ manufacturer lines. Signals network breadth.</td></tr>
+    <tr><td>sourcing.directRelationships</td><td>Boolean</td><td class="status-opt">OPTIONAL</td><td>Whether the business has direct relationships with producers/quarries/manufacturers (vs. buying through other intermediaries).</td></tr>
+    <tr><td>sourcing.exclusiveLines</td><td>Array&lt;String&gt;</td><td class="status-opt">OPTIONAL</td><td>Product lines or brands this business is the exclusive or authorized representative for in their territory.</td></tr>
+  </tbody>
+</table>
+
+<h3>4. Buyer Types &amp; Service Area</h3>
+<p>Defines who this business sells to and where. More granular than <code>brand.audiencePrimary</code> — these fields tell AI whether a buyer query is a match.</p>
+<table class="field-table">
+  <thead><tr><th>Field</th><th>Type</th><th>Status</th><th>Description</th></tr></thead>
+  <tbody>
+    <tr><td>buyerTypes</td><td>Array&lt;String&gt;</td><td class="status-req">REQUIRED</td><td>Who purchases from this business. Examples: general contractors, architects, landscape designers, homeowners, retailers, restaurants, fabricators.</td></tr>
+    <tr><td>serviceRegions</td><td>Array&lt;String&gt;</td><td class="status-req">REQUIRED</td><td>Geographic areas served for delivery/fulfillment. Distinct from sourcing.regions (where goods come FROM vs. where they go TO).</td></tr>
+    <tr><td>deliveryScope</td><td>String (enum)</td><td class="status-rec">RECOMMENDED</td><td>Geographic scope of delivery capability. Enum: "local", "regional", "statewide", "national", "international". Answers "Do they ship to me?"</td></tr>
+    <tr><td>tradeOnly</td><td>Boolean</td><td class="status-opt">OPTIONAL</td><td>Whether sales are restricted to trade/licensed buyers only, or open to the public. Important for AI to filter consumer vs. professional queries.</td></tr>
+  </tbody>
+</table>
+
+<h3>5. Logistics &amp; Ordering</h3>
+<p>Covers the practical details of how to do business with this intermediary. These are the fields AI needs to answer "How do I order from them?"</p>
+<table class="field-table">
+  <thead><tr><th>Field</th><th>Type</th><th>Status</th><th>Description</th></tr></thead>
+  <tbody>
+    <tr><td>logistics.minimumOrder</td><td>String</td><td class="status-rec">RECOMMENDED</td><td>Minimum order requirement. Examples: No minimum, 1 pallet, $500 minimum, 100 sq ft. Key differentiator for AI to recommend appropriately.</td></tr>
+    <tr><td>logistics.leadTime</td><td>String</td><td class="status-rec">RECOMMENDED</td><td>Typical lead time from order to delivery. Examples: 1–2 weeks for stocked items, 4–6 weeks for custom orders.</td></tr>
+    <tr><td>logistics.quoteProcess</td><td>String (enum)</td><td class="status-rec">RECOMMENDED</td><td>How pricing works. Enum: "instant", "request-quote", "call-for-pricing", "online-catalog". Tells AI how to guide the buyer.</td></tr>
+    <tr><td>logistics.fulfillmentModel</td><td>String (enum)</td><td class="status-opt">OPTIONAL</td><td>How orders are fulfilled. Enum: "drop-ship", "warehouse-ship", "direct-from-supplier", "pickup-available", "mixed".</td></tr>
+    <tr><td>logistics.freightCapabilities</td><td>Array&lt;String&gt;</td><td class="status-opt">OPTIONAL</td><td>Freight and shipping options. Examples: LTL, full truckload, flatbed, white glove delivery, international container shipping.</td></tr>
+  </tbody>
+</table>
+
+<h3>6. Sample Program</h3>
+<p>Many brokers differentiate on their sample process. These fields let AI recommend businesses that offer hands-on evaluation before purchase.</p>
+<table class="field-table">
+  <thead><tr><th>Field</th><th>Type</th><th>Status</th><th>Description</th></tr></thead>
+  <tbody>
+    <tr><td>sampleProgram.available</td><td>Boolean</td><td class="status-rec">RECOMMENDED</td><td>Whether the business offers a sample program. Answering "Can I see samples before ordering?" is a key conversion moment.</td></tr>
+    <tr><td>sampleProgram.description</td><td>String</td><td class="status-opt">OPTIONAL</td><td>How the sample process works. Examples: Free samples shipped within 48 hours, sample kits available for $25 (refundable with order), showroom viewing by appointment.</td></tr>
+    <tr><td>sampleProgram.url</td><td>URL</td><td class="status-opt">OPTIONAL</td><td>Link to sample request page or form. Gives AI a direct action to recommend.</td></tr>
+  </tbody>
+</table>
+
+<h3>7. Certifications &amp; Compliance</h3>
+<p>Industry certifications and compliance credentials that build trust and match specialized queries.</p>
+<table class="field-table">
+  <thead><tr><th>Field</th><th>Type</th><th>Status</th><th>Description</th></tr></thead>
+  <tbody>
+    <tr><td>certifications</td><td>Array&lt;String&gt;</td><td class="status-opt">OPTIONAL</td><td>Industry certifications held. Examples: LEED supplier, USDA organic, ISO 9001, bonded &amp; insured, licensed contractor.</td></tr>
+    <tr><td>complianceNotes</td><td>String</td><td class="status-opt">OPTIONAL</td><td>Any regulatory compliance or import/export credentials relevant to the materials handled. Examples: customs broker license, USDA phytosanitary compliance.</td></tr>
+  </tbody>
+</table>
+
+<!-- Example JSON -->
+<h2>Example: Cascade Stone Supply (fictional)</h2>
+<p>Below is an illustrative <code>citemap.json</code> excerpt showing how a fictional natural stone broker in Portland, OR would populate this module alongside Local Business:</p>
+<pre><code>{
+  <span class="key">"@type"</span>: <span class="str">"Citemap"</span>,
+  <span class="key">"citemapVersion"</span>: <span class="str">"2.x"</span>,
+  <span class="key">"brand"</span>: {
+    <span class="key">"name"</span>: <span class="str">"Cascade Stone Supply"</span>,
+    <span class="key">"url"</span>: <span class="str">"https://cascadestonesupply.com"</span>,
+    <span class="key">"siteType"</span>: <span class="str">"broker"</span>,
+    <span class="key">"aiSummary"</span>: <span class="str">"Cascade Stone Supply is a natural stone brokerage..."</span>
+  },
+
+  <span class="key">"localBusiness"</span>: {
+    <span class="key">"location"</span>: { <span class="key">"address"</span>: <span class="str">"Portland, OR"</span>, <span class="key">"serviceArea"</span>: [<span class="str">"Portland Metro"</span>] },
+    <span class="key">"services"</span>: [{ <span class="key">"name"</span>: <span class="str">"Natural stone sourcing &amp; logistics"</span> }]
+  },
+
+  <span class="key">"b2bSupplyChain"</span>: {
+    <span class="key">"supplyChainRole"</span>: <span class="str">"broker"</span>,
+    <span class="key">"roleDescription"</span>: <span class="str">"Sources natural stone from regional quarries..."</span>,
+    <span class="key">"industriesServed"</span>: [<span class="str">"construction"</span>, <span class="str">"landscaping"</span>, <span class="str">"architecture"</span>],
+    <span class="key">"materialsHandled"</span>: [
+      {
+        <span class="key">"name"</span>: <span class="str">"Basalt Veneer"</span>,
+        <span class="key">"aiSummary"</span>: <span class="str">"Premium basalt veneer sourced from Pacific NW..."</span>,
+        <span class="key">"bestForQueries"</span>: [<span class="str">"best basalt veneer Oregon"</span>, ...],
+        <span class="key">"sourcingOrigin"</span>: <span class="str">"Pacific Northwest quarries"</span>
+      }
+    ],
+    <span class="key">"buyerTypes"</span>: [<span class="str">"general contractors"</span>, <span class="str">"architects"</span>, <span class="str">"landscape designers"</span>],
+    <span class="key">"serviceRegions"</span>: [<span class="str">"Central Oregon"</span>, <span class="str">"Pacific Northwest"</span>, <span class="str">"Western US"</span>],
+    <span class="key">"deliveryScope"</span>: <span class="str">"regional"</span>,
+    <span class="key">"sourcing"</span>: {
+      <span class="key">"regions"</span>: [<span class="str">"Pacific Northwest"</span>, <span class="str">"Western US"</span>],
+      <span class="key">"directRelationships"</span>: <span class="bool">true</span>
+    },
+    <span class="key">"logistics"</span>: {
+      <span class="key">"minimumOrder"</span>: <span class="str">"1 pallet"</span>,
+      <span class="key">"leadTime"</span>: <span class="str">"1–2 weeks stocked, 4–6 weeks custom"</span>,
+      <span class="key">"quoteProcess"</span>: <span class="str">"request-quote"</span>,
+      <span class="key">"fulfillmentModel"</span>: <span class="str">"drop-ship"</span>
+    },
+    <span class="key">"sampleProgram"</span>: {
+      <span class="key">"available"</span>: <span class="bool">true</span>,
+      <span class="key">"description"</span>: <span class="str">"Free samples shipped within 48 hours"</span>
+    }
+  }
+}</code></pre>
+
+<!-- Compatibility -->
+<h2>Compatibility with Existing Modules</h2>
+<p>This module is designed to be used alongside existing modules, not to replace them. A broker like Cascade Stone Supply would typically combine:</p>
+<table>
+  <thead><tr><th>Module</th><th>What It Adds</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Local Business</strong></td><td>Physical address, service area, hours. Catches "near me" queries.</td></tr>
+    <tr><td><strong>Ecommerce</strong></td><td>WooCommerce product catalog, if applicable. Catches product-specific purchase queries.</td></tr>
+    <tr><td><strong>B2B Supply Chain</strong> (new)</td><td>Supply chain role, materials handled, sourcing network, buyer types, logistics. Catches "who supplies X" and "find a broker for Y" queries.</td></tr>
+    <tr><td><strong>Entity</strong></td><td>Legal structure, parent company, trade associations. Establishes business identity for AI trust.</td></tr>
+    <tr><td><strong>Verification</strong></td><td>Authorization tier, dispute contact. Standard trust layer.</td></tr>
+  </tbody>
+</table>
+
+<!-- Implementation Notes -->
+<h2>Implementation Notes</h2>
+
+<h3>New siteType Values</h3>
+<p>This module introduces four new siteType values: <code>broker</code>, <code>distributor</code>, <code>wholesaler</code>, and <code>manufacturer-rep</code>. These would be added to the siteType enum in the Universal Core brand object and mapped to the b2bSupplyChain module in the generator's module picker.</p>
+
+<h3>Generator Integration</h3>
+<p>The module would appear in the generator's module picker when any of the new siteType values are selected. It could also be manually selected by any siteType (a SaaS company might also be a distributor, for example).</p>
+
+<h3>Validator Checks</h3>
+<p>The validator should check: <code>supplyChainRole</code> is a valid enum value; <code>materialsHandled</code> has at least one entry with a name; <code>buyerTypes</code> and <code>serviceRegions</code> are non-empty arrays; <code>deliveryScope</code> is a valid enum value when present.</p>
+
+<h3>Schema Package</h3>
+<p>The <code>@citemap/schema</code> npm package would need a new JSON Schema definition for <code>b2bSupplyChain</code>, following the same pattern as existing modules. The <code>@citemap/validator</code> CLI would gain checks for the new required fields.</p>
+
+<!-- Field Summary -->
+<h2>Field Summary</h2>
+<table class="summary-table">
+  <thead><tr><th>Section</th><th>Required</th><th>Recommended</th><th>Optional</th></tr></thead>
+  <tbody>
+    <tr><td>Identity &amp; Role</td><td>2</td><td>1</td><td>1</td></tr>
+    <tr><td>Materials &amp; Products</td><td>1 (+2)</td><td>0 (+2)</td><td>0 (+3)</td></tr>
+    <tr><td>Sourcing &amp; Supply Network</td><td>0</td><td>1</td><td>3</td></tr>
+    <tr><td>Buyer Types &amp; Service Area</td><td>2</td><td>1</td><td>1</td></tr>
+    <tr><td>Logistics &amp; Ordering</td><td>0</td><td>3</td><td>2</td></tr>
+    <tr><td>Sample Program</td><td>0</td><td>1</td><td>2</td></tr>
+    <tr><td>Certifications</td><td>0</td><td>0</td><td>2</td></tr>
+    <tr><td><strong>Total</strong></td><td><strong>5 (+2)</strong></td><td><strong>7 (+2)</strong></td><td><strong>11 (+3)</strong></td></tr>
+  </tbody>
+</table>
+<p style="font-size:0.82rem;color:var(--gray-500);">(+N) indicates sub-fields within <code>materialsHandled</code> array items. Total: 23 top-level fields + 7 sub-fields = 30 fields.</p>
+
+<!-- Next Steps -->
+<h2>Next Steps</h2>
+<ol>
+  <li>Review and refine field definitions based on real-world testing with broker and distributor businesses</li>
+  <li>Add <code>b2bSupplyChain</code> JSON Schema to <code>@citemap/schema</code> package</li>
+  <li>Implement generator form UI with sections matching this spec</li>
+  <li>Add validator checks for required fields and enum values</li>
+  <li>Add new siteType values to Universal Core enum</li>
+  <li>Publish as part of citemap.json v2.x spec update</li>
+</ol>
+
+<div class="callout blue">
+  <p><strong>Feedback Welcome</strong> — This is a proposed draft. If you broker, distribute, or wholesale goods and have feedback on the field definitions, contact <strong>support@citemaps.ai</strong> or open an issue at <strong>github.com/citemaps/citemap</strong>.</p>
+</div>
+
+<div class="footer-card">
+  <strong>CiteMap Spec</strong> &nbsp;&middot;&nbsp; Module 22: B2B Supply Chain &amp; Brokerage &nbsp;&middot;&nbsp; Proposed Draft &nbsp;&middot;&nbsp; 2026-03-12<br>
+  CiteMaps.ai
+</div>
+
+</body>
+</html>
