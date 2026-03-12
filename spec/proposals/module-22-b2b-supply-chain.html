@@ -238,6 +238,24 @@
   }
   .footer-card strong { color: var(--gray-700); }
 
+  /* Breadcrumb */
+  .breadcrumb {
+    font-size: 0.82rem;
+    color: var(--gray-500);
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--gray-200);
+  }
+  .breadcrumb a {
+    color: var(--gray-500);
+    text-decoration: none;
+  }
+  .breadcrumb a:hover {
+    color: #16a34a;
+    text-decoration: underline;
+  }
+  .breadcrumb .sep { margin: 0 0.4rem; }
+
   @media (max-width: 640px) {
     body { padding: 1.25rem 1rem 2rem; }
     h1 { font-size: 1.5rem; }
@@ -247,6 +265,10 @@
 </style>
 </head>
 <body>
+
+<nav class="breadcrumb">
+  <a href="/">citemaps.org</a><span class="sep">/</span><a href="/#modules">Spec v2.0</a><span class="sep">/</span>Proposals<span class="sep">/</span>Module 22
+</nav>
 
 <div class="badge">Proposed</div>
 <h1>Module 22: B2B Supply Chain &amp; Brokerage</h1>
