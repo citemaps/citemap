@@ -1,16 +1,16 @@
 {
   "name": "@citemap/cli",
-  "version": "0.2.0",
+  "version": "0.3.4",
   "description": "Command-line tool for validating citemap.json files",
-  "type": "module",
   "bin": {
-    "citemap": "./dist/index.js"
+    "citemap": "bin/citemap.js"
   },
   "files": [
-    "dist"
+    "dist",
+    "bin"
   ],
   "scripts": {
-    "build": "tsup src/index.ts --format cjs --dts",
+    "build": "tsup src/index.ts --format esm --no-dts --out-dir dist",
     "dev": "node --loader ts-node/esm src/index.ts",
     "prepublishOnly": "npm run build"
   },
@@ -30,9 +30,10 @@
     "node": ">=18.0.0"
   },
   "dependencies": {
-    "@citemap/validator": "^0.2.0"
+    "@citemap/validator": "^0.3.1"
   },
   "devDependencies": {
+    "@types/node": "^25.5.0",
     "tsup": "^8.0.0",
     "typescript": "^5.4.0"
   }

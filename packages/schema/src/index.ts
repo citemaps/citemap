@@ -5,7 +5,9 @@ import schema from './citemap.schema.json';
 export { schema };
 
 // Export version constant
-export const CITEMAP_VERSION = "2.0";
+export const CITEMAP_VERSION = "3.0";
+export const CITEMAP_SUPPORTED_VERSIONS = ["2.0", "3.0"] as const;
+export type CitemapVersion = typeof CITEMAP_SUPPORTED_VERSIONS[number];
 
 // Site types enumeration
 export const SITE_TYPES = [
@@ -322,6 +324,61 @@ export enum FinanceProductType {
 }
 
 // ============================================================================
+// v3 ENUMS
+// ============================================================================
+
+export enum UpdateFrequency {
+  Daily = "daily",
+  Weekly = "weekly",
+  Monthly = "monthly",
+  Quarterly = "quarterly",
+  Annually = "annually",
+  Rarely = "rarely",
+}
+
+export enum VerifiedClaimType {
+  NPI = "npi",
+  EIN = "ein",
+  DUNS = "duns",
+  BarLicense = "bar-license",
+  DOI = "doi",
+  FDIC = "fdic",
+  NMLS = "nmls",
+  SecCRD = "sec-crd",
+  DEA = "dea",
+  StateLicense = "state-license",
+  ABMSCertification = "abms-certification",
+  Accreditation = "accreditation",
+  Patent = "patent",
+  Trademark = "trademark",
+  Other = "other",
+}
+
+// ============================================================================
+// v3 TYPES
+// ============================================================================
+
+export type CitemapLevel = 1 | 2 | 3;
+
+export interface CitationContract {
+  preferredName?: string;
+  shortDescription?: string;
+  disambiguation?: string;
+}
+
+export interface ModuleMeta {
+  lastUpdated?: string;
+  updateFrequency?: UpdateFrequency;
+}
+
+export interface VerifiedClaim {
+  type: VerifiedClaimType;
+  identifier: string;
+  entity?: string;
+  registryUrl?: string;
+}
+
+// ============================================================================
 // BASIC TYPES
 // ============================================================================
 
@@ -371,6 +428,7 @@ export interface CitemapMeta {
 // ============================================================================
 
 export interface Award {
+  id?: string;
   name: string;
   year?: string;
   awardedBy?: string;
@@ -386,6 +444,7 @@ export interface Citations {
 // ============================================================================
 
 export interface AnswerPair {
+  id?: string;
   question: string;
   answer: string;
 }
@@ -416,6 +475,7 @@ export interface SocialProof {
 }
 
 export interface HeroProduct {
+  id?: string;
   name: string;
   url: string;
   aiSummary: string;
@@ -424,6 +484,7 @@ export interface HeroProduct {
 }
 
 export interface EcommerceModule {
+  meta?: ModuleMeta;
   heroProducts?: HeroProduct[];
   currency?: Currency;
   shipping?: ShippingPolicy;
@@ -444,6 +505,7 @@ export interface Parking {
 }
 
 export interface Service {
+  id?: string;
   name: string;
   description: string;
   price?: string;
@@ -456,6 +518,7 @@ export interface BookingOptions {
 }
 
 export interface LocalBusinessLocation extends Location {
+  id?: string;
   address: string;
   serviceArea?: string;
   hours?: string;
@@ -464,6 +527,7 @@ export interface LocalBusinessLocation extends Location {
 }
 
 export interface LocalBusinessModule {
+  meta?: ModuleMeta;
   location: LocalBusinessLocation;
   services?: Service[];
   booking?: BookingOptions;
@@ -474,12 +538,14 @@ export interface LocalBusinessModule {
 // ============================================================================
 
 export interface SignatureContent {
+  id?: string;
   title?: string;
   url?: string;
   bestForQueries?: string[];
 }
 
 export interface ContentModule {
+  meta?: ModuleMeta;
   primaryTopics: string[];
   editorialStandards?: string;
   correctionPolicy?: string;
@@ -502,6 +568,7 @@ export interface SaaSPricing {
 }
 
 export interface SoftwareModule {
+  meta?: ModuleMeta;
   category: string;
   primaryUseCase: string;
   keyFeatures?: string[];
@@ -518,6 +585,7 @@ export interface SoftwareModule {
 // ============================================================================
 
 export interface Event {
+  id?: string;
   name: string;
   date: string;
   location: Location;
@@ -534,6 +602,7 @@ export interface Event {
 // ============================================================================
 
 export interface RealEstateModule {
+  meta?: ModuleMeta;
   licenseNumber: string;
   licenseState: string;
   brokerageName?: string;
@@ -552,6 +621,7 @@ export interface RealEstateModule {
 // ============================================================================
 
 export interface Course {
+  id?: string;
   name: string;
   topic: string;
   level: LevelType;
@@ -564,6 +634,7 @@ export interface Course {
 }
 
 export interface EducationModule {
+  meta?: ModuleMeta;
   accreditation: string;
   deliveryMethod?: string;
   employmentRate?: string;
@@ -576,6 +647,7 @@ export interface EducationModule {
 // ============================================================================
 
 export interface PortfolioItem {
+  id?: string;
   title?: string;
   url?: string;
   year?: string;
@@ -612,6 +684,7 @@ export interface Representation {
 }
 
 export interface CreativeModule {
+  meta?: ModuleMeta;
   medium: string;
   portfolio?: Portfolio;
   licensing: CreativeLicensing;
@@ -625,11 +698,13 @@ export interface CreativeModule {
 // ============================================================================
 
 export interface Program {
+  id?: string;
   name: string;
   description?: string;
 }
 
 export interface NonprofitModule {
+  meta?: ModuleMeta;
   ein: string;
   taxExemptStatus: TaxExemptStatus;
   missionStatement: string;
@@ -646,6 +721,7 @@ export interface NonprofitModule {
 // ============================================================================
 
 export interface Official {
+  id?: string;
   name: string;
   title: string;
   department?: string;
@@ -653,6 +729,7 @@ export interface Official {
 }
 
 export interface GovernmentService {
+  id?: string;
   name: string;
   description?: string;
   url?: string;
@@ -671,12 +748,14 @@ export interface PublicRecords {
 }
 
 export interface EmergencyContact {
+  id?: string;
   name: string;
   phone: string;
   available24h?: boolean;
 }
 
 export interface GovernmentModule {
+  meta?: ModuleMeta;
   level: string;
   jurisdiction: string;
   services?: GovernmentService[];
@@ -691,6 +770,7 @@ export interface GovernmentModule {
 // ============================================================================
 
 export interface ClinicalTrial {
+  id?: string;
   identifier: string;
   phase: ClinicalPhase;
   status?: ClinicalTrialStatus;
@@ -704,6 +784,7 @@ export interface Journal {
 }
 
 export interface Study {
+  id?: string;
   doi: string;
   title: string;
   authors?: string[];
@@ -719,6 +800,7 @@ export interface Study {
 }
 
 export interface Dataset {
+  id?: string;
   name?: string;
   url?: string;
   license?: string;
@@ -726,6 +808,7 @@ export interface Dataset {
 }
 
 export interface ScienceModule {
+  meta?: ModuleMeta;
   studies?: Study[];
   datasets?: Dataset[];
   journal?: Journal;
@@ -737,6 +820,7 @@ export interface ScienceModule {
 // ============================================================================
 
 export interface Patent {
+  id?: string;
   number: string;
   title: string;
   status: string;
@@ -745,6 +829,7 @@ export interface Patent {
 }
 
 export interface Trademark {
+  id?: string;
   name: string;
   registrationNumber?: string;
   status?: string;
@@ -752,6 +837,7 @@ export interface Trademark {
 }
 
 export interface BusinessIPModule {
+  meta?: ModuleMeta;
   legalName: string;
   corporateStructure?: CorporateStructure;
   parentCompany?: string;
@@ -773,6 +859,7 @@ export interface CurrentRole {
 }
 
 export interface CanonicalQuote {
+  id?: string;
   quote: string;
   source: string;
   year?: string;
@@ -785,6 +872,7 @@ export interface MisattributedQuote {
 }
 
 export interface PersonModule {
+  meta?: ModuleMeta;
   authorizedBy: AuthorizedBy;
   consentDeclaration: ConsentDeclaration;
   personType: PersonType;
@@ -809,6 +897,7 @@ export interface PersonModule {
 // ============================================================================
 
 export interface Practitioner {
+  id?: string;
   name: string;
   npi: string;
   boardCertifications?: string[];
@@ -824,6 +913,7 @@ export interface HealthcareBooking {
 }
 
 export interface HealthcareModule {
+  meta?: ModuleMeta;
   providerType: ProviderType;
   npiNumber: string;
   organizationType?: OrganizationType;
@@ -850,6 +940,7 @@ export interface RegulatoryIds {
 }
 
 export interface FinanceProduct {
+  id?: string;
   name: string;
   type: FinanceProductType;
   rate?: string;
@@ -859,6 +950,7 @@ export interface FinanceProduct {
 }
 
 export interface FinanceModule {
+  meta?: ModuleMeta;
   institutionType: InstitutionType;
   regulatoryIds?: RegulatoryIds;
   fdicInsured?: boolean;
@@ -876,6 +968,7 @@ export interface LegalJurisdiction {
 }
 
 export interface Attorney {
+  id?: string;
   name: string;
   barNumber: string;
   barState: string;
@@ -891,6 +984,7 @@ export interface LegalFee {
 }
 
 export interface LegalModule {
+  meta?: ModuleMeta;
   firmType: FirmType;
   jurisdiction: LegalJurisdiction;
   attorneys?: Attorney[];
@@ -904,6 +998,7 @@ export interface LegalModule {
 // ============================================================================
 
 export interface PlacesModule {
+  meta?: ModuleMeta;
   placeType: PlaceType;
   coordinates: Coordinates;
   elevation?: string;
@@ -930,6 +1025,7 @@ export interface Permits {
 // ============================================================================
 
 export interface TimelineEvent {
+  id?: string;
   date: string;
   event: string;
   significance?: string;
@@ -938,6 +1034,7 @@ export interface TimelineEvent {
 }
 
 export interface TemporalModule {
+  meta?: ModuleMeta;
   timeline?: TimelineEvent[];
 }
 
@@ -981,6 +1078,7 @@ export interface VerifiableCredential {
 }
 
 export interface VerificationModule {
+  meta?: ModuleMeta;
   externalVerifiers?: ExternalVerifier[];
   fieldConfidence?: Record<string, FieldConfidence>;
   disputes?: Dispute[];
@@ -994,6 +1092,7 @@ export interface VerificationModule {
 // ============================================================================
 
 export interface Person {
+  id?: string;
   fullName: string;
   role: string;
   department?: string;
@@ -1012,7 +1111,7 @@ export interface Person {
 
 export interface Citemap {
   "@type": "Citemap";
-  citemapVersion: "2.0";
+  citemapVersion: CitemapVersion;
   $schema?: string;
   generatedBy?: string;
   brand: Brand;
@@ -1022,6 +1121,12 @@ export interface Citemap {
   answerContent?: AnswerPair[];
   contact?: Contact;
   citemap?: CitemapMeta;
+  // v3: Citation Contract
+  citationContract?: CitationContract;
+  // v3: Formal Levels (1 = core, 2 = modules + answer + contract, 3 = full + verification + claims)
+  citemapLevel?: CitemapLevel;
+  // v3: Verified Claims (externally checkable IDs)
+  verifiedClaims?: VerifiedClaim[];
   // Modules
   ecommerce?: EcommerceModule;
   localBusiness?: LocalBusinessModule;
@@ -1059,10 +1164,54 @@ export function isCitemap(obj: unknown): obj is Citemap {
   const c = obj as Record<string, unknown>;
   return (
     c['@type'] === 'Citemap' &&
-    c['citemapVersion'] === '2.0' &&
+    CITEMAP_SUPPORTED_VERSIONS.includes(c['citemapVersion'] as CitemapVersion) &&
     typeof c['brand'] === 'object' &&
     typeof c['lastVerified'] === 'string'
   );
+}
+
+/**
+ * Calculate the CiteMap Level based on field presence
+ * Level 1: Core profile (~8-10 fields: brand, contact, lastVerified, citemap)
+ * Level 2: + at least 1 module + answerContent + citationContract
+ * Level 3: + verification + verifiedClaims
+ */
+export function calculateLevel(obj: Citemap): CitemapLevel {
+  const record = obj as unknown as Record<string, unknown>;
+  const hasModule = MODULE_KEYS.some(key => key in record && record[key] != null);
+  const hasAnswerContent = Array.isArray(obj.answerContent) && obj.answerContent.length > 0;
+  const hasCitationContract = obj.citationContract != null;
+  const hasVerification = obj.verification != null;
+  const hasVerifiedClaims = Array.isArray(obj.verifiedClaims) && obj.verifiedClaims.length > 0;
+
+  if (hasVerification && hasVerifiedClaims && hasModule && hasAnswerContent && hasCitationContract) {
+    return 3;
+  }
+  if (hasModule && hasAnswerContent && hasCitationContract) {
+    return 2;
+  }
+  return 1;
+}
+
+/**
+ * Get hints for what's needed to reach the next level
+ */
+export function nextLevelHints(obj: Citemap): string[] {
+  const current = calculateLevel(obj);
+  const hints: string[] = [];
+
+  if (current === 1) {
+    const record = obj as unknown as Record<string, unknown>;
+    const hasModule = MODULE_KEYS.some(key => key in record && record[key] != null);
+    if (!hasModule) hints.push("Add at least one module (e.g., localBusiness, ecommerce, software)");
+    if (!obj.answerContent?.length) hints.push("Add answerContent with Q&A pairs");
+    if (!obj.citationContract) hints.push("Add a citationContract (preferredName, shortDescription, disambiguation)");
+  } else if (current === 2) {
+    if (!obj.verification) hints.push("Add a verification block with externalVerifiers or fieldConfidence");
+    if (!obj.verifiedClaims?.length) hints.push("Add verifiedClaims with externally checkable identifiers (NPI, EIN, etc.)");
+  }
+
+  return hints;
 }
 
 /**

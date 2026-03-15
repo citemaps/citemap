@@ -1,6 +1,13 @@
 import Ajv, { ValidateFunction, ErrorObject } from 'ajv';
 import addFormats from 'ajv-formats';
-import schema from '@citemap/schema';
+import {
+  schema,
+  calculateLevel,
+  nextLevelHints,
+  CitemapLevel,
+  MODULE_KEYS,
+  CITEMAP_SUPPORTED_VERSIONS,
+} from '@citemap/schema';
 
 /**
  * Represents a validation error from schema checking
@@ -32,6 +39,17 @@ export interface QualityScore {
 }
 
 /**
+ * v3 Level assessment
+ */
+export interface LevelAssessment {
+  current: CitemapLevel;
+  claimed?: CitemapLevel;
+  claimAccurate: boolean;
+  nextLevelHints: string[];
+  badge: string; // e.g. "Level 2 ★★☆"
+}
+
+/**
  * Complete validation result
  */
 export interface ValidationResult {
@@ -39,6 +57,8 @@ export interface ValidationResult {
   errors: ValidationError[];
   warnings: ValidationWarning[];
   score: QualityScore;
+  level: LevelAssessment;
+  version: string;
 }
 
 /**
@@ -60,6 +80,7 @@ export interface Diagnosis {
   missingModules: string[];
   fieldCoverage: FieldCoverage;
   recommendations: string[];
+  level: LevelAssessment;
 }
 
 /**
@@ -122,6 +143,11 @@ const RECOMMENDED_ROOT_FIELDS = [
   'contact',
   'citemap',
 ];
+
+/**
+ * Regex pattern for entity IDs: type:slug
+ */
+const ENTITY_ID_PATTERN = /^[a-z][a-z0-9-]*:[a-z0-9][a-z0-9-]*$/;
 
 /**
  * Get applicable modules for a given siteType
@@ -196,19 +222,25 @@ function calculateTrustSignals(data: any): number {
   let score = 0;
   const maxScore = 100;
 
-  if (data?.externalVerifiers && Array.isArray(data.externalVerifiers) && data.externalVerifiers.length > 0) {
-    score += 30;
+  // v3: verification module
+  if (data?.verification?.externalVerifiers && Array.isArray(data.verification.externalVerifiers) && data.verification.externalVerifiers.length > 0) {
+    score += 25;
   }
 
-  if (data?.citemap?.fieldConfidence && typeof data.citemap.fieldConfidence === 'object') {
-    const confidenceKeys = Object.keys(data.citemap.fieldConfidence);
+  // Legacy: externalVerifiers at root (v2 compat)
+  if (data?.externalVerifiers && Array.isArray(data.externalVerifiers) && data.externalVerifiers.length > 0) {
+    score += 25;
+  }
+
+  if (data?.verification?.fieldConfidence && typeof data.verification.fieldConfidence === 'object') {
+    const confidenceKeys = Object.keys(data.verification.fieldConfidence);
     if (confidenceKeys.length > 0) {
-      score += Math.min(20, confidenceKeys.length * 2);
+      score += Math.min(15, confidenceKeys.length * 2);
     }
   }
 
   if (data?.citemap?.authorizedBy === 'self') {
-    score += 20;
+    score += 15;
   }
 
   if (data?.answerContent && Array.isArray(data.answerContent) && data.answerContent.length > 0) {
@@ -216,9 +248,14 @@ function calculateTrustSignals(data: any): number {
   }
 
   if (data?.citations && typeof data.citations === 'object') {
-    if (data.citations.preferences || data.citations.awards) {
-      score += 15;
+    if (data.citations.preferredBy || data.citations.awards) {
+      score += 10;
     }
+  }
+
+  // v3: verifiedClaims bonus
+  if (data?.verifiedClaims && Array.isArray(data.verifiedClaims) && data.verifiedClaims.length > 0) {
+    score += Math.min(20, data.verifiedClaims.length * 5);
   }
 
   return Math.min(score, maxScore);
@@ -257,17 +294,116 @@ function calculateModuleScore(data: any, applicableModules: string[]): number {
 }
 
 /**
+ * Generate a level badge string
+ */
+function levelBadge(level: CitemapLevel): string {
+  const stars = '★'.repeat(level) + '☆'.repeat(3 - level);
+  return `Level ${level} ${stars}`;
+}
+
+/**
+ * Assess the CiteMap Level using @citemap/schema helpers
+ */
+function assessLevel(data: any): LevelAssessment {
+  const current = calculateLevel(data as any);
+  const claimed = data?.citemapLevel as CitemapLevel | undefined;
+  const claimAccurate = claimed == null || claimed === current;
+  const hints = nextLevelHints(data as any);
+
+  return {
+    current,
+    claimed: claimed ?? undefined,
+    claimAccurate,
+    nextLevelHints: hints,
+    badge: levelBadge(current),
+  };
+}
+
+/**
+ * Validate entity IDs found in arrays throughout the citemap
+ */
+function validateEntityIds(data: any): ValidationWarning[] {
+  const warnings: ValidationWarning[] = [];
+
+  const arraysToCheck: { path: string; items: any[] }[] = [];
+
+  // Collect all arrays that might have entity IDs
+  const arrayPaths: [string, string][] = [
+    ['answerContent', '/answerContent'],
+    ['people', '/people'],
+    ['events', '/events'],
+  ];
+
+  for (const [key, path] of arrayPaths) {
+    if (Array.isArray(data?.[key])) {
+      arraysToCheck.push({ path, items: data[key] });
+    }
+  }
+
+  // Check module arrays
+  const moduleArrayFields: Record<string, string[]> = {
+    ecommerce: ['heroProducts'],
+    localBusiness: ['services'],
+    content: ['signatureContent'],
+    education: ['courses'],
+    creative: ['portfolio.featured'],
+    nonprofit: ['programs'],
+    government: ['services', 'officials', 'emergencyContacts'],
+    science: ['studies', 'datasets', 'trials'],
+    businessIP: ['patents', 'trademarks'],
+    person: ['canonicalQuotes'],
+    health: ['practitioners'],
+    finance: ['products'],
+    legal: ['attorneys'],
+    temporal: ['timeline'],
+  };
+
+  for (const [moduleName, fields] of Object.entries(moduleArrayFields)) {
+    if (!data?.[moduleName]) continue;
+    for (const field of fields) {
+      const parts = field.split('.');
+      let target = data[moduleName];
+      for (const part of parts) {
+        target = target?.[part];
+      }
+      if (Array.isArray(target)) {
+        arraysToCheck.push({ path: `/${moduleName}/${field}`, items: target });
+      }
+    }
+  }
+
+  // Validate ID format on each item
+  for (const { path, items } of arraysToCheck) {
+    for (let i = 0; i < items.length; i++) {
+      const item = items[i];
+      if (item?.id && typeof item.id === 'string') {
+        if (!ENTITY_ID_PATTERN.test(item.id)) {
+          warnings.push({
+            path: `${path}[${i}].id`,
+            message: `Entity ID "${item.id}" does not match required format "type:slug"`,
+            suggestion: 'Use lowercase type:slug format, e.g. "service:craft-beer-selection" or "person:betsy-weedman"',
+          });
+        }
+      }
+    }
+  }
+
+  return warnings;
+}
+
+/**
  * Validate a citemap.json file against the schema
  * @param data - The data to validate (typically parsed citemap.json)
- * @returns ValidationResult with errors, warnings, and quality score
+ * @returns ValidationResult with errors, warnings, quality score, and level assessment
  */
 export function validate(data: unknown): ValidationResult {
   const validate = createValidator();
   const isValid = validate(data);
-  const errors = formatValidationErrors(validate.errors);
+  const errors = formatValidationErrors(validate.errors ?? null);
 
   const warnings: ValidationWarning[] = [];
   const citemapData = data as Record<string, any>;
+  const version = citemapData?.citemapVersion || 'unknown';
 
   // Generate warnings for quality issues
   if (citemapData?.brand) {
@@ -312,6 +448,32 @@ export function validate(data: unknown): ValidationResult {
     });
   }
 
+  // v3-specific warnings
+  if (version === '3.0') {
+    if (!citemapData?.citationContract) {
+      warnings.push({
+        path: '/citationContract',
+        message: 'No citationContract specified (v3 recommended)',
+        suggestion: 'Add citationContract with preferredName, shortDescription, and disambiguation to control how AI introduces your brand',
+      });
+    }
+
+    // Validate entity IDs
+    warnings.push(...validateEntityIds(citemapData));
+
+    // Check citemapLevel claim accuracy
+    if (citemapData?.citemapLevel != null) {
+      const actual = calculateLevel(citemapData as any);
+      if (citemapData.citemapLevel !== actual) {
+        warnings.push({
+          path: '/citemapLevel',
+          message: `Claimed Level ${citemapData.citemapLevel} but actual content is Level ${actual}`,
+          suggestion: `Update citemapLevel to ${actual}, or add missing content to reach Level ${citemapData.citemapLevel}`,
+        });
+      }
+    }
+  }
+
   // Calculate quality score
   const applicableModules = getApplicableModules(citemapData?.brand?.siteType || 'general');
   const completenessScore = calculateCompletenessScore(citemapData);
@@ -334,18 +496,23 @@ export function validate(data: unknown): ValidationResult {
     },
   };
 
+  // Assess level
+  const level = assessLevel(citemapData);
+
   return {
     valid: isValid,
     errors,
     warnings,
     score,
+    level,
+    version,
   };
 }
 
 /**
  * Perform deep diagnostic analysis of a citemap
  * @param data - The citemap data to analyze
- * @returns Diagnosis with module coverage and recommendations
+ * @returns Diagnosis with module coverage, recommendations, and level assessment
  */
 export function diagnose(data: unknown): Diagnosis {
   const citemapData = data as Record<string, any>;
@@ -386,8 +553,27 @@ export function diagnose(data: unknown): Diagnosis {
     recommendations.push('Define citation preferences in the citations field');
   }
 
-  if (!citemapData?.externalVerifiers) {
-    recommendations.push('Add external verifiers (certifications, awards) to build trust');
+  if (!citemapData?.verification) {
+    recommendations.push('Add a verification block with externalVerifiers or fieldConfidence to build trust');
+  }
+
+  // v3-specific recommendations
+  const version = citemapData?.citemapVersion;
+  if (version === '3.0') {
+    if (!citemapData?.citationContract) {
+      recommendations.push('Add citationContract to control how AI introduces your brand');
+    }
+    if (!citemapData?.verifiedClaims || citemapData.verifiedClaims.length === 0) {
+      recommendations.push('Add verifiedClaims with externally checkable IDs (NPI, EIN, bar license, etc.)');
+    }
+  }
+
+  // Level assessment with next-level hints
+  const level = assessLevel(citemapData);
+  if (level.nextLevelHints.length > 0) {
+    for (const hint of level.nextLevelHints) {
+      recommendations.push(`To reach Level ${level.current + 1}: ${hint}`);
+    }
   }
 
   return {
@@ -397,6 +583,7 @@ export function diagnose(data: unknown): Diagnosis {
     missingModules,
     fieldCoverage,
     recommendations,
+    level,
   };
 }
 

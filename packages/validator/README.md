@@ -1,16 +1,10 @@
 # @citemap/validator
 
-Validate citemap.json files with schema validation, quality scoring, and field diagnostics.
+Validate [citemap.json](https://citemaps.org) files against the official schema, with quality scoring, level assessment, and diagnostic recommendations.
 
-## Features
+Supports CiteMap v2.0 and v3.0.
 
-- **Schema Validation**: Uses AJV to validate against the official citemap.json schema
-- **Quality Scoring**: Calculates overall quality (0-100) across completeness, module coverage, and trust signals
-- **Diagnostics**: Deep analysis of module coverage and recommendations
-- **Warning System**: Identifies quality issues and suggests improvements
-- **Type-Safe**: Full TypeScript support with comprehensive interfaces
-
-## Installation
+## Install
 
 ```bash
 npm install @citemap/validator
@@ -23,133 +17,109 @@ npm install @citemap/validator
 ```typescript
 import { validate } from '@citemap/validator';
 
-const citemap = {
-  "@type": "Citemap",
-  "citemapVersion": "2.0",
-  "brand": {
-    "name": "My Business",
-    "url": "https://example.com",
-    "siteType": "local-business",
-    "aiSummary": "..."
-  },
-  "lastVerified": "2024-03-11"
-};
+const result = validate(myCitemapData);
 
-const result = validate(citemap);
-
-if (result.valid) {
-  console.log(`Quality Score: ${result.score.overall}/100`);
-  console.log(`Completeness: ${result.score.completeness}/100`);
-  console.log(`Module Coverage: ${result.score.modules}/100`);
-  console.log(`Trust Signals: ${result.score.trust}/100`);
-} else {
-  console.error('Validation errors:', result.errors);
-}
+console.log(result.valid);          // true/false
+console.log(result.version);        // "3.0"
+console.log(result.level.badge);    // "Level 2 ★★☆"
+console.log(result.score.overall);  // 0-100
 
 if (result.warnings.length > 0) {
-  console.log('Quality warnings:', result.warnings);
+  result.warnings.forEach(w => {
+    console.log(`${w.path}: ${w.message}`);
+    console.log(`  → ${w.suggestion}`);
+  });
 }
 ```
 
-### Deep Diagnostics
+### Full Diagnosis
 
 ```typescript
 import { diagnose } from '@citemap/validator';
 
-const diagnosis = diagnose(citemap);
+const diagnosis = diagnose(myCitemapData);
 
-console.log(`Site Type: ${diagnosis.siteType}`);
-console.log(`Applicable Modules: ${diagnosis.applicableModules.join(', ')}`);
-console.log(`Present Modules: ${diagnosis.presentModules.join(', ')}`);
-console.log(`Missing Modules: ${diagnosis.missingModules.join(', ')}`);
-console.log(`Field Coverage: ${diagnosis.fieldCoverage.percentage}%`);
+console.log(diagnosis.siteType);        // "local-business"
+console.log(diagnosis.presentModules);  // ["localBusiness"]
+console.log(diagnosis.missingModules);  // []
+console.log(diagnosis.fieldCoverage);   // { total: 173, filled: 173, percentage: 100 }
+console.log(diagnosis.level.badge);     // "Level 3 ★★★"
 
-if (diagnosis.recommendations.length > 0) {
-  console.log('Recommendations:');
-  diagnosis.recommendations.forEach((rec) => console.log(`  - ${rec}`));
-}
+// Next-level coaching
+diagnosis.level.nextLevelHints.forEach(hint => {
+  console.log(`To reach Level ${diagnosis.level.current + 1}: ${hint}`);
+});
 ```
 
-### Combined Validation & Diagnosis
+### Validate + Diagnose in One Call
 
 ```typescript
 import { validateAndDiagnose } from '@citemap/validator';
 
-const result = validateAndDiagnose(citemap);
-
-console.log(`Valid: ${result.valid}`);
-console.log(`Quality Score: ${result.score.overall}/100`);
-console.log(`Diagnosis: ${result.diagnosis.siteType}`);
-```
-
-### Get Applicable Modules for a Site Type
-
-```typescript
-import { getApplicableModules } from '@citemap/validator';
-
-const modules = getApplicableModules('ecommerce');
-console.log(modules); // ['ecommerce']
-
-const restaurantModules = getApplicableModules('restaurant');
-console.log(restaurantModules); // ['localBusiness', 'events']
+const result = validateAndDiagnose(myCitemapData);
+// result.valid, result.errors, result.warnings, result.score, result.level
+// result.diagnosis.siteType, result.diagnosis.recommendations, etc.
 ```
 
 ## API Reference
 
 ### `validate(data: unknown): ValidationResult`
 
-Validates a citemap.json file against the schema and calculates quality scores.
-
-**Returns:**
-- `valid`: Boolean indicating if the schema validation passed
-- `errors`: Array of schema validation errors
-- `warnings`: Array of quality/completeness warnings
-- `score`: Quality score breakdown (overall, completeness, modules, trust)
+Validates a citemap against the schema and returns errors, warnings, quality score, and level assessment.
 
 ### `diagnose(data: unknown): Diagnosis`
 
-Performs deep analysis of a citemap file.
-
-**Returns:**
-- `siteType`: The detected site type
-- `applicableModules`: Modules that should be present for this site type
-- `presentModules`: Modules currently present
-- `missingModules`: Modules that are missing
-- `fieldCoverage`: Percentage of fields filled out
-- `recommendations`: Array of improvement suggestions
+Deep analysis with module coverage, field coverage, recommendations, and level assessment.
 
 ### `validateAndDiagnose(data: unknown): ValidationResult & { diagnosis: Diagnosis }`
 
-Combines validation and diagnosis in a single call.
+Combines both in a single call.
 
 ### `getApplicableModules(siteType: string): string[]`
 
-Helper function to get the list of modules applicable for a given site type.
+Returns module names applicable to a given site type (e.g., `"restaurant"` → `["localBusiness", "events"]`).
+
+## ValidationResult
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `valid` | `boolean` | Whether the citemap passes schema validation |
+| `errors` | `ValidationError[]` | Schema errors (path, message, keyword) |
+| `warnings` | `ValidationWarning[]` | Quality warnings with suggestions |
+| `score` | `QualityScore` | Breakdown: overall, completeness, modules, trust (0-100 each) |
+| `level` | `LevelAssessment` | Current level (1/2/3), claimed vs. actual, badge, next-level hints |
+| `version` | `string` | Detected citemapVersion |
+
+## LevelAssessment
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `current` | `1 \| 2 \| 3` | Computed level based on field presence |
+| `claimed` | `1 \| 2 \| 3 \| undefined` | The `citemapLevel` declared in the file |
+| `claimAccurate` | `boolean` | Whether claimed matches actual |
+| `nextLevelHints` | `string[]` | What to add to reach the next level |
+| `badge` | `string` | Display string like `"Level 2 ★★☆"` |
 
 ## Quality Scoring
-
-The overall quality score (0-100) is calculated as:
 
 ```
 Overall = (Completeness × 0.4) + (Module Coverage × 0.3) + (Trust Signals × 0.3)
 ```
 
-### Completeness Score (0-100)
-- Based on percentage of required and recommended fields filled
-- Required fields are weighted more heavily than recommended fields
+- **Completeness (0-100)** — Required + recommended root fields filled
+- **Module Coverage (0-100)** — Applicable modules present for the site type
+- **Trust Signals (0-100)** — Verification block, authorized-by, answer content, verified claims, citations
 
-### Module Coverage Score (0-100)
-- Based on presence of applicable modules for the site type
-- Each module present increases the score proportionally
+## v3-Specific Validation
 
-### Trust Signals Score (0-100)
-- External verifiers: +30 points
-- Field confidence data: +20 points
-- Self-authorized citemap: +20 points
-- Answer content: +15 points
-- Citation preferences or awards: +15 points
+When `citemapVersion` is `"3.0"`, the validator also checks:
 
-## Site Type to Module Mapping
+- Missing `citationContract` (warning with suggestion)
+- Entity ID format validation (`type:slug` regex pattern)
+- `citemapLevel` claim accuracy vs. actual computed level
+- `verifiedClaims` type enum values
+
+## Site Type → Module Mapping
 
 | Site Type | Applicable Modules |
 |-----------|-------------------|
@@ -172,51 +142,12 @@ Overall = (Completeness × 0.4) + (Module Coverage × 0.3) + (Trust Signals × 0
 | places | places |
 | general | (none) |
 
-## Types
+## Links
 
-```typescript
-interface ValidationError {
-  path: string;
-  message: string;
-  keyword: string;
-}
-
-interface ValidationWarning {
-  path: string;
-  message: string;
-  suggestion: string;
-}
-
-interface QualityScore {
-  overall: number;
-  completeness: number;
-  modules: number;
-  trust: number;
-  breakdown: Record<string, number>;
-}
-
-interface ValidationResult {
-  valid: boolean;
-  errors: ValidationError[];
-  warnings: ValidationWarning[];
-  score: QualityScore;
-}
-
-interface FieldCoverage {
-  total: number;
-  filled: number;
-  percentage: number;
-}
-
-interface Diagnosis {
-  siteType: string;
-  applicableModules: string[];
-  presentModules: string[];
-  missingModules: string[];
-  fieldCoverage: FieldCoverage;
-  recommendations: string[];
-}
-```
+- [CiteMap Spec](https://citemaps.org)
+- [GitHub](https://github.com/citemaps/citemap)
+- [@citemap/schema](https://www.npmjs.com/package/@citemap/schema) — Schema + TypeScript types
+- [@citemap/cli](https://www.npmjs.com/package/@citemap/cli) — Command-line tool
 
 ## License
 

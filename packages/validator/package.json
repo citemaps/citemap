@@ -1,7 +1,7 @@
 {
   "name": "@citemap/validator",
-  "version": "0.2.0",
-  "description": "Validate citemap.json files — schema checks, quality scoring, field diagnostics",
+  "version": "0.3.1",
+  "description": "Validate citemap.json files — schema checks, quality scoring, level assessment, field diagnostics",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
@@ -33,7 +33,7 @@
   "dependencies": {
     "ajv": "^8.12.0",
     "ajv-formats": "^2.1.1",
-    "@citemap/schema": "^0.2.0"
+    "@citemap/schema": "^0.3.0"
   },
   "devDependencies": {
     "tsup": "^8.0.0",
