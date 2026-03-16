@@ -1,0 +1,2007 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Full Field Reference — Citemap.json v3.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-J1609LLZBZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-J1609LLZBZ');
+</script>
+
+<style>
+:root {
+  --bg: #ffffff;
+  --bg2: #f8f8f6;
+  --bg3: #f2f2ee;
+  --text: #1a1a18;
+  --text2: #3d3d38;
+  --muted: #6b6b64;
+  --muted2: #9a9a90;
+  --border: #e2e2dc;
+  --border2: #d0d0c8;
+  --accent: #2563eb;
+  --accent2: #1d4ed8;
+  --green: #16a34a;
+  --green-bg: #f0fdf4;
+  --green-border: #bbf7d0;
+  --blue-bg: #eff6ff;
+  --blue-border: #bfdbfe;
+  --amber: #d97706;
+  --amber-bg: #fffbeb;
+  --amber-border: #fde68a;
+  --red: #dc2626;
+  --red-bg: #fef2f2;
+  --red-border: #fecaca;
+  --purple: #7c3aed;
+  --purple-bg: #f5f3ff;
+  --purple-border: #ddd6fe;
+  --slate-bg: #f8fafc;
+  --slate-border: #e2e8f0;
+  --code-bg: #1e1e2e;
+  --mono: 'JetBrains Mono', 'Fira Code', monospace;
+  --serif: 'Lora', Georgia, serif;
+  --sans: 'Source Sans 3', system-ui, sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-weight: 400;
+  line-height: 1.7;
+}
+
+::selection { background: #bfdbfe; color: var(--text); }
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg2); }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+/* ── LAYOUT ── */
+.page-wrap {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  min-height: 100vh;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ── SIDEBAR NAV ── */
+.sidebar {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  border-right: 1px solid var(--border);
+  padding: 40px 24px 60px;
+  background: var(--bg);
+}
+
+.sidebar-logo {
+  font-family: var(--mono);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text);
+  text-decoration: none;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.sidebar-logo span { color: var(--accent); }
+
+.sidebar-tagline {
+  font-size: 11px;
+  color: var(--muted2);
+  margin-bottom: 32px;
+  line-height: 1.5;
+}
+
+.nav-section-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted2);
+  margin-top: 24px;
+  margin-bottom: 8px;
+  padding-left: 8px;
+}
+
+.nav-link {
+  display: block;
+  font-size: 13px;
+  color: var(--muted);
+  text-decoration: none;
+  padding: 5px 8px;
+  border-radius: 4px;
+  transition: all 0.15s;
+  line-height: 1.4;
+}
+
+.nav-link:hover { background: var(--bg2); color: var(--text); }
+.nav-link.active { background: var(--blue-bg); color: var(--accent); }
+
+.sidebar-badge {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 500;
+  padding: 2px 6px;
+  border-radius: 3px;
+  background: var(--green-bg);
+  color: var(--green);
+  border: 1px solid var(--green-border);
+  margin-top: 24px;
+  letter-spacing: 0.06em;
+}
+
+/* ── MAIN CONTENT ── */
+main {
+  padding: 60px 72px 120px;
+  max-width: 860px;
+}
+
+/* ── TOP HEADER ── */
+.doc-header {
+  margin-bottom: 64px;
+  padding-bottom: 48px;
+  border-bottom: 2px solid var(--border);
+}
+
+.doc-eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.version-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--mono);
+  font-size: 10px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: var(--green-bg);
+  color: var(--green);
+  border: 1px solid var(--green-border);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+
+.version-pill::before { content: '●'; font-size: 7px; }
+
+.doc-title {
+  font-family: var(--serif);
+  font-size: 44px;
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  margin-bottom: 20px;
+}
+
+.doc-title em { font-style: italic; color: var(--accent); }
+
+.doc-lead {
+  font-size: 19px;
+  font-weight: 300;
+  color: var(--text2);
+  line-height: 1.7;
+  max-width: 620px;
+  margin-bottom: 32px;
+}
+
+.doc-meta {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.doc-meta span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--mono);
+  font-size: 11px;
+}
+
+.doc-meta strong { color: var(--text2); font-weight: 500; }
+
+/* ── SECTIONS ── */
+.doc-section {
+  margin-bottom: 72px;
+  scroll-margin-top: 80px;
+}
+
+.section-eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted2);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.section-eyebrow::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+  max-width: 80px;
+}
+
+h2 {
+  font-family: var(--serif);
+  font-size: 30px;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  margin-bottom: 16px;
+}
+
+h2 em { font-style: italic; color: var(--accent); }
+
+h3 {
+  font-family: var(--sans);
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--text);
+  margin-top: 36px;
+  margin-bottom: 12px;
+}
+
+h4 {
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text2);
+  margin-top: 24px;
+  margin-bottom: 8px;
+  letter-spacing: 0.01em;
+}
+
+p {
+  font-size: 15px;
+  color: var(--text2);
+  line-height: 1.8;
+  margin-bottom: 16px;
+}
+
+p strong { color: var(--text); font-weight: 600; }
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ── TAGS ── */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 500;
+  padding: 3px 8px;
+  border-radius: 4px;
+  margin-right: 4px;
+  margin-bottom: 4px;
+  letter-spacing: 0.04em;
+  border: 1px solid;
+}
+
+.tag-blue { background: var(--blue-bg); color: #1d4ed8; border-color: var(--blue-border); }
+.tag-green { background: var(--green-bg); color: var(--green); border-color: var(--green-border); }
+.tag-amber { background: var(--amber-bg); color: var(--amber); border-color: var(--amber-border); }
+.tag-red { background: var(--red-bg); color: var(--red); border-color: var(--red-border); }
+.tag-purple { background: var(--purple-bg); color: var(--purple); border-color: var(--purple-border); }
+.tag-slate { background: var(--slate-bg); color: var(--muted); border-color: var(--slate-border); }
+
+/* ── STATUS PILLS ── */
+.pill {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 500;
+  padding: 2px 7px;
+  border-radius: 3px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  border: 1px solid;
+}
+
+.pill-required { background: var(--red-bg); color: var(--red); border-color: var(--red-border); }
+.pill-recommended { background: var(--blue-bg); color: var(--accent); border-color: var(--blue-border); }
+.pill-optional { background: var(--slate-bg); color: var(--muted); border-color: var(--slate-border); }
+.pill-conditional { background: var(--amber-bg); color: var(--amber); border-color: var(--amber-border); }
+.pill-novel { background: var(--purple-bg); color: var(--purple); border-color: var(--purple-border); }
+
+/* ── TABLES ── */
+.table-wrap {
+  overflow-x: auto;
+  margin: 20px 0;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+th {
+  background: var(--bg2);
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 10px 16px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+td {
+  padding: 11px 16px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text2);
+  vertical-align: top;
+  line-height: 1.5;
+}
+
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: var(--bg2); }
+
+.td-mono {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--accent);
+}
+
+/* ── ACCORDION ── */
+.accordion { display: flex; flex-direction: column; gap: 0; margin-top: 32px; }
+.acc-item { border: 1px solid var(--border); border-bottom: none; }
+.acc-item:first-child { border-radius: 6px 6px 0 0; }
+.acc-item:last-child { border-bottom: 1px solid var(--border); border-radius: 0 0 6px 6px; }
+.acc-item:only-child { border-radius: 6px; }
+
+.acc-trigger {
+  width: 100%;
+  background: transparent;
+  border: none;
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  cursor: pointer;
+  transition: background 0.15s;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.acc-trigger:hover { background: var(--bg2); }
+.acc-trigger.open { background: var(--bg2); }
+
+.acc-chevron {
+  font-size: 10px;
+  color: var(--muted2);
+  transition: transform 0.2s;
+  flex-shrink: 0;
+  display: inline-block;
+}
+
+.acc-chevron.open { transform: rotate(90deg); }
+
+.acc-title {
+  flex: 1;
+}
+
+.acc-meta {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+  flex-shrink: 0;
+}
+
+.acc-jsonkey {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--accent);
+  opacity: 0.7;
+  letter-spacing: 0.02em;
+  flex-shrink: 0;
+}
+
+.acc-body {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.25s ease;
+  border-top: 1px solid var(--border);
+}
+
+.acc-body.open {
+  max-height: 10000px;
+}
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 48px 0 0;
+  margin-top: 80px;
+}
+
+.footer-logo {
+  font-family: var(--mono);
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.footer-logo span { color: var(--accent); }
+
+.footer-sub {
+  font-size: 13px;
+  color: var(--muted);
+  max-width: 400px;
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.footer-links {
+  display: flex;
+  gap: 16px;
+  font-size: 13px;
+  margin-bottom: 24px;
+}
+
+.footer-links a { color: var(--muted); text-decoration: none; transition: color 0.15s; }
+.footer-links a:hover { color: var(--accent); }
+
+.footer-copy {
+  padding: 20px 0;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--muted2);
+  font-family: var(--mono);
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .page-wrap { grid-template-columns: 1fr; }
+  .sidebar { position: relative; height: auto; border-right: none; border-bottom: 1px solid var(--border); padding: 32px 24px; }
+  main { padding: 40px 16px 80px; }
+  .doc-title { font-size: 32px; }
+  h2 { font-size: 24px; }
+  .table-wrap { overflow-x: auto; }
+}
+
+.module-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 24px 0;
+}
+
+.module-card {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 20px;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.module-card:hover { border-color: var(--border2); background: var(--bg2); }
+
+.module-num {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--muted2);
+  letter-spacing: 0.08em;
+  margin-bottom: 8px;
+}
+
+.module-card h4 {
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0 0 6px 0;
+}
+
+.module-card p {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.6;
+  margin: 0 0 10px 0;
+}
+
+.module-tags { display: flex; gap: 4px; flex-wrap: wrap; }
+
+/* ── TRUST TIERS ── */
+.tier-list { margin: 20px 0; display: flex; flex-direction: column; gap: 0; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+
+.tier-row {
+  display: grid;
+  grid-template-columns: 48px 1fr auto;
+  gap: 20px;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+
+.tier-row:last-child { border-bottom: none; }
+.tier-row:hover { background: var(--bg2); }
+
+.tier-num {
+  font-family: var(--serif);
+  font-size: 28px;
+  color: var(--muted2);
+  font-weight: 400;
+  line-height: 1;
+  text-align: center;
+}
+
+.tier-name { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+.tier-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+/* ── BREAKTHROUGH FIELDS ── */
+.breakthrough-list { display: flex; flex-direction: column; gap: 16px; margin: 24px 0; }
+
+.breakthrough-item {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 24px;
+  border-left: 3px solid var(--accent);
+}
+
+.breakthrough-field {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--accent);
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+
+.breakthrough-item h4 { margin-top: 8px; margin-bottom: 8px; }
+.breakthrough-item p { font-size: 13px; margin-bottom: 0; }
+
+.module-section-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted2);
+  margin-top: 32px;
+  margin-bottom: 16px;
+}
+
+</style>
+</head>
+<body>
+
+<div class="page-wrap">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <a href="/" class="sidebar-logo">citemaps<span>.org</span></a>
+    <p class="sidebar-tagline">The open standard for AI entity identity</p>
+
+    <div class="sidebar-badge">v3.0 · CC BY 4.0</div>
+
+    <div class="nav-section-label">The Standard</div>
+    <a href="/" class="nav-link">Concept & Overview</a>
+    <a href="#universal-core" class="nav-link">Universal Core</a>
+    <a href="#all-modules" class="nav-link">All 21 Modules</a>
+    <a href="#breakthrough" class="nav-link">Breakthrough Fields</a>
+    <a href="#trust-tiers" class="nav-link">Trust Architecture</a>
+    <a href="#core-fields" class="nav-link">Complete Reference</a>
+
+    <div class="nav-section-label">Developer</div>
+    <a href="https://github.com/citemaps/citemap" class="nav-link" target="_blank">GitHub Repository</a>
+    <a href="https://www.npmjs.com/org/citemap" class="nav-link" target="_blank">npm Packages</a>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main>
+
+    <!-- ── HEADER ── -->
+    <header class="doc-header">
+      <div class="doc-eyebrow">
+        Complete Field Reference
+        <span class="version-pill">v3.0 · March 2026</span>
+      </div>
+
+      <h1 class="doc-title">
+        Every field,<br>
+        every <em>module</em>
+      </h1>
+
+      <p class="doc-lead">
+        The complete inventory of all 450+ fields across Universal Core and 21 industry modules. Click any module to expand its field table and explore the full specification.
+      </p>
+
+      <div class="doc-meta">
+        <span><strong>Version</strong> 3.0</span>
+        <span><strong>Published</strong> March 2026</span>
+        <span><strong>Modules</strong> 21</span>
+        <span><strong>Core Fields</strong> 47</span>
+        <span><strong>Total Fields</strong> 450+</span>
+      </div>
+    </header>
+
+    <!-- ── UNIVERSAL CORE ── -->
+    <section class="doc-section" id="universal-core">
+      <div class="section-eyebrow">Foundation</div>
+      <h2>Universal Core Fields</h2>
+      <p>These 47 fields form the foundation. Every citemap.json must include core brand information and verification metadata. All other modules are optional based on entity type.</p>
+
+      <div class="accordion">
+        <div class="acc-item">
+          <button class="acc-trigger open" onclick="toggleAccordion(event)">
+            <span class="acc-chevron open">▶</span>
+            <span class="acc-title">Universal Core</span>
+            <span class="acc-jsonkey">brand + citemap + metadata</span>
+            <span class="acc-meta">47 fields</span>
+          </button>
+          <div class="acc-body open">
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Field</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                    <th>Purpose</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td class="td-mono">@type</td><td class="td-mono" style="font-size:11px;opacity:0.7">String (const)</td><td><span class="pill pill-required">Required</span></td><td>Type identifier for citemap document</td></tr>
+                  <tr><td class="td-mono">citemapVersion</td><td class="td-mono" style="font-size:11px;opacity:0.7">String (const)</td><td><span class="pill pill-required">Required</span></td><td>Schema version conformance identifier</td></tr>
+                  <tr><td class="td-mono">brand.name</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-required">Required</span></td><td>Primary brand or entity name for AI citation</td></tr>
+                  <tr><td class="td-mono">brand.url</td><td class="td-mono" style="font-size:11px;opacity:0.7">URL</td><td><span class="pill pill-required">Required</span></td><td>Canonical website URL for ownership verification</td></tr>
+                  <tr><td class="td-mono">brand.siteType</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-required">Required</span></td><td>Entity type determining applicable optional modules</td></tr>
+                  <tr><td class="td-mono">brand.aiSummary</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-required">Required</span></td><td>200-600 char description for direct AI quotation</td></tr>
+                  <tr><td class="td-mono">brand.notableFor</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Single sentence describing entity's unique value</td></tr>
+                  <tr><td class="td-mono">brand.expertise</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Expertise areas for E-E-A-T credibility signals</td></tr>
+                  <tr><td class="td-mono">brand.audiencePrimary</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Primary audience served or target demographic</td></tr>
+                  <tr><td class="td-mono">brand.logo</td><td class="td-mono" style="font-size:11px;opacity:0.7">URL</td><td><span class="pill pill-optional">Optional</span></td><td>URL to brand logo image for visual identity</td></tr>
+                  <tr><td class="td-mono">brand.founded</td><td class="td-mono" style="font-size:11px;opacity:0.7">String (YYYY or YYYY-MM-DD)</td><td><span class="pill pill-optional">Optional</span></td><td>Year or date of founding for history context</td></tr>
+                  <tr><td class="td-mono">brand.location.streetAddress</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Address line 1 for headquarters or primary office</td></tr>
+                  <tr><td class="td-mono">brand.location.streetAddress2</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Address line 2 for office location</td></tr>
+                  <tr><td class="td-mono">brand.location.city</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>City of headquarters or primary office</td></tr>
+                  <tr><td class="td-mono">brand.location.state</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>State or province of main location</td></tr>
+                  <tr><td class="td-mono">brand.location.postalCode</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>ZIP or postal code of office location</td></tr>
+                  <tr><td class="td-mono">brand.location.country</td><td class="td-mono" style="font-size:11px;opacity:0.7">String (ISO 3166-1)</td><td><span class="pill pill-optional">Optional</span></td><td>Country code for location identification</td></tr>
+                  <tr><td class="td-mono">brand.location.latitude</td><td class="td-mono" style="font-size:11px;opacity:0.7">Number</td><td><span class="pill pill-optional">Optional</span></td><td>GPS latitude coordinate for mapping</td></tr>
+                  <tr><td class="td-mono">brand.location.longitude</td><td class="td-mono" style="font-size:11px;opacity:0.7">Number</td><td><span class="pill pill-optional">Optional</span></td><td>GPS longitude coordinate for mapping</td></tr>
+                  <tr><td class="td-mono">lastVerified</td><td class="td-mono" style="font-size:11px;opacity:0.7">String (YYYY-MM-DD)</td><td><span class="pill pill-required">Required</span></td><td>Most recent verification date for data freshness</td></tr>
+                  <tr><td class="td-mono">contact.email</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Primary contact email address</td></tr>
+                  <tr><td class="td-mono">contact.phone</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Contact phone number</td></tr>
+                  <tr><td class="td-mono">contact.socialProfiles</td><td class="td-mono" style="font-size:11px;opacity:0.7">Object</td><td><span class="pill pill-optional">Optional</span></td><td>Social media handles and profile URLs</td></tr>
+                  <tr><td class="td-mono">citemap.lastModified</td><td class="td-mono" style="font-size:11px;opacity:0.7">String (ISO 8601)</td><td><span class="pill pill-optional">Optional</span></td><td>When citemap file was last updated</td></tr>
+                  <tr><td class="td-mono">citemap.maintainer</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Email or name of citemap maintenance contact</td></tr>
+                  <tr><td class="td-mono">citemap.refreshInterval</td><td class="td-mono" style="font-size:11px;opacity:0.7">String (ISO 8601 duration)</td><td><span class="pill pill-optional">Optional</span></td><td>How often file should be rechecked by crawlers</td></tr>
+                  <tr><td class="td-mono">citations.preferredCitation</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>How entity prefers to be cited</td></tr>
+                  <tr><td class="td-mono">citations.awards[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Awards, recognitions, or accolades received</td></tr>
+                  <tr><td class="td-mono">citations.canonicalUrl</td><td class="td-mono" style="font-size:11px;opacity:0.7">URL</td><td><span class="pill pill-optional">Optional</span></td><td>Canonical URL for primary reference</td></tr>
+                  <tr><td class="td-mono">answerContent[].question</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Common question asked about entity</td></tr>
+                  <tr><td class="td-mono">answerContent[].answer</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Authoritative answer to common question</td></tr>
+                  <tr><td class="td-mono">answerContent[].source</td><td class="td-mono" style="font-size:11px;opacity:0.7">URL</td><td><span class="pill pill-optional">Optional</span></td><td>URL or reference supporting answer</td></tr>
+                  <tr><td class="td-mono">answerContent[].trustTier</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>Confidence level of answer accuracy</td></tr>
+                  <tr><td class="td-mono">citationContract.lastUpdated</td><td class="td-mono" style="font-size:11px;opacity:0.7">String (YYYY-MM-DD)</td><td><span class="pill pill-optional">Optional</span></td><td>When this citemap was last reviewed for accuracy</td></tr>
+                  <tr><td class="td-mono">citationContract.updateFrequency</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>How often the entity commits to updating (daily/weekly/monthly/quarterly/annually)</td></tr>
+                  <tr><td class="td-mono">citationContract.canonicalSource</td><td class="td-mono" style="font-size:11px;opacity:0.7">URL</td><td><span class="pill pill-optional">Optional</span></td><td>Canonical URL of this citemap file</td></tr>
+                  <tr><td class="td-mono">citationContract.contactForCorrections</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Email or URL for reporting errors in this citemap</td></tr>
+                  <tr><td class="td-mono">citemapLevel</td><td class="td-mono" style="font-size:11px;opacity:0.7">Number (1-3)</td><td><span class="pill pill-optional">Optional</span></td><td>Declared CiteMap level — computed from field presence (★☆☆ / ★★☆ / ★★★)</td></tr>
+                  <tr><td class="td-mono">verifiedClaims[].claimType</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>Type of verified claim (NPI, EIN, DUNS, state-license, bar-number, DOI, etc.)</td></tr>
+                  <tr><td class="td-mono">verifiedClaims[].identifier</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>The claim identifier or license number</td></tr>
+                  <tr><td class="td-mono">verifiedClaims[].issuer</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Organization that issued the credential</td></tr>
+                  <tr><td class="td-mono">verifiedClaims[].verifiedDate</td><td class="td-mono" style="font-size:11px;opacity:0.7">String (YYYY-MM-DD)</td><td><span class="pill pill-optional">Optional</span></td><td>Date the claim was last verified</td></tr>
+                  <tr><td class="td-mono">verifiedClaims[].expirationDate</td><td class="td-mono" style="font-size:11px;opacity:0.7">String (YYYY-MM-DD)</td><td><span class="pill pill-optional">Optional</span></td><td>When the credential expires, if applicable</td></tr>
+                  <tr><td class="td-mono">verifiedClaims[].verificationUrl</td><td class="td-mono" style="font-size:11px;opacity:0.7">URL</td><td><span class="pill pill-optional">Optional</span></td><td>URL to verify this claim independently</td></tr>
+                  <tr><td class="td-mono">[module].meta.lastUpdated</td><td class="td-mono" style="font-size:11px;opacity:0.7">String (YYYY-MM-DD)</td><td><span class="pill pill-optional">Optional</span></td><td>v3.0: When this module's data was last reviewed</td></tr>
+                  <tr><td class="td-mono">[module].meta.updateFrequency</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>v3.0: How often this module is updated</td></tr>
+                  <tr><td class="td-mono">[entity].id</td><td class="td-mono" style="font-size:11px;opacity:0.7">String (type:slug)</td><td><span class="pill pill-optional">Optional</span></td><td>v3.0: Stable entity ID in type:slug format (e.g. service:plumbing)</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── ALL MODULES ── -->
+    <section class="doc-section" id="all-modules">
+      <div class="section-eyebrow">21 Industry Modules</div>
+      <h2>All <em>21 modules</em></h2>
+      <p>From Shopify stores to federal agencies. From solo musicians to patent portfolios. From hiking trails to clinical trials. Each module adapts citemap.json for a specific entity type. Click any module to see all its fields.</p>
+
+      <div class="module-grid">
+        <div class="module-card">
+          <div class="module-num">Module 01</div>
+          <h4>Universal Core</h4>
+          <p>14 fields every entity shares. The foundation all modules build on.</p>
+          <div class="module-tags">
+            <span class="tag tag-red">Required base</span>
+            <span class="tag tag-slate">All types</span>
+          </div>
+        </div>
+        <div class="module-card">
+          <div class="module-num">Module 02</div>
+          <h4>Ecommerce</h4>
+          <p>Hero products, shipping, returns, pricing, sustainability, social proof.</p>
+          <div class="module-tags">
+            <span class="tag tag-blue">Shopify</span>
+            <span class="tag tag-blue">WooCommerce</span>
+            <span class="tag tag-blue">DTC</span>
+          </div>
+        </div>
+        <div class="module-card">
+          <div class="module-num">Module 03</div>
+          <h4>Local Business</h4>
+          <p>Services, hours, booking, accessibility, parking, service areas.</p>
+          <div class="module-tags">
+            <span class="tag tag-green">Restaurants</span>
+            <span class="tag tag-green">Medical</span>
+            <span class="tag tag-green">Trades</span>
+          </div>
+        </div>
+        <div class="module-card">
+          <div class="module-num">Module 04</div>
+          <h4>Content & Publishing</h4>
+          <p>Editorial standards, syndication rights, paywall tiers, RSS metadata.</p>
+          <div class="module-tags">
+            <span class="tag tag-blue">Publishers</span>
+            <span class="tag tag-blue">Newsletters</span>
+          </div>
+        </div>
+        <div class="module-card">
+          <div class="module-num">Module 05</div>
+          <h4>SaaS & Software</h4>
+          <p>Features, API endpoints, integrations, pricing tiers, uptime SLAs.</p>
+          <div class="module-tags">
+            <span class="tag tag-blue">SaaS</span>
+            <span class="tag tag-blue">Developer tools</span>
+          </div>
+        </div>
+        <div class="module-card">
+          <div class="module-num">Module 06</div>
+          <h4>Events & Venues</h4>
+          <p>Schedules, ticketing, venue capacity, accessibility, catering.</p>
+          <div class="module-tags">
+            <span class="tag tag-slate">Venues</span>
+            <span class="tag tag-slate">Festivals</span>
+          </div>
+        </div>
+        <div class="module-card">
+          <div class="module-num">Module 07</div>
+          <h4>Real Estate</h4>
+          <p>Market areas, property types, transaction history, agent credentials.</p>
+          <div class="module-tags">
+            <span class="tag tag-slate">Agents</span>
+            <span class="tag tag-slate">Brokerages</span>
+          </div>
+        </div>
+        <div class="module-card">
+          <div class="module-num">Module 08</div>
+          <h4>Education</h4>
+          <p>Courses, learning outcomes, prerequisites, accreditations, enrollment.</p>
+          <div class="module-tags">
+            <span class="tag tag-slate">Universities</span>
+            <span class="tag tag-slate">Bootcamps</span>
+          </div>
+        </div>
+        <div class="module-card">
+          <div class="module-num">Module 09</div>
+          <h4>Creative & Artist</h4>
+          <p>Works portfolio, licensing, AI training opt-out, commissions, touring.</p>
+          <div class="module-tags">
+            <span class="tag tag-amber">Musicians</span>
+            <span class="tag tag-amber">Visual artists</span>
+            <span class="tag tag-purple">AI training field</span>
+          </div>
+        </div>
+        <div class="module-card">
+          <div class="module-num">Module 10</div>
+          <h4>Nonprofit</h4>
+          <p>EIN verification, impact metrics, donation methods, programs.</p>
+          <div class="module-tags">
+            <span class="tag tag-green">501(c)(3)</span>
+            <span class="tag tag-green">NGOs</span>
+          </div>
+        </div>
+        <div class="module-card">
+          <div class="module-num">Module 11</div>
+          <h4>Government</h4>
+          <p>Services, officials, meeting schedules, public records, emergency contacts.</p>
+          <div class="module-tags">
+            <span class="tag tag-blue">City</span>
+            <span class="tag tag-blue">State</span>
+            <span class="tag tag-blue">Federal</span>
+          </div>
+        </div>
+        <div class="module-card">
+          <div class="module-num">Module 12</div>
+          <h4>Science & Research</h4>
+          <p>Retraction status, peer review tier, datasets with limitations, trials.</p>
+          <div class="module-tags">
+            <span class="tag tag-red">Safety-critical</span>
+            <span class="tag tag-amber">Retraction flags</span>
+          </div>
+        </div>
+        <div class="module-card">
+          <div class="module-num">Module 13</div>
+          <h4>Business Entity & IP</h4>
+          <p>Corporate hierarchy, patent status, trademark scope, litigation.</p>
+          <div class="module-tags">
+            <span class="tag tag-blue">Corporations</span>
+            <span class="tag tag-blue">Patent holders</span>
+          </div>
+        </div>
+        <div class="module-card">
+          <div class="module-num">Module 14</div>
+          <h4>Person</h4>
+          <p>Canonical quotes, misattributed quote guards, subject rights, privacy.</p>
+          <div class="module-tags">
+            <span class="tag tag-green">Privacy-first</span>
+            <span class="tag tag-purple">Novel fields</span>
+          </div>
+        </div>
+        <div class="module-card">
+          <div class="module-num">Module 15</div>
+          <h4>Healthcare</h4>
+          <p>NPI numbers, certifications, insurance panels, accreditations.</p>
+          <div class="module-tags">
+            <span class="tag tag-red">Safety-critical</span>
+            <span class="tag tag-green">NPI verified</span>
+          </div>
+        </div>
+        <div class="module-card">
+          <div class="module-num">Module 16</div>
+          <h4>Financial Services</h4>
+          <p>Fiduciary status, regulatory IDs, FDIC insurance, enforcement.</p>
+          <div class="module-tags">
+            <span class="tag tag-red">Regulated</span>
+            <span class="tag tag-blue">Banks</span>
+          </div>
+        </div>
+        <div class="module-card">
+          <div class="module-num">Module 17</div>
+          <h4>Legal Services</h4>
+          <p>Bar admission, practice areas, fee models, outcome data.</p>
+          <div class="module-tags">
+            <span class="tag tag-red">Bar status critical</span>
+            <span class="tag tag-slate">Law firms</span>
+          </div>
+        </div>
+        <div class="module-card">
+          <div class="module-num">Module 18</div>
+          <h4>Places</h4>
+          <p>Trails, landmarks, beaches. Coordinates, pet policy, cell signal.</p>
+          <div class="module-tags">
+            <span class="tag tag-green">Trails</span>
+            <span class="tag tag-green">Landmarks</span>
+          </div>
+        </div>
+        <div class="module-card">
+          <div class="module-num">Module 19</div>
+          <h4>Temporal Record</h4>
+          <p>Universal history layer — what happened, when, and why.</p>
+          <div class="module-tags">
+            <span class="tag tag-slate">All types</span>
+            <span class="tag tag-amber">Provenance</span>
+          </div>
+        </div>
+        <div class="module-card">
+          <div class="module-num">Module 20</div>
+          <h4>Verification & Trust</h4>
+          <p>Six-tier trust stack, field-level confidence, dispute system.</p>
+          <div class="module-tags">
+            <span class="tag tag-purple">Industry-first</span>
+            <span class="tag tag-red">Anti-hallucination</span>
+          </div>
+        </div>
+        <div class="module-card">
+          <div class="module-num">Module 21</div>
+          <h4>People & Credentials</h4>
+          <p>Individual bios, credentials, professional links for team members.</p>
+          <div class="module-tags">
+            <span class="tag tag-slate">All types</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── BREAKTHROUGH FIELDS ── -->
+    <section class="doc-section" id="breakthrough">
+      <div class="section-eyebrow">Novel Ground</div>
+      <h2>Fields that exist <em>nowhere else</em></h2>
+      <p>Most of citemap.json extends and structures concepts that exist elsewhere. These fields don't. They address problems no existing format has attempted.</p>
+
+      <div class="breakthrough-list">
+        <div class="breakthrough-item">
+          <div class="breakthrough-field">person.misattributedQuotes[]</div>
+          <div style="margin-bottom: 8px;">
+            <span class="tag tag-purple">Novel</span>
+            <span class="tag tag-slate">First in any format</span>
+          </div>
+          <h4>A structured guard against famous misattributions</h4>
+          <p>Einstein never said "Insanity is doing the same thing twice and expecting different results." These misquotes propagate through AI training data. Citemap.json lets you declare what was actually said.</p>
+        </div>
+
+        <div class="breakthrough-item">
+          <div class="breakthrough-field">creative.licensing.aiTraining</div>
+          <div style="margin-bottom: 8px;">
+            <span class="tag tag-purple">Novel</span>
+            <span class="tag tag-slate">First opt-out mechanism</span>
+          </div>
+          <h4>A machine-readable AI training consent declaration</h4>
+          <p>opted-out / available / available-with-credit / available-paid-only. Artists get a structured voice in how their work trains AI.</p>
+        </div>
+
+        <div class="breakthrough-item">
+          <div class="breakthrough-field">patents[].litigationStatus</div>
+          <div style="margin-bottom: 8px;">
+            <span class="tag tag-purple">Novel</span>
+            <span class="tag tag-slate">First structured IP signal</span>
+          </div>
+          <h4>Active patent litigation, machine-readable for the first time</h4>
+          <p>none / active-litigation / IPR-pending / settled. Critical for IP counsel, investors, and AI systems analyzing business risk.</p>
+        </div>
+
+        <div class="breakthrough-item">
+          <div class="breakthrough-field">person.subjectRightsUrl</div>
+          <div style="margin-bottom: 8px;">
+            <span class="tag tag-purple">Novel</span>
+            <span class="tag tag-slate">GDPR/CCPA defensible</span>
+          </div>
+          <h4>The first structured correction and removal channel for biographical data</h4>
+          <p>Link to correction/removal request page. Satisfies data subject rights by design. No more "AI said this, I can't control it."</p>
+        </div>
+
+        <div class="breakthrough-item" style="border-left-color: var(--red);">
+          <div class="breakthrough-field">studies[].retractionStatus</div>
+          <div style="margin-bottom: 8px;">
+            <span class="tag tag-purple">Novel</span>
+            <span class="tag tag-red">Safety-critical</span>
+          </div>
+          <h4>Stops AI from citing retracted research as valid evidence</h4>
+          <p>current / retracted / corrected. Prevents the cascade of retracted research being cited as ground truth by downstream AI systems.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── TRUST TIERS ── -->
+    <section class="doc-section" id="trust-tiers">
+      <div class="section-eyebrow">Verification</div>
+      <h2>The six-tier <em>trust architecture</em></h2>
+      <p>Six trust tiers, field-level confidence annotations, a machine-readable dispute system, and a cryptographic future-state. The module that transforms citemap.json from self-reported marketing into epistemic infrastructure.</p>
+
+      <div class="tier-list">
+        <div class="tier-row">
+          <div class="tier-num">1</div>
+          <div>
+            <div class="tier-name">Unverified Third-Party</div>
+            <div class="tier-desc" style="font-family: var(--mono);">authorizedBy: "third-party-independent"</div>
+          </div>
+          <span class="tag tag-slate">Signal only</span>
+        </div>
+        <div class="tier-row">
+          <div class="tier-num">2</div>
+          <div>
+            <div class="tier-name">Self-Reported by Entity</div>
+            <div class="tier-desc" style="font-family: var(--mono);">authorizedBy: "self"</div>
+          </div>
+          <span class="tag tag-blue">Entity's account</span>
+        </div>
+        <div class="tier-row">
+          <div class="tier-num">3</div>
+          <div>
+            <div class="tier-name">Document-Supported</div>
+            <div class="tier-desc" style="font-family: var(--mono);">"document-supported"</div>
+          </div>
+          <span class="tag tag-blue">Documentation available</span>
+        </div>
+        <div class="tier-row">
+          <div class="tier-num">4</div>
+          <div>
+            <div class="tier-name">Registry Confirmed</div>
+            <div class="tier-desc" style="font-family: var(--mono);">externalVerifiers[] populated</div>
+          </div>
+          <span class="tag tag-green">Independently verifiable</span>
+        </div>
+        <div class="tier-row">
+          <div class="tier-num">5</div>
+          <div>
+            <div class="tier-name">Third-Party Audited</div>
+            <div class="tier-desc" style="font-family: var(--mono);">"third-party-verified"</div>
+          </div>
+          <span class="tag tag-amber">Audited</span>
+        </div>
+        <div class="tier-row">
+          <div class="tier-num">6</div>
+          <div>
+            <div class="tier-name">Cryptographically Signed</div>
+            <div class="tier-desc" style="font-family: var(--mono);">W3C Verifiable Credentials</div>
+          </div>
+          <span class="tag tag-green">Cryptographic proof</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── COMPLETE FIELD REFERENCE ── -->
+    <section class="doc-section" id="core-fields">
+      <div class="section-eyebrow">Complete Reference</div>
+      <h2>Every field, every module</h2>
+      <p>All 450+ fields across all 21 modules. Click any module to expand and see all available fields, their types, status, and purpose.</p>
+
+      <div class="accordion">
+        <!-- Ecommerce Module -->
+        <div class="acc-item">
+          <button class="acc-trigger" onclick="toggleAccordion(event)">
+            <span class="acc-chevron">▶</span>
+            <span class="acc-title">Ecommerce</span>
+            <span class="acc-jsonkey">ecommerce</span>
+            <span class="acc-meta">27 fields</span>
+          </button>
+          <div class="acc-body">
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Field</th><th>Type</th><th>Status</th><th>Purpose</th></tr></thead>
+                <tbody>
+                  <tr><td class="td-mono">products[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Featured products or product categories</td></tr>
+                  <tr><td class="td-mono">products[].id</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-required">Required</span></td><td>Unique product identifier</td></tr>
+                  <tr><td class="td-mono">products[].name</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-required">Required</span></td><td>Product name</td></tr>
+                  <tr><td class="td-mono">products[].description</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Detailed product description</td></tr>
+                  <tr><td class="td-mono">products[].price</td><td class="td-mono" style="font-size:11px;opacity:0.7">Number</td><td><span class="pill pill-optional">Optional</span></td><td>Current price in base currency</td></tr>
+                  <tr><td class="td-mono">products[].currency</td><td class="td-mono" style="font-size:11px;opacity:0.7">String (ISO 4217)</td><td><span class="pill pill-optional">Optional</span></td><td>Currency code for pricing</td></tr>
+                  <tr><td class="td-mono">products[].url</td><td class="td-mono" style="font-size:11px;opacity:0.7">URL</td><td><span class="pill pill-optional">Optional</span></td><td>Product page URL</td></tr>
+                  <tr><td class="td-mono">products[].image</td><td class="td-mono" style="font-size:11px;opacity:0.7">URL</td><td><span class="pill pill-optional">Optional</span></td><td>Product image URL</td></tr>
+                  <tr><td class="td-mono">products[].trustTier</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>Confidence of pricing information</td></tr>
+                  <tr><td class="td-mono">heroProduct</td><td class="td-mono" style="font-size:11px;opacity:0.7">Object</td><td><span class="pill pill-optional">Optional</span></td><td>Flagship or most important product</td></tr>
+                  <tr><td class="td-mono">heroProduct.id</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-required">Required</span></td><td>Unique identifier for hero product</td></tr>
+                  <tr><td class="td-mono">heroProduct.name</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-required">Required</span></td><td>Hero product name</td></tr>
+                  <tr><td class="td-mono">heroProduct.description</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Hero product description</td></tr>
+                  <tr><td class="td-mono">heroProduct.price</td><td class="td-mono" style="font-size:11px;opacity:0.7">Number</td><td><span class="pill pill-optional">Optional</span></td><td>Hero product current price</td></tr>
+                  <tr><td class="td-mono">heroProduct.currency</td><td class="td-mono" style="font-size:11px;opacity:0.7">String (ISO 4217)</td><td><span class="pill pill-optional">Optional</span></td><td>Currency for hero product price</td></tr>
+                  <tr><td class="td-mono">heroProduct.url</td><td class="td-mono" style="font-size:11px;opacity:0.7">URL</td><td><span class="pill pill-optional">Optional</span></td><td>Hero product page URL</td></tr>
+                  <tr><td class="td-mono">heroProduct.image</td><td class="td-mono" style="font-size:11px;opacity:0.7">URL</td><td><span class="pill pill-optional">Optional</span></td><td>Hero product image URL</td></tr>
+                  <tr><td class="td-mono">heroProduct.trustTier</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>Confidence of hero product information</td></tr>
+                  <tr><td class="td-mono">categories[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Product categories offered</td></tr>
+                  <tr><td class="td-mono">shippingPolicy.summary</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Brief shipping policy summary</td></tr>
+                  <tr><td class="td-mono">shippingPolicy.internationalShipping</td><td class="td-mono" style="font-size:11px;opacity:0.7">Boolean</td><td><span class="pill pill-optional">Optional</span></td><td>Whether international shipping offered</td></tr>
+                  <tr><td class="td-mono">shippingPolicy.countries[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>List of ISO 3166-1 shipping countries</td></tr>
+                  <tr><td class="td-mono">shippingPolicy.estimatedDelivery</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Typical delivery timeframe</td></tr>
+                  <tr><td class="td-mono">returnPolicy.summary</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Return policy summary</td></tr>
+                  <tr><td class="td-mono">returnPolicy.returnWindow</td><td class="td-mono" style="font-size:11px;opacity:0.7">Number</td><td><span class="pill pill-optional">Optional</span></td><td>Days from purchase to initiate return</td></tr>
+                  <tr><td class="td-mono">returnPolicy.refundType</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>Refund method: full, store-credit, or partial</td></tr>
+                  <tr><td class="td-mono">ecommerce.trustTier</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>Overall confidence level for ecommerce data</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Local Business Module -->
+        <div class="acc-item">
+          <button class="acc-trigger" onclick="toggleAccordion(event)">
+            <span class="acc-chevron">▶</span>
+            <span class="acc-title">Local Business</span>
+            <span class="acc-jsonkey">localBusiness</span>
+            <span class="acc-meta">37 fields</span>
+          </button>
+          <div class="acc-body">
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Field</th><th>Type</th><th>Status</th><th>Purpose</th></tr></thead>
+                <tbody>
+                  <tr><td class="td-mono">locations[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Physical business locations</td></tr>
+                  <tr><td class="td-mono">locations[].id</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-required">Required</span></td><td>Unique location identifier</td></tr>
+                  <tr><td class="td-mono">locations[].name</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Location name if different from brand</td></tr>
+                  <tr><td class="td-mono">locations[].address.streetAddress</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Street address line 1</td></tr>
+                  <tr><td class="td-mono">locations[].address.streetAddress2</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Street address line 2</td></tr>
+                  <tr><td class="td-mono">locations[].address.city</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>City name</td></tr>
+                  <tr><td class="td-mono">locations[].address.state</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>State or province</td></tr>
+                  <tr><td class="td-mono">locations[].address.postalCode</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>ZIP or postal code</td></tr>
+                  <tr><td class="td-mono">locations[].address.country</td><td class="td-mono" style="font-size:11px;opacity:0.7">String (ISO 3166-1)</td><td><span class="pill pill-optional">Optional</span></td><td>Country code</td></tr>
+                  <tr><td class="td-mono">locations[].phone</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Local phone number</td></tr>
+                  <tr><td class="td-mono">locations[].email</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Location email address</td></tr>
+                  <tr><td class="td-mono">locations[].coordinates.latitude</td><td class="td-mono" style="font-size:11px;opacity:0.7">Number</td><td><span class="pill pill-optional">Optional</span></td><td>GPS latitude</td></tr>
+                  <tr><td class="td-mono">locations[].coordinates.longitude</td><td class="td-mono" style="font-size:11px;opacity:0.7">Number</td><td><span class="pill pill-optional">Optional</span></td><td>GPS longitude</td></tr>
+                  <tr><td class="td-mono">locations[].hoursOfOperation.monday</td><td class="td-mono" style="font-size:11px;opacity:0.7">Object</td><td><span class="pill pill-optional">Optional</span></td><td>Monday hours open and close</td></tr>
+                  <tr><td class="td-mono">locations[].hoursOfOperation.tuesday</td><td class="td-mono" style="font-size:11px;opacity:0.7">Object</td><td><span class="pill pill-optional">Optional</span></td><td>Tuesday hours open and close</td></tr>
+                  <tr><td class="td-mono">locations[].hoursOfOperation.wednesday</td><td class="td-mono" style="font-size:11px;opacity:0.7">Object</td><td><span class="pill pill-optional">Optional</span></td><td>Wednesday hours open and close</td></tr>
+                  <tr><td class="td-mono">locations[].hoursOfOperation.thursday</td><td class="td-mono" style="font-size:11px;opacity:0.7">Object</td><td><span class="pill pill-optional">Optional</span></td><td>Thursday hours open and close</td></tr>
+                  <tr><td class="td-mono">locations[].hoursOfOperation.friday</td><td class="td-mono" style="font-size:11px;opacity:0.7">Object</td><td><span class="pill pill-optional">Optional</span></td><td>Friday hours open and close</td></tr>
+                  <tr><td class="td-mono">locations[].hoursOfOperation.saturday</td><td class="td-mono" style="font-size:11px;opacity:0.7">Object</td><td><span class="pill pill-optional">Optional</span></td><td>Saturday hours open and close</td></tr>
+                  <tr><td class="td-mono">locations[].hoursOfOperation.sunday</td><td class="td-mono" style="font-size:11px;opacity:0.7">Object</td><td><span class="pill pill-optional">Optional</span></td><td>Sunday hours open and close</td></tr>
+                  <tr><td class="td-mono">locations[].timezone</td><td class="td-mono" style="font-size:11px;opacity:0.7">String (IANA)</td><td><span class="pill pill-optional">Optional</span></td><td>IANA timezone identifier</td></tr>
+                  <tr><td class="td-mono">locations[].servicesOffered[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Types of services provided</td></tr>
+                  <tr><td class="td-mono">locations[].trustTier</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>Confidence of location data</td></tr>
+                  <tr><td class="td-mono">services[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Services offered by business</td></tr>
+                  <tr><td class="td-mono">services[].name</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-required">Required</span></td><td>Service name</td></tr>
+                  <tr><td class="td-mono">services[].description</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Service description</td></tr>
+                  <tr><td class="td-mono">services[].price</td><td class="td-mono" style="font-size:11px;opacity:0.7">Number</td><td><span class="pill pill-optional">Optional</span></td><td>Base service price</td></tr>
+                  <tr><td class="td-mono">services[].currency</td><td class="td-mono" style="font-size:11px;opacity:0.7">String (ISO 4217)</td><td><span class="pill pill-optional">Optional</span></td><td>Currency for service pricing</td></tr>
+                  <tr><td class="td-mono">services[].duration</td><td class="td-mono" style="font-size:11px;opacity:0.7">String (ISO 8601)</td><td><span class="pill pill-optional">Optional</span></td><td>Estimated service duration</td></tr>
+                  <tr><td class="td-mono">bookingOptions.online</td><td class="td-mono" style="font-size:11px;opacity:0.7">Boolean</td><td><span class="pill pill-optional">Optional</span></td><td>Can be booked online?</td></tr>
+                  <tr><td class="td-mono">bookingOptions.phone</td><td class="td-mono" style="font-size:11px;opacity:0.7">Boolean</td><td><span class="pill pill-optional">Optional</span></td><td>Can be booked by phone?</td></tr>
+                  <tr><td class="td-mono">bookingOptions.inPerson</td><td class="td-mono" style="font-size:11px;opacity:0.7">Boolean</td><td><span class="pill pill-optional">Optional</span></td><td>Can be booked in person?</td></tr>
+                  <tr><td class="td-mono">bookingOptions.bookingUrl</td><td class="td-mono" style="font-size:11px;opacity:0.7">URL</td><td><span class="pill pill-optional">Optional</span></td><td>URL to booking system</td></tr>
+                  <tr><td class="td-mono">bookingOptions.leadTime</td><td class="td-mono" style="font-size:11px;opacity:0.7">String (ISO 8601)</td><td><span class="pill pill-optional">Optional</span></td><td>Minimum advance booking time</td></tr>
+                  <tr><td class="td-mono">parking.available</td><td class="td-mono" style="font-size:11px;opacity:0.7">Boolean</td><td><span class="pill pill-optional">Optional</span></td><td>Is parking available?</td></tr>
+                  <tr><td class="td-mono">parking.type</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>Parking type: free, paid, permit, private</td></tr>
+                  <tr><td class="td-mono">parking.notes</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Additional parking notes</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Remaining 19 modules - collapsed, simplified display -->
+        <div class="acc-item">
+          <button class="acc-trigger" onclick="toggleAccordion(event)">
+            <span class="acc-chevron">▶</span>
+            <span class="acc-title">Content & Publishing</span>
+            <span class="acc-jsonkey">content</span>
+            <span class="acc-meta">10 fields</span>
+          </button>
+          <div class="acc-body">
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Field</th><th>Type</th><th>Status</th><th>Purpose</th></tr></thead>
+                <tbody>
+                  <tr><td class="td-mono">contentTypes[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Types of content published</td></tr>
+                  <tr><td class="td-mono">publicationFrequency</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>How often content is published</td></tr>
+                  <tr><td class="td-mono">topicsOfExpertise[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Editorial focus areas and expertise</td></tr>
+                  <tr><td class="td-mono">editorContact.name</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Editor name</td></tr>
+                  <tr><td class="td-mono">editorContact.email</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Editor email address</td></tr>
+                  <tr><td class="td-mono">editorContact.title</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Editor job title</td></tr>
+                  <tr><td class="td-mono">contentPolicy.url</td><td class="td-mono" style="font-size:11px;opacity:0.7">URL</td><td><span class="pill pill-optional">Optional</span></td><td>URL to editorial guidelines</td></tr>
+                  <tr><td class="td-mono">contentPolicy.correctionProcess</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>How corrections are made</td></tr>
+                  <tr><td class="td-mono">contentPolicy.retractionsPolicy</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Policy on retractions</td></tr>
+                  <tr><td class="td-mono">content.trustTier</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>Confidence in content accuracy</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- SaaS Module -->
+        <div class="acc-item">
+          <button class="acc-trigger" onclick="toggleAccordion(event)">
+            <span class="acc-chevron">▶</span>
+            <span class="acc-title">SaaS & Software</span>
+            <span class="acc-jsonkey">software</span>
+            <span class="acc-meta">15 fields</span>
+          </button>
+          <div class="acc-body">
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Field</th><th>Type</th><th>Status</th><th>Purpose</th></tr></thead>
+                <tbody>
+                  <tr><td class="td-mono">productName</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-required">Required</span></td><td>Official product name</td></tr>
+                  <tr><td class="td-mono">description</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Product description and use case</td></tr>
+                  <tr><td class="td-mono">features[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Key product features and capabilities</td></tr>
+                  <tr><td class="td-mono">pricing.model</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>Pricing model type</td></tr>
+                  <tr><td class="td-mono">pricing.currency</td><td class="td-mono" style="font-size:11px;opacity:0.7">String (ISO 4217)</td><td><span class="pill pill-optional">Optional</span></td><td>Currency for pricing</td></tr>
+                  <tr><td class="td-mono">pricing.tiers[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Pricing tier options</td></tr>
+                  <tr><td class="td-mono">pricing.tiers[].name</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Pricing tier name</td></tr>
+                  <tr><td class="td-mono">pricing.tiers[].price</td><td class="td-mono" style="font-size:11px;opacity:0.7">Number</td><td><span class="pill pill-optional">Optional</span></td><td>Monthly or annual price</td></tr>
+                  <tr><td class="td-mono">pricing.tiers[].features[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Included tier features</td></tr>
+                  <tr><td class="td-mono">pricing.tiers[].users</td><td class="td-mono" style="font-size:11px;opacity:0.7">Number</td><td><span class="pill pill-optional">Optional</span></td><td>Maximum users in tier</td></tr>
+                  <tr><td class="td-mono">requirements.platforms[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Supported platforms</td></tr>
+                  <tr><td class="td-mono">requirements.integrations[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Available third-party integrations</td></tr>
+                  <tr><td class="td-mono">requirements.apis</td><td class="td-mono" style="font-size:11px;opacity:0.7">Boolean</td><td><span class="pill pill-optional">Optional</span></td><td>API access available?</td></tr>
+                  <tr><td class="td-mono">targetAudience</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Target market description</td></tr>
+                  <tr><td class="td-mono">software.trustTier</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>Confidence in product specifications</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Note: The remaining 18 modules would follow the same pattern -->
+        <!-- For brevity in this HTML file, I'll add placeholders showing the structure is in place -->
+        <div class="acc-item">
+          <button class="acc-trigger" onclick="toggleAccordion(event)">
+            <span class="acc-chevron">▶</span>
+            <span class="acc-title">Events & Venues</span>
+            <span class="acc-jsonkey">events</span>
+            <span class="acc-meta">20 fields</span>
+          </button>
+          <div class="acc-body">
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Field</th><th>Type</th><th>Status</th><th>Purpose</th></tr></thead>
+                <tbody>
+                  <tr><td class="td-mono">venueType</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Type of venue</td></tr>
+                  <tr><td class="td-mono">capacity</td><td class="td-mono" style="font-size:11px;opacity:0.7">Number</td><td><span class="pill pill-optional">Optional</span></td><td>Total venue capacity</td></tr>
+                  <tr><td class="td-mono">location</td><td class="td-mono" style="font-size:11px;opacity:0.7">Object</td><td><span class="pill pill-optional">Optional</span></td><td>Venue address and coordinates</td></tr>
+                  <tr><td class="td-mono">events[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Upcoming or featured events</td></tr>
+                  <tr><td class="td-mono">events[].name</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-required">Required</span></td><td>Event name</td></tr>
+                  <tr><td class="td-mono">events[].date</td><td class="td-mono" style="font-size:11px;opacity:0.7">String (ISO 8601)</td><td><span class="pill pill-optional">Optional</span></td><td>Event date and time</td></tr>
+                  <tr><td class="td-mono">events[].description</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Event description</td></tr>
+                  <tr><td class="td-mono">events[].url</td><td class="td-mono" style="font-size:11px;opacity:0.7">URL</td><td><span class="pill pill-optional">Optional</span></td><td>Event page or ticketing URL</td></tr>
+                  <tr><td class="td-mono">events[].ticketPrice.min</td><td class="td-mono" style="font-size:11px;opacity:0.7">Number</td><td><span class="pill pill-optional">Optional</span></td><td>Minimum ticket price</td></tr>
+                  <tr><td class="td-mono">events[].ticketPrice.max</td><td class="td-mono" style="font-size:11px;opacity:0.7">Number</td><td><span class="pill pill-optional">Optional</span></td><td>Maximum ticket price</td></tr>
+                  <tr><td class="td-mono">events[].ticketPrice.currency</td><td class="td-mono" style="font-size:11px;opacity:0.7">String (ISO 4217)</td><td><span class="pill pill-optional">Optional</span></td><td>Ticket currency</td></tr>
+                  <tr><td class="td-mono">events[].capacity</td><td class="td-mono" style="font-size:11px;opacity:0.7">Number</td><td><span class="pill pill-optional">Optional</span></td><td>Event capacity</td></tr>
+                  <tr><td class="td-mono">events[].trustTier</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>Event data confidence</td></tr>
+                  <tr><td class="td-mono">accessibility.wheelchairAccessible</td><td class="td-mono" style="font-size:11px;opacity:0.7">Boolean</td><td><span class="pill pill-optional">Optional</span></td><td>Wheelchair accessible?</td></tr>
+                  <tr><td class="td-mono">accessibility.parkingAccessible</td><td class="td-mono" style="font-size:11px;opacity:0.7">Boolean</td><td><span class="pill pill-optional">Optional</span></td><td>Accessible parking available?</td></tr>
+                  <tr><td class="td-mono">accessibility.audioDescribed</td><td class="td-mono" style="font-size:11px;opacity:0.7">Boolean</td><td><span class="pill pill-optional">Optional</span></td><td>Audio described events?</td></tr>
+                  <tr><td class="td-mono">accessibility.captioned</td><td class="td-mono" style="font-size:11px;opacity:0.7">Boolean</td><td><span class="pill pill-optional">Optional</span></td><td>Captioned events?</td></tr>
+                  <tr><td class="td-mono">accessibility.serviceAnimalsAllowed</td><td class="td-mono" style="font-size:11px;opacity:0.7">Boolean</td><td><span class="pill pill-optional">Optional</span></td><td>Service animals allowed?</td></tr>
+                  <tr><td class="td-mono">accessibility.otherAccommodations[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Additional accommodations</td></tr>
+                  <tr><td class="td-mono">bookingSystem</td><td class="td-mono" style="font-size:11px;opacity:0.7">URL</td><td><span class="pill pill-optional">Optional</span></td><td>Ticket booking system URL</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="acc-item">
+          <button class="acc-trigger" onclick="toggleAccordion(event)">
+            <span class="acc-chevron">▶</span>
+            <span class="acc-title">Real Estate</span>
+            <span class="acc-jsonkey">realEstate</span>
+            <span class="acc-meta">20 fields</span>
+          </button>
+          <div class="acc-body">
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Field</th><th>Type</th><th>Status</th><th>Purpose</th></tr></thead>
+                <tbody>
+                  <tr><td class="td-mono">brokerLicense.license</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Broker license number</td></tr>
+                  <tr><td class="td-mono">brokerLicense.state</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>State of broker licensure</td></tr>
+                  <tr><td class="td-mono">brokerLicense.expiration</td><td class="td-mono" style="font-size:11px;opacity:0.7">String (Date)</td><td><span class="pill pill-optional">Optional</span></td><td>License expiration date</td></tr>
+                  <tr><td class="td-mono">brokerLicense.trustTier</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>Confidence in license validity</td></tr>
+                  <tr><td class="td-mono">agentLicenses[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Individual agent licenses</td></tr>
+                  <tr><td class="td-mono">agentLicenses[].name</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Agent name</td></tr>
+                  <tr><td class="td-mono">agentLicenses[].license</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Agent license number</td></tr>
+                  <tr><td class="td-mono">agentLicenses[].state</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>State of agent licensure</td></tr>
+                  <tr><td class="td-mono">agentLicenses[].specializations[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Agent specializations</td></tr>
+                  <tr><td class="td-mono">listings[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Current or recent listings</td></tr>
+                  <tr><td class="td-mono">listings[].address</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Property address</td></tr>
+                  <tr><td class="td-mono">listings[].price</td><td class="td-mono" style="font-size:11px;opacity:0.7">Number</td><td><span class="pill pill-optional">Optional</span></td><td>Property price</td></tr>
+                  <tr><td class="td-mono">listings[].currency</td><td class="td-mono" style="font-size:11px;opacity:0.7">String (ISO 4217)</td><td><span class="pill pill-optional">Optional</span></td><td>Currency for property price</td></tr>
+                  <tr><td class="td-mono">listings[].sqft</td><td class="td-mono" style="font-size:11px;opacity:0.7">Number</td><td><span class="pill pill-optional">Optional</span></td><td>Square feet of property</td></tr>
+                  <tr><td class="td-mono">listings[].bedrooms</td><td class="td-mono" style="font-size:11px;opacity:0.7">Number</td><td><span class="pill pill-optional">Optional</span></td><td>Number of bedrooms</td></tr>
+                  <tr><td class="td-mono">listings[].bathrooms</td><td class="td-mono" style="font-size:11px;opacity:0.7">Number</td><td><span class="pill pill-optional">Optional</span></td><td>Number of bathrooms</td></tr>
+                  <tr><td class="td-mono">listings[].url</td><td class="td-mono" style="font-size:11px;opacity:0.7">URL</td><td><span class="pill pill-optional">Optional</span></td><td>MLS or listing page URL</td></tr>
+                  <tr><td class="td-mono">listings[].trustTier</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>Listing data confidence</td></tr>
+                  <tr><td class="td-mono">specializations[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Real estate specializations</td></tr>
+                  <tr><td class="td-mono">serviceArea[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Geographic service areas</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="acc-item">
+          <button class="acc-trigger" onclick="toggleAccordion(event)">
+            <span class="acc-chevron">▶</span>
+            <span class="acc-title">Education</span>
+            <span class="acc-jsonkey">education</span>
+            <span class="acc-meta">19 fields</span>
+          </button>
+          <div class="acc-body">
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Field</th><th>Type</th><th>Status</th><th>Purpose</th></tr></thead>
+                <tbody>
+                  <tr><td class="td-mono">accreditation[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Institutional accreditations</td></tr>
+                  <tr><td class="td-mono">accreditation[].body</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-required">Required</span></td><td>Accrediting body name</td></tr>
+                  <tr><td class="td-mono">accreditation[].credential</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Accreditation credential</td></tr>
+                  <tr><td class="td-mono">accreditation[].url</td><td class="td-mono" style="font-size:11px;opacity:0.7">URL</td><td><span class="pill pill-optional">Optional</span></td><td>Verification URL</td></tr>
+                  <tr><td class="td-mono">accreditation[].expirationDate</td><td class="td-mono" style="font-size:11px;opacity:0.7">String (Date)</td><td><span class="pill pill-optional">Optional</span></td><td>Accreditation expiration date</td></tr>
+                  <tr><td class="td-mono">accreditation[].trustTier</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>Accreditation confidence</td></tr>
+                  <tr><td class="td-mono">courses[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Degree programs or courses</td></tr>
+                  <tr><td class="td-mono">courses[].name</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-required">Required</span></td><td>Course or program name</td></tr>
+                  <tr><td class="td-mono">courses[].level</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>Degree level</td></tr>
+                  <tr><td class="td-mono">courses[].description</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Course description</td></tr>
+                  <tr><td class="td-mono">courses[].duration</td><td class="td-mono" style="font-size:11px;opacity:0.7">String (ISO 8601)</td><td><span class="pill pill-optional">Optional</span></td><td>Typical course duration</td></tr>
+                  <tr><td class="td-mono">courses[].credits</td><td class="td-mono" style="font-size:11px;opacity:0.7">Number</td><td><span class="pill pill-optional">Optional</span></td><td>Credit hours</td></tr>
+                  <tr><td class="td-mono">courses[].url</td><td class="td-mono" style="font-size:11px;opacity:0.7">URL</td><td><span class="pill pill-optional">Optional</span></td><td>Course page URL</td></tr>
+                  <tr><td class="td-mono">studentPopulation</td><td class="td-mono" style="font-size:11px;opacity:0.7">Number</td><td><span class="pill pill-optional">Optional</span></td><td>Total student count</td></tr>
+                  <tr><td class="td-mono">facultySize</td><td class="td-mono" style="font-size:11px;opacity:0.7">Number</td><td><span class="pill pill-optional">Optional</span></td><td>Number of faculty</td></tr>
+                  <tr><td class="td-mono">tuition.domestic</td><td class="td-mono" style="font-size:11px;opacity:0.7">Number</td><td><span class="pill pill-optional">Optional</span></td><td>Domestic student tuition</td></tr>
+                  <tr><td class="td-mono">tuition.international</td><td class="td-mono" style="font-size:11px;opacity:0.7">Number</td><td><span class="pill pill-optional">Optional</span></td><td>International student tuition</td></tr>
+                  <tr><td class="td-mono">tuition.currency</td><td class="td-mono" style="font-size:11px;opacity:0.7">String (ISO 4217)</td><td><span class="pill pill-optional">Optional</span></td><td>Tuition currency</td></tr>
+                  <tr><td class="td-mono">tuition.period</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>Tuition billing period</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="acc-item">
+          <button class="acc-trigger" onclick="toggleAccordion(event)">
+            <span class="acc-chevron">▶</span>
+            <span class="acc-title">Creative & Artist</span>
+            <span class="acc-jsonkey">creative</span>
+            <span class="acc-meta">25 fields</span>
+          </button>
+          <div class="acc-body">
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Field</th><th>Type</th><th>Status</th><th>Purpose</th></tr></thead>
+                <tbody>
+                  <tr><td class="td-mono">portfolio[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Portfolio of creative works</td></tr>
+                  <tr><td class="td-mono">portfolio[].title</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-required">Required</span></td><td>Work title</td></tr>
+                  <tr><td class="td-mono">portfolio[].description</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Work description</td></tr>
+                  <tr><td class="td-mono">portfolio[].year</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Year completed</td></tr>
+                  <tr><td class="td-mono">portfolio[].url</td><td class="td-mono" style="font-size:11px;opacity:0.7">URL</td><td><span class="pill pill-optional">Optional</span></td><td>Link to work</td></tr>
+                  <tr><td class="td-mono">portfolio[].imageUrl</td><td class="td-mono" style="font-size:11px;opacity:0.7">URL</td><td><span class="pill pill-optional">Optional</span></td><td>Preview image</td></tr>
+                  <tr><td class="td-mono">portfolio[].medium</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Creative medium or format</td></tr>
+                  <tr><td class="td-mono">mediums[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Creative disciplines</td></tr>
+                  <tr><td class="td-mono">awards[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Awards and recognitions</td></tr>
+                  <tr><td class="td-mono">awards[].name</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-required">Required</span></td><td>Award name</td></tr>
+                  <tr><td class="td-mono">awards[].year</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Award year</td></tr>
+                  <tr><td class="td-mono">awards[].organization</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Awarding organization</td></tr>
+                  <tr><td class="td-mono">licensing.terms</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Licensing terms</td></tr>
+                  <tr><td class="td-mono">licensing.url</td><td class="td-mono" style="font-size:11px;opacity:0.7">URL</td><td><span class="pill pill-optional">Optional</span></td><td>Licensing agreement URL</td></tr>
+                  <tr><td class="td-mono">licensing.availableFor[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Permitted uses</td></tr>
+                  <tr><td class="td-mono">commissions.acceptingCommissions</td><td class="td-mono" style="font-size:11px;opacity:0.7">Boolean</td><td><span class="pill pill-optional">Optional</span></td><td>Accepting commissions?</td></tr>
+                  <tr><td class="td-mono">commissions.rateRange.min</td><td class="td-mono" style="font-size:11px;opacity:0.7">Number</td><td><span class="pill pill-optional">Optional</span></td><td>Minimum commission rate</td></tr>
+                  <tr><td class="td-mono">commissions.rateRange.max</td><td class="td-mono" style="font-size:11px;opacity:0.7">Number</td><td><span class="pill pill-optional">Optional</span></td><td>Maximum commission rate</td></tr>
+                  <tr><td class="td-mono">commissions.rateRange.currency</td><td class="td-mono" style="font-size:11px;opacity:0.7">String (ISO 4217)</td><td><span class="pill pill-optional">Optional</span></td><td>Currency for rates</td></tr>
+                  <tr><td class="td-mono">commissions.contactEmail</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Commission contact email</td></tr>
+                  <tr><td class="td-mono">exhibitions[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Exhibitions and showings</td></tr>
+                  <tr><td class="td-mono">exhibitions[].name</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-required">Required</span></td><td>Exhibition name</td></tr>
+                  <tr><td class="td-mono">exhibitions[].date</td><td class="td-mono" style="font-size:11px;opacity:0.7">String (ISO 8601)</td><td><span class="pill pill-optional">Optional</span></td><td>Exhibition date</td></tr>
+                  <tr><td class="td-mono">exhibitions[].location</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Exhibition location</td></tr>
+                  <tr><td class="td-mono">exhibitions[].url</td><td class="td-mono" style="font-size:11px;opacity:0.7">URL</td><td><span class="pill pill-optional">Optional</span></td><td>Exhibition URL</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="acc-item">
+          <button class="acc-trigger" onclick="toggleAccordion(event)">
+            <span class="acc-chevron">▶</span>
+            <span class="acc-title">Nonprofit</span>
+            <span class="acc-jsonkey">nonprofit</span>
+            <span class="acc-meta">26 fields</span>
+          </button>
+          <div class="acc-body">
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Field</th><th>Type</th><th>Status</th><th>Purpose</th></tr></thead>
+                <tbody>
+                  <tr><td class="td-mono">taxExemption.status</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>IRS tax exemption status</td></tr>
+                  <tr><td class="td-mono">taxExemption.ein</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Employer Identification Number</td></tr>
+                  <tr><td class="td-mono">taxExemption.ein_verified</td><td class="td-mono" style="font-size:11px;opacity:0.7">Boolean</td><td><span class="pill pill-optional">Optional</span></td><td>Is EIN verified?</td></tr>
+                  <tr><td class="td-mono">taxExemption.url</td><td class="td-mono" style="font-size:11px;opacity:0.7">URL</td><td><span class="pill pill-optional">Optional</span></td><td>IRS determination letter URL</td></tr>
+                  <tr><td class="td-mono">taxExemption.expirationDate</td><td class="td-mono" style="font-size:11px;opacity:0.7">String (Date)</td><td><span class="pill pill-optional">Optional</span></td><td>Tax exemption expiration</td></tr>
+                  <tr><td class="td-mono">taxExemption.trustTier</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>Tax status confidence</td></tr>
+                  <tr><td class="td-mono">mission</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Nonprofit mission statement</td></tr>
+                  <tr><td class="td-mono">programs[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Programs and services offered</td></tr>
+                  <tr><td class="td-mono">programs[].name</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-required">Required</span></td><td>Program name</td></tr>
+                  <tr><td class="td-mono">programs[].description</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Program description</td></tr>
+                  <tr><td class="td-mono">programs[].beneficiaries</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Who program benefits</td></tr>
+                  <tr><td class="td-mono">programs[].annualBudget</td><td class="td-mono" style="font-size:11px;opacity:0.7">Number</td><td><span class="pill pill-optional">Optional</span></td><td>Annual program budget</td></tr>
+                  <tr><td class="td-mono">programs[].trustTier</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>Program data confidence</td></tr>
+                  <tr><td class="td-mono">impactMetrics[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Key impact statistics</td></tr>
+                  <tr><td class="td-mono">impactMetrics[].metric</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-required">Required</span></td><td>What is being measured</td></tr>
+                  <tr><td class="td-mono">impactMetrics[].value</td><td class="td-mono" style="font-size:11px;opacity:0.7">Number</td><td><span class="pill pill-optional">Optional</span></td><td>Metric value</td></tr>
+                  <tr><td class="td-mono">impactMetrics[].unit</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Unit of measurement</td></tr>
+                  <tr><td class="td-mono">impactMetrics[].year</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Year of measurement</td></tr>
+                  <tr><td class="td-mono">impactMetrics[].trustTier</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>Metric confidence</td></tr>
+                  <tr><td class="td-mono">financials.annualRevenue</td><td class="td-mono" style="font-size:11px;opacity:0.7">Number</td><td><span class="pill pill-optional">Optional</span></td><td>Annual revenue amount</td></tr>
+                  <tr><td class="td-mono">financials.currency</td><td class="td-mono" style="font-size:11px;opacity:0.7">String (ISO 4217)</td><td><span class="pill pill-optional">Optional</span></td><td>Financial currency</td></tr>
+                  <tr><td class="td-mono">financials.year</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Financial reporting year</td></tr>
+                  <tr><td class="td-mono">financials.expenseRatio</td><td class="td-mono" style="font-size:11px;opacity:0.7">Number</td><td><span class="pill pill-optional">Optional</span></td><td>Percentage spent on programs</td></tr>
+                  <tr><td class="td-mono">financials.auditedFinancials</td><td class="td-mono" style="font-size:11px;opacity:0.7">URL</td><td><span class="pill pill-optional">Optional</span></td><td>Audited financial statements URL</td></tr>
+                  <tr><td class="td-mono">financials.trustTier</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>Financial data confidence</td></tr>
+                  <tr><td class="td-mono">leadership[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Executive leadership team</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="acc-item">
+          <button class="acc-trigger" onclick="toggleAccordion(event)">
+            <span class="acc-chevron">▶</span>
+            <span class="acc-title">Government</span>
+            <span class="acc-jsonkey">government</span>
+            <span class="acc-meta">15 fields</span>
+          </button>
+          <div class="acc-body">
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Field</th><th>Type</th><th>Status</th><th>Purpose</th></tr></thead>
+                <tbody>
+                  <tr><td class="td-mono">jurisdiction.type</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>Jurisdiction type</td></tr>
+                  <tr><td class="td-mono">jurisdiction.territory</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Territory name or FIPS code</td></tr>
+                  <tr><td class="td-mono">jurisdiction.population</td><td class="td-mono" style="font-size:11px;opacity:0.7">Number</td><td><span class="pill pill-optional">Optional</span></td><td>Population count</td></tr>
+                  <tr><td class="td-mono">jurisdiction.area.value</td><td class="td-mono" style="font-size:11px;opacity:0.7">Number</td><td><span class="pill pill-optional">Optional</span></td><td>Geographic area size</td></tr>
+                  <tr><td class="td-mono">jurisdiction.area.unit</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>Area unit: square-miles or kilometers</td></tr>
+                  <tr><td class="td-mono">services[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Public services offered</td></tr>
+                  <tr><td class="td-mono">services[].name</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-required">Required</span></td><td>Service name</td></tr>
+                  <tr><td class="td-mono">services[].description</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Service description</td></tr>
+                  <tr><td class="td-mono">services[].url</td><td class="td-mono" style="font-size:11px;opacity:0.7">URL</td><td><span class="pill pill-optional">Optional</span></td><td>Service page or application URL</td></tr>
+                  <tr><td class="td-mono">services[].eligibility</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Eligibility requirements</td></tr>
+                  <tr><td class="td-mono">publicRecords.budgetUrl</td><td class="td-mono" style="font-size:11px;opacity:0.7">URL</td><td><span class="pill pill-optional">Optional</span></td><td>Public budget URL</td></tr>
+                  <tr><td class="td-mono">publicRecords.meetingMinutes</td><td class="td-mono" style="font-size:11px;opacity:0.7">URL</td><td><span class="pill pill-optional">Optional</span></td><td>Meeting minutes URL</td></tr>
+                  <tr><td class="td-mono">publicRecords.dataPortal</td><td class="td-mono" style="font-size:11px;opacity:0.7">URL</td><td><span class="pill pill-optional">Optional</span></td><td>Data portal URL</td></tr>
+                  <tr><td class="td-mono">publicRecords.foiaContact</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>FOIA request email</td></tr>
+                  <tr><td class="td-mono">electedOfficials[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Elected or appointed officials</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="acc-item">
+          <button class="acc-trigger" onclick="toggleAccordion(event)">
+            <span class="acc-chevron">▶</span>
+            <span class="acc-title">Science & Research</span>
+            <span class="acc-jsonkey">science</span>
+            <span class="acc-meta">27 fields</span>
+          </button>
+          <div class="acc-body">
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Field</th><th>Type</th><th>Status</th><th>Purpose</th></tr></thead>
+                <tbody>
+                  <tr><td class="td-mono">institution</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Research institution affiliation</td></tr>
+                  <tr><td class="td-mono">focusAreas[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Research focus areas</td></tr>
+                  <tr><td class="td-mono">studies[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Active or recent studies</td></tr>
+                  <tr><td class="td-mono">studies[].title</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-required">Required</span></td><td>Study title</td></tr>
+                  <tr><td class="td-mono">studies[].description</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Study description</td></tr>
+                  <tr><td class="td-mono">studies[].status</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>Study status</td></tr>
+                  <tr><td class="td-mono">studies[].principalInvestigator</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Lead researcher name</td></tr>
+                  <tr><td class="td-mono">studies[].publicationUrl</td><td class="td-mono" style="font-size:11px;opacity:0.7">URL</td><td><span class="pill pill-optional">Optional</span></td><td>Published paper URL</td></tr>
+                  <tr><td class="td-mono">studies[].clinicalTrialId</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>ClinicalTrials.gov ID</td></tr>
+                  <tr><td class="td-mono">studies[].year</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Study year</td></tr>
+                  <tr><td class="td-mono">studies[].trustTier</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>Study data confidence</td></tr>
+                  <tr><td class="td-mono">publications[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Peer-reviewed publications</td></tr>
+                  <tr><td class="td-mono">publications[].title</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-required">Required</span></td><td>Publication title</td></tr>
+                  <tr><td class="td-mono">publications[].authors[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Author names</td></tr>
+                  <tr><td class="td-mono">publications[].journal</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Journal name</td></tr>
+                  <tr><td class="td-mono">publications[].year</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Publication year</td></tr>
+                  <tr><td class="td-mono">publications[].doi</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Digital Object Identifier</td></tr>
+                  <tr><td class="td-mono">publications[].url</td><td class="td-mono" style="font-size:11px;opacity:0.7">URL</td><td><span class="pill pill-optional">Optional</span></td><td>Publication URL</td></tr>
+                  <tr><td class="td-mono">publications[].peerReviewed</td><td class="td-mono" style="font-size:11px;opacity:0.7">Boolean</td><td><span class="pill pill-optional">Optional</span></td><td>Is peer-reviewed?</td></tr>
+                  <tr><td class="td-mono">publications[].trustTier</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>Publication confidence</td></tr>
+                  <tr><td class="td-mono">clinicalTrials[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Active clinical trials</td></tr>
+                  <tr><td class="td-mono">clinicalTrials[].name</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-required">Required</span></td><td>Trial name</td></tr>
+                  <tr><td class="td-mono">clinicalTrials[].phase</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>Trial phase</td></tr>
+                  <tr><td class="td-mono">clinicalTrials[].clinicalTrialId</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>ClinicalTrials.gov ID</td></tr>
+                  <tr><td class="td-mono">clinicalTrials[].status</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>Trial status</td></tr>
+                  <tr><td class="td-mono">clinicalTrials[].url</td><td class="td-mono" style="font-size:11px;opacity:0.7">URL</td><td><span class="pill pill-optional">Optional</span></td><td>ClinicalTrials.gov URL</td></tr>
+                  <tr><td class="td-mono">clinicalTrials[].trustTier</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>Trial data confidence</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="acc-item">
+          <button class="acc-trigger" onclick="toggleAccordion(event)">
+            <span class="acc-chevron">▶</span>
+            <span class="acc-title">Business Entity & IP</span>
+            <span class="acc-jsonkey">businessIp</span>
+            <span class="acc-meta">39 fields</span>
+          </button>
+          <div class="acc-body">
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Field</th><th>Type</th><th>Status</th><th>Purpose</th></tr></thead>
+                <tbody>
+                  <tr><td class="td-mono">legalEntity.type</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>Legal business structure type</td></tr>
+                  <tr><td class="td-mono">legalEntity.ein</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Employer Identification Number</td></tr>
+                  <tr><td class="td-mono">legalEntity.incorporationDate</td><td class="td-mono" style="font-size:11px;opacity:0.7">String (Date)</td><td><span class="pill pill-optional">Optional</span></td><td>Date of incorporation</td></tr>
+                  <tr><td class="td-mono">legalEntity.state</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>State of incorporation</td></tr>
+                  <tr><td class="td-mono">legalEntity.businessRegistry</td><td class="td-mono" style="font-size:11px;opacity:0.7">URL</td><td><span class="pill pill-optional">Optional</span></td><td>Business registry entry URL</td></tr>
+                  <tr><td class="td-mono">legalEntity.trustTier</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>Entity data confidence</td></tr>
+                  <tr><td class="td-mono">patents[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Patents held</td></tr>
+                  <tr><td class="td-mono">patents[].title</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-required">Required</span></td><td>Patent title</td></tr>
+                  <tr><td class="td-mono">patents[].patentNumber</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Patent number</td></tr>
+                  <tr><td class="td-mono">patents[].patentOffice</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Patent office issuer</td></tr>
+                  <tr><td class="td-mono">patents[].filingDate</td><td class="td-mono" style="font-size:11px;opacity:0.7">String (Date)</td><td><span class="pill pill-optional">Optional</span></td><td>Patent filing date</td></tr>
+                  <tr><td class="td-mono">patents[].issuanceDate</td><td class="td-mono" style="font-size:11px;opacity:0.7">String (Date)</td><td><span class="pill pill-optional">Optional</span></td><td>Patent issuance date</td></tr>
+                  <tr><td class="td-mono">patents[].expirationDate</td><td class="td-mono" style="font-size:11px;opacity:0.7">String (Date)</td><td><span class="pill pill-optional">Optional</span></td><td>Patent expiration date</td></tr>
+                  <tr><td class="td-mono">patents[].status</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>Patent status</td></tr>
+                  <tr><td class="td-mono">patents[].url</td><td class="td-mono" style="font-size:11px;opacity:0.7">URL</td><td><span class="pill pill-optional">Optional</span></td><td>Patent office URL</td></tr>
+                  <tr><td class="td-mono">patents[].trustTier</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>Patent data confidence</td></tr>
+                  <tr><td class="td-mono">trademarks[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Registered trademarks</td></tr>
+                  <tr><td class="td-mono">trademarks[].mark</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-required">Required</span></td><td>Trademark text or image</td></tr>
+                  <tr><td class="td-mono">trademarks[].registrationNumber</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Trademark registration number</td></tr>
+                  <tr><td class="td-mono">trademarks[].office</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Trademark office</td></tr>
+                  <tr><td class="td-mono">trademarks[].registrationDate</td><td class="td-mono" style="font-size:11px;opacity:0.7">String (Date)</td><td><span class="pill pill-optional">Optional</span></td><td>Registration date</td></tr>
+                  <tr><td class="td-mono">trademarks[].status</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>Trademark status</td></tr>
+                  <tr><td class="td-mono">trademarks[].classes[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Nice classification codes</td></tr>
+                  <tr><td class="td-mono">trademarks[].url</td><td class="td-mono" style="font-size:11px;opacity:0.7">URL</td><td><span class="pill pill-optional">Optional</span></td><td>Trademark office URL</td></tr>
+                  <tr><td class="td-mono">trademarks[].trustTier</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>Trademark confidence</td></tr>
+                  <tr><td class="td-mono">copyrights[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Copyright registrations</td></tr>
+                  <tr><td class="td-mono">copyrights[].title</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-required">Required</span></td><td>Copyright title</td></tr>
+                  <tr><td class="td-mono">copyrights[].registrationNumber</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Registration number</td></tr>
+                  <tr><td class="td-mono">copyrights[].registrationDate</td><td class="td-mono" style="font-size:11px;opacity:0.7">String (Date)</td><td><span class="pill pill-optional">Optional</span></td><td>Registration date</td></tr>
+                  <tr><td class="td-mono">copyrights[].authorsOrOwners[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Authors or copyright owners</td></tr>
+                  <tr><td class="td-mono">copyrights[].url</td><td class="td-mono" style="font-size:11px;opacity:0.7">URL</td><td><span class="pill pill-optional">Optional</span></td><td>Copyright office URL</td></tr>
+                  <tr><td class="td-mono">copyrights[].trustTier</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>Copyright confidence</td></tr>
+                  <tr><td class="td-mono">permits[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Regulatory permits and licenses</td></tr>
+                  <tr><td class="td-mono">permits[].type</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Permit type</td></tr>
+                  <tr><td class="td-mono">permits[].issuer</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Issuing agency</td></tr>
+                  <tr><td class="td-mono">permits[].permitNumber</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Permit number</td></tr>
+                  <tr><td class="td-mono">permits[].issuanceDate</td><td class="td-mono" style="font-size:11px;opacity:0.7">String (Date)</td><td><span class="pill pill-optional">Optional</span></td><td>Permit issuance date</td></tr>
+                  <tr><td class="td-mono">permits[].expirationDate</td><td class="td-mono" style="font-size:11px;opacity:0.7">String (Date)</td><td><span class="pill pill-optional">Optional</span></td><td>Permit expiration date</td></tr>
+                  <tr><td class="td-mono">permits[].trustTier</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>Permit data confidence</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="acc-item">
+          <button class="acc-trigger" onclick="toggleAccordion(event)">
+            <span class="acc-chevron">▶</span>
+            <span class="acc-title">Person</span>
+            <span class="acc-jsonkey">person</span>
+            <span class="acc-meta">18 fields</span>
+          </button>
+          <div class="acc-body">
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Field</th><th>Type</th><th>Status</th><th>Purpose</th></tr></thead>
+                <tbody>
+                  <tr><td class="td-mono">fullName</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-required">Required</span></td><td>Full legal name</td></tr>
+                  <tr><td class="td-mono">bioSummary</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Biographical summary</td></tr>
+                  <tr><td class="td-mono">birthDate</td><td class="td-mono" style="font-size:11px;opacity:0.7">String (YYYY-MM-DD or YYYY)</td><td><span class="pill pill-optional">Optional</span></td><td>Date or year of birth</td></tr>
+                  <tr><td class="td-mono">birthPlace</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Place of birth</td></tr>
+                  <tr><td class="td-mono">deathDate</td><td class="td-mono" style="font-size:11px;opacity:0.7">String (YYYY-MM-DD or YYYY)</td><td><span class="pill pill-optional">Optional</span></td><td>Date or year of death</td></tr>
+                  <tr><td class="td-mono">nationality[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Citizenship or nationality</td></tr>
+                  <tr><td class="td-mono">notableQuotes[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Signature or frequently quoted statements</td></tr>
+                  <tr><td class="td-mono">notableQuotes[].quote</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-required">Required</span></td><td>Quoted text</td></tr>
+                  <tr><td class="td-mono">notableQuotes[].context</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>When/where quote was said</td></tr>
+                  <tr><td class="td-mono">notableQuotes[].source</td><td class="td-mono" style="font-size:11px;opacity:0.7">URL</td><td><span class="pill pill-optional">Optional</span></td><td>Source URL or citation</td></tr>
+                  <tr><td class="td-mono">notableQuotes[].year</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Quote year</td></tr>
+                  <tr><td class="td-mono">notableQuotes[].trustTier</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>Quote confidence</td></tr>
+                  <tr><td class="td-mono">achievements[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Major accomplishments</td></tr>
+                  <tr><td class="td-mono">affiliations[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Professional affiliations</td></tr>
+                  <tr><td class="td-mono">affiliations[].organization</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-required">Required</span></td><td>Organization name</td></tr>
+                  <tr><td class="td-mono">affiliations[].role</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Role or title</td></tr>
+                  <tr><td class="td-mono">affiliations[].period</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Date range of affiliation</td></tr>
+                  <tr><td class="td-mono">affiliations[].url</td><td class="td-mono" style="font-size:11px;opacity:0.7">URL</td><td><span class="pill pill-optional">Optional</span></td><td>Affiliation URL</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="acc-item">
+          <button class="acc-trigger" onclick="toggleAccordion(event)">
+            <span class="acc-chevron">▶</span>
+            <span class="acc-title">Healthcare</span>
+            <span class="acc-jsonkey">healthcare</span>
+            <span class="acc-meta">30 fields</span>
+          </button>
+          <div class="acc-body">
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Field</th><th>Type</th><th>Status</th><th>Purpose</th></tr></thead>
+                <tbody>
+                  <tr><td class="td-mono">providers[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Healthcare providers or practitioners</td></tr>
+                  <tr><td class="td-mono">providers[].name</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-required">Required</span></td><td>Provider name</td></tr>
+                  <tr><td class="td-mono">providers[].title</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Medical credential (MD, DDS, APRN)</td></tr>
+                  <tr><td class="td-mono">providers[].specializations[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Medical specialties</td></tr>
+                  <tr><td class="td-mono">providers[].licenseNumber</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>License number</td></tr>
+                  <tr><td class="td-mono">providers[].licenseState</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>License state</td></tr>
+                  <tr><td class="td-mono">providers[].boardCertified</td><td class="td-mono" style="font-size:11px;opacity:0.7">Boolean</td><td><span class="pill pill-optional">Optional</span></td><td>Is board certified?</td></tr>
+                  <tr><td class="td-mono">providers[].boardCertification</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Board name if certified</td></tr>
+                  <tr><td class="td-mono">providers[].yearsInPractice</td><td class="td-mono" style="font-size:11px;opacity:0.7">Number</td><td><span class="pill pill-optional">Optional</span></td><td>Years in practice</td></tr>
+                  <tr><td class="td-mono">providers[].languages[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Languages spoken</td></tr>
+                  <tr><td class="td-mono">providers[].trustTier</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>Provider data confidence</td></tr>
+                  <tr><td class="td-mono">services[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Healthcare services offered</td></tr>
+                  <tr><td class="td-mono">services[].name</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-required">Required</span></td><td>Service name</td></tr>
+                  <tr><td class="td-mono">services[].description</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Service description</td></tr>
+                  <tr><td class="td-mono">services[].acceptsNewPatients</td><td class="td-mono" style="font-size:11px;opacity:0.7">Boolean</td><td><span class="pill pill-optional">Optional</span></td><td>Accepts new patients?</td></tr>
+                  <tr><td class="td-mono">services[].url</td><td class="td-mono" style="font-size:11px;opacity:0.7">URL</td><td><span class="pill pill-optional">Optional</span></td><td>Service page URL</td></tr>
+                  <tr><td class="td-mono">insurance[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Accepted insurance plans</td></tr>
+                  <tr><td class="td-mono">appointments.online</td><td class="td-mono" style="font-size:11px;opacity:0.7">Boolean</td><td><span class="pill pill-optional">Optional</span></td><td>Online booking available?</td></tr>
+                  <tr><td class="td-mono">appointments.phone</td><td class="td-mono" style="font-size:11px;opacity:0.7">Boolean</td><td><span class="pill pill-optional">Optional</span></td><td>Phone booking available?</td></tr>
+                  <tr><td class="td-mono">appointments.inPerson</td><td class="td-mono" style="font-size:11px;opacity:0.7">Boolean</td><td><span class="pill pill-optional">Optional</span></td><td>In-person booking available?</td></tr>
+                  <tr><td class="td-mono">appointments.url</td><td class="td-mono" style="font-size:11px;opacity:0.7">URL</td><td><span class="pill pill-optional">Optional</span></td><td>Booking system URL</td></tr>
+                  <tr><td class="td-mono">appointments.waitTime</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Typical appointment wait time</td></tr>
+                  <tr><td class="td-mono">facilities.accreditations[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Facility accreditations</td></tr>
+                  <tr><td class="td-mono">facilities.certifications[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Facility certifications</td></tr>
+                  <tr><td class="td-mono">facilities.hipaaCompliant</td><td class="td-mono" style="font-size:11px;opacity:0.7">Boolean</td><td><span class="pill pill-optional">Optional</span></td><td>HIPAA compliant?</td></tr>
+                  <tr><td class="td-mono">patientReviews.source</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Review platform name</td></tr>
+                  <tr><td class="td-mono">patientReviews.rating</td><td class="td-mono" style="font-size:11px;opacity:0.7">Number</td><td><span class="pill pill-optional">Optional</span></td><td>Star rating (1-5)</td></tr>
+                  <tr><td class="td-mono">patientReviews.reviewCount</td><td class="td-mono" style="font-size:11px;opacity:0.7">Number</td><td><span class="pill pill-optional">Optional</span></td><td>Total review count</td></tr>
+                  <tr><td class="td-mono">patientReviews.url</td><td class="td-mono" style="font-size:11px;opacity:0.7">URL</td><td><span class="pill pill-optional">Optional</span></td><td>Reviews page URL</td></tr>
+                  <tr><td class="td-mono">patientReviews.trustTier</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>Review data confidence</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="acc-item">
+          <button class="acc-trigger" onclick="toggleAccordion(event)">
+            <span class="acc-chevron">▶</span>
+            <span class="acc-title">Financial Services</span>
+            <span class="acc-jsonkey">financial</span>
+            <span class="acc-meta">19 fields</span>
+          </button>
+          <div class="acc-body">
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Field</th><th>Type</th><th>Status</th><th>Purpose</th></tr></thead>
+                <tbody>
+                  <tr><td class="td-mono">institutionType</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Type of financial institution</td></tr>
+                  <tr><td class="td-mono">regulatoryStatus.fdic_Insured</td><td class="td-mono" style="font-size:11px;opacity:0.7">Boolean</td><td><span class="pill pill-optional">Optional</span></td><td>FDIC insurance status</td></tr>
+                  <tr><td class="td-mono">regulatoryStatus.fdic_CertNumber</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>FDIC certificate number</td></tr>
+                  <tr><td class="td-mono">regulatoryStatus.sec_Registered</td><td class="td-mono" style="font-size:11px;opacity:0.7">Boolean</td><td><span class="pill pill-optional">Optional</span></td><td>SEC registration status</td></tr>
+                  <tr><td class="td-mono">regulatoryStatus.sec_CRD</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Central Registration Depository number</td></tr>
+                  <tr><td class="td-mono">regulatoryStatus.url</td><td class="td-mono" style="font-size:11px;opacity:0.7">URL</td><td><span class="pill pill-optional">Optional</span></td><td>Regulatory filing URL</td></tr>
+                  <tr><td class="td-mono">regulatoryStatus.trustTier</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>Regulatory data confidence</td></tr>
+                  <tr><td class="td-mono">products[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Financial products offered</td></tr>
+                  <tr><td class="td-mono">products[].name</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-required">Required</span></td><td>Product name</td></tr>
+                  <tr><td class="td-mono">products[].type</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>Product type</td></tr>
+                  <tr><td class="td-mono">products[].description</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Product description</td></tr>
+                  <tr><td class="td-mono">products[].apy</td><td class="td-mono" style="font-size:11px;opacity:0.7">Number</td><td><span class="pill pill-optional">Optional</span></td><td>Annual Percentage Yield</td></tr>
+                  <tr><td class="td-mono">products[].apr</td><td class="td-mono" style="font-size:11px;opacity:0.7">Number</td><td><span class="pill pill-optional">Optional</span></td><td>Annual Percentage Rate</td></tr>
+                  <tr><td class="td-mono">products[].features[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Product features</td></tr>
+                  <tr><td class="td-mono">advisors[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Financial advisors or representatives</td></tr>
+                  <tr><td class="td-mono">fees[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Fee schedules and pricing</td></tr>
+                  <tr><td class="td-mono">fees[].description</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-required">Required</span></td><td>Fee description</td></tr>
+                  <tr><td class="td-mono">fees[].amount</td><td class="td-mono" style="font-size:11px;opacity:0.7">Number</td><td><span class="pill pill-optional">Optional</span></td><td>Fee amount</td></tr>
+                  <tr><td class="td-mono">fees[].frequency</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>Fee frequency</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="acc-item">
+          <button class="acc-trigger" onclick="toggleAccordion(event)">
+            <span class="acc-chevron">▶</span>
+            <span class="acc-title">Legal Services</span>
+            <span class="acc-jsonkey">legal</span>
+            <span class="acc-meta">26 fields</span>
+          </button>
+          <div class="acc-body">
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Field</th><th>Type</th><th>Status</th><th>Purpose</th></tr></thead>
+                <tbody>
+                  <tr><td class="td-mono">lawFirmType</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Size and structure of practice</td></tr>
+                  <tr><td class="td-mono">attorneys[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Attorneys and legal professionals</td></tr>
+                  <tr><td class="td-mono">attorneys[].name</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-required">Required</span></td><td>Attorney name</td></tr>
+                  <tr><td class="td-mono">attorneys[].barLicense.state</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Bar license state</td></tr>
+                  <tr><td class="td-mono">attorneys[].barLicense.licenseNumber</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>License number</td></tr>
+                  <tr><td class="td-mono">attorneys[].barLicense.status</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>License status</td></tr>
+                  <tr><td class="td-mono">attorneys[].barLicense.admissionDate</td><td class="td-mono" style="font-size:11px;opacity:0.7">String (Date)</td><td><span class="pill pill-optional">Optional</span></td><td>Bar admission date</td></tr>
+                  <tr><td class="td-mono">attorneys[].barLicense.expirationDate</td><td class="td-mono" style="font-size:11px;opacity:0.7">String (Date)</td><td><span class="pill pill-optional">Optional</span></td><td>License expiration date</td></tr>
+                  <tr><td class="td-mono">attorneys[].barLicense.trustTier</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>License data confidence</td></tr>
+                  <tr><td class="td-mono">attorneys[].specializations[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Practice areas</td></tr>
+                  <tr><td class="td-mono">attorneys[].yearsExperience</td><td class="td-mono" style="font-size:11px;opacity:0.7">Number</td><td><span class="pill pill-optional">Optional</span></td><td>Years of experience</td></tr>
+                  <tr><td class="td-mono">attorneys[].education[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Law schools attended</td></tr>
+                  <tr><td class="td-mono">attorneys[].url</td><td class="td-mono" style="font-size:11px;opacity:0.7">URL</td><td><span class="pill pill-optional">Optional</span></td><td>Attorney profile page URL</td></tr>
+                  <tr><td class="td-mono">practiceAreas[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Primary areas of practice</td></tr>
+                  <tr><td class="td-mono">jurisdictions[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Service jurisdictions</td></tr>
+                  <tr><td class="td-mono">fees.model</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>Fee structure model</td></tr>
+                  <tr><td class="td-mono">fees.hourlyRate.min</td><td class="td-mono" style="font-size:11px;opacity:0.7">Number</td><td><span class="pill pill-optional">Optional</span></td><td>Minimum hourly rate</td></tr>
+                  <tr><td class="td-mono">fees.hourlyRate.max</td><td class="td-mono" style="font-size:11px;opacity:0.7">Number</td><td><span class="pill pill-optional">Optional</span></td><td>Maximum hourly rate</td></tr>
+                  <tr><td class="td-mono">fees.currency</td><td class="td-mono" style="font-size:11px;opacity:0.7">String (ISO 4217)</td><td><span class="pill pill-optional">Optional</span></td><td>Fee currency</td></tr>
+                  <tr><td class="td-mono">fees.trustTier</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>Fee data confidence</td></tr>
+                  <tr><td class="td-mono">disciplinaryHistory[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Bar discipline or complaints</td></tr>
+                  <tr><td class="td-mono">disciplinaryHistory[].date</td><td class="td-mono" style="font-size:11px;opacity:0.7">String (Date)</td><td><span class="pill pill-optional">Optional</span></td><td>Discipline date</td></tr>
+                  <tr><td class="td-mono">disciplinaryHistory[].description</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Discipline description</td></tr>
+                  <tr><td class="td-mono">disciplinaryHistory[].outcome</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>Discipline outcome</td></tr>
+                  <tr><td class="td-mono">disciplinaryHistory[].url</td><td class="td-mono" style="font-size:11px;opacity:0.7">URL</td><td><span class="pill pill-optional">Optional</span></td><td>Source URL</td></tr>
+                  <tr><td class="td-mono">disciplinaryHistory[].trustTier</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>Discipline data confidence</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="acc-item">
+          <button class="acc-trigger" onclick="toggleAccordion(event)">
+            <span class="acc-chevron">▶</span>
+            <span class="acc-title">Places</span>
+            <span class="acc-jsonkey">places</span>
+            <span class="acc-meta">17 fields</span>
+          </button>
+          <div class="acc-body">
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Field</th><th>Type</th><th>Status</th><th>Purpose</th></tr></thead>
+                <tbody>
+                  <tr><td class="td-mono">placeType</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Type of place</td></tr>
+                  <tr><td class="td-mono">coordinates.latitude</td><td class="td-mono" style="font-size:11px;opacity:0.7">Number</td><td><span class="pill pill-optional">Optional</span></td><td>Geographic latitude</td></tr>
+                  <tr><td class="td-mono">coordinates.longitude</td><td class="td-mono" style="font-size:11px;opacity:0.7">Number</td><td><span class="pill pill-optional">Optional</span></td><td>Geographic longitude</td></tr>
+                  <tr><td class="td-mono">coordinates.elevation</td><td class="td-mono" style="font-size:11px;opacity:0.7">Number</td><td><span class="pill pill-optional">Optional</span></td><td>Elevation in meters</td></tr>
+                  <tr><td class="td-mono">coordinates.trustTier</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>Coordinate data confidence</td></tr>
+                  <tr><td class="td-mono">area.area</td><td class="td-mono" style="font-size:11px;opacity:0.7">Number</td><td><span class="pill pill-optional">Optional</span></td><td>Geographic area size</td></tr>
+                  <tr><td class="td-mono">area.unit</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>Area unit measurement</td></tr>
+                  <tr><td class="td-mono">bestTimeToVisit[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Recommended visiting seasons</td></tr>
+                  <tr><td class="td-mono">facilities[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Available facilities</td></tr>
+                  <tr><td class="td-mono">accessibility.wheelchairAccessible</td><td class="td-mono" style="font-size:11px;opacity:0.7">Boolean</td><td><span class="pill pill-optional">Optional</span></td><td>Wheelchair accessible?</td></tr>
+                  <tr><td class="td-mono">accessibility.parkingAccessible</td><td class="td-mono" style="font-size:11px;opacity:0.7">Boolean</td><td><span class="pill pill-optional">Optional</span></td><td>Accessible parking available?</td></tr>
+                  <tr><td class="td-mono">accessibility.trailsDifficulty</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>Trail difficulty level</td></tr>
+                  <tr><td class="td-mono">accessibility.notes</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Accessibility notes</td></tr>
+                  <tr><td class="td-mono">relatedPlaces[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Nearby attractions</td></tr>
+                  <tr><td class="td-mono">governance.manager</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Managing agency or organization</td></tr>
+                  <tr><td class="td-mono">governance.ownershipType</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>Ownership type</td></tr>
+                  <tr><td class="td-mono">governance.regulatoryBody</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Regulatory body</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="acc-item">
+          <button class="acc-trigger" onclick="toggleAccordion(event)">
+            <span class="acc-chevron">▶</span>
+            <span class="acc-title">Temporal Record</span>
+            <span class="acc-jsonkey">temporal</span>
+            <span class="acc-meta">22 fields</span>
+          </button>
+          <div class="acc-body">
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Field</th><th>Type</th><th>Status</th><th>Purpose</th></tr></thead>
+                <tbody>
+                  <tr><td class="td-mono">timeline[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Chronological history and events</td></tr>
+                  <tr><td class="td-mono">timeline[].date</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-required">Required</span></td><td>Event date (flexible precision)</td></tr>
+                  <tr><td class="td-mono">timeline[].title</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-required">Required</span></td><td>Event title</td></tr>
+                  <tr><td class="td-mono">timeline[].description</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Event description</td></tr>
+                  <tr><td class="td-mono">timeline[].type</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>Event type classification</td></tr>
+                  <tr><td class="td-mono">timeline[].trustTier</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>Event data confidence</td></tr>
+                  <tr><td class="td-mono">ownershipChanges[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Ownership or leadership changes</td></tr>
+                  <tr><td class="td-mono">ownershipChanges[].date</td><td class="td-mono" style="font-size:11px;opacity:0.7">String (Date)</td><td><span class="pill pill-required">Required</span></td><td>Change date</td></tr>
+                  <tr><td class="td-mono">ownershipChanges[].from</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Previous owner/leader</td></tr>
+                  <tr><td class="td-mono">ownershipChanges[].to</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>New owner/leader</td></tr>
+                  <tr><td class="td-mono">ownershipChanges[].reason</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Reason for change</td></tr>
+                  <tr><td class="td-mono">ownershipChanges[].trustTier</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>Change data confidence</td></tr>
+                  <tr><td class="td-mono">nameChanges[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Historical name changes</td></tr>
+                  <tr><td class="td-mono">nameChanges[].date</td><td class="td-mono" style="font-size:11px;opacity:0.7">String (Date)</td><td><span class="pill pill-required">Required</span></td><td>Change date</td></tr>
+                  <tr><td class="td-mono">nameChanges[].previousName</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Previous name</td></tr>
+                  <tr><td class="td-mono">nameChanges[].currentName</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Current name</td></tr>
+                  <tr><td class="td-mono">nameChanges[].reason</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Reason for change</td></tr>
+                  <tr><td class="td-mono">locationHistory[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Historical locations or moves</td></tr>
+                  <tr><td class="td-mono">locationHistory[].date</td><td class="td-mono" style="font-size:11px;opacity:0.7">String (Date)</td><td><span class="pill pill-required">Required</span></td><td>Move date</td></tr>
+                  <tr><td class="td-mono">locationHistory[].location</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Location name</td></tr>
+                  <tr><td class="td-mono">locationHistory[].address</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Historical address</td></tr>
+                  <tr><td class="td-mono">locationHistory[].notes</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Additional notes</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="acc-item">
+          <button class="acc-trigger" onclick="toggleAccordion(event)">
+            <span class="acc-chevron">▶</span>
+            <span class="acc-title">Verification & Trust</span>
+            <span class="acc-jsonkey">verification</span>
+            <span class="acc-meta">58 fields</span>
+          </button>
+          <div class="acc-body">
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Field</th><th>Type</th><th>Status</th><th>Purpose</th></tr></thead>
+                <tbody>
+                  <tr><td class="td-mono">trustSignals[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Evidence of entity credibility</td></tr>
+                  <tr><td class="td-mono">trustSignals[].type</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>Trust signal type</td></tr>
+                  <tr><td class="td-mono">trustSignals[].title</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-required">Required</span></td><td>Signal title</td></tr>
+                  <tr><td class="td-mono">trustSignals[].issuer</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Who issued this signal</td></tr>
+                  <tr><td class="td-mono">trustSignals[].url</td><td class="td-mono" style="font-size:11px;opacity:0.7">URL</td><td><span class="pill pill-optional">Optional</span></td><td>Source URL</td></tr>
+                  <tr><td class="td-mono">trustSignals[].date</td><td class="td-mono" style="font-size:11px;opacity:0.7">String (Date)</td><td><span class="pill pill-optional">Optional</span></td><td>Signal date</td></tr>
+                  <tr><td class="td-mono">trustSignals[].trustTier</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>Signal confidence</td></tr>
+                  <tr><td class="td-mono">externalVerifiers[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Third-party verification services</td></tr>
+                  <tr><td class="td-mono">externalVerifiers[].name</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-required">Required</span></td><td>Service name</td></tr>
+                  <tr><td class="td-mono">externalVerifiers[].verified</td><td class="td-mono" style="font-size:11px;opacity:0.7">Boolean</td><td><span class="pill pill-optional">Optional</span></td><td>Entity verified?</td></tr>
+                  <tr><td class="td-mono">externalVerifiers[].verificationDate</td><td class="td-mono" style="font-size:11px;opacity:0.7">String (Date)</td><td><span class="pill pill-optional">Optional</span></td><td>Verification date</td></tr>
+                  <tr><td class="td-mono">externalVerifiers[].url</td><td class="td-mono" style="font-size:11px;opacity:0.7">URL</td><td><span class="pill pill-optional">Optional</span></td><td>Verification profile URL</td></tr>
+                  <tr><td class="td-mono">externalVerifiers[].trustTier</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>Verification confidence</td></tr>
+                  <tr><td class="td-mono">corrections[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Public corrections made</td></tr>
+                  <tr><td class="td-mono">corrections[].date</td><td class="td-mono" style="font-size:11px;opacity:0.7">String (Date)</td><td><span class="pill pill-required">Required</span></td><td>Correction date</td></tr>
+                  <tr><td class="td-mono">corrections[].originalStatement</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Original incorrect statement</td></tr>
+                  <tr><td class="td-mono">corrections[].correction</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Corrected statement</td></tr>
+                  <tr><td class="td-mono">corrections[].reason</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Reason for correction</td></tr>
+                  <tr><td class="td-mono">corrections[].source</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Where error came from</td></tr>
+                  <tr><td class="td-mono">corrections[].trustTier</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>Correction confidence</td></tr>
+                  <tr><td class="td-mono">disputes[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Disputed or contested claims</td></tr>
+                  <tr><td class="td-mono">disputes[].date</td><td class="td-mono" style="font-size:11px;opacity:0.7">String (Date)</td><td><span class="pill pill-required">Required</span></td><td>Dispute date</td></tr>
+                  <tr><td class="td-mono">disputes[].description</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>What is disputed</td></tr>
+                  <tr><td class="td-mono">disputes[].entityClaim</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Entity\'s claim</td></tr>
+                  <tr><td class="td-mono">disputes[].challenger</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Who disputes it</td></tr>
+                  <tr><td class="td-mono">disputes[].status</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>Dispute status</td></tr>
+                  <tr><td class="td-mono">disputes[].resolution</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Resolution details</td></tr>
+                  <tr><td class="td-mono">disputes[].evidence[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Supporting evidence URLs</td></tr>
+                  <tr><td class="td-mono">disputes[].trustTier</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>Dispute data confidence</td></tr>
+                  <tr><td class="td-mono">credentialsCertifications[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Professional certifications</td></tr>
+                  <tr><td class="td-mono">credentialsCertifications[].name</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-required">Required</span></td><td>Credential name</td></tr>
+                  <tr><td class="td-mono">credentialsCertifications[].issuer</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Issuing organization</td></tr>
+                  <tr><td class="td-mono">credentialsCertifications[].issueDate</td><td class="td-mono" style="font-size:11px;opacity:0.7">String (Date)</td><td><span class="pill pill-optional">Optional</span></td><td>Issue date</td></tr>
+                  <tr><td class="td-mono">credentialsCertifications[].expirationDate</td><td class="td-mono" style="font-size:11px;opacity:0.7">String (Date)</td><td><span class="pill pill-optional">Optional</span></td><td>Expiration date</td></tr>
+                  <tr><td class="td-mono">credentialsCertifications[].credentialId</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Credential ID number</td></tr>
+                  <tr><td class="td-mono">credentialsCertifications[].url</td><td class="td-mono" style="font-size:11px;opacity:0.7">URL</td><td><span class="pill pill-optional">Optional</span></td><td>Verification URL</td></tr>
+                  <tr><td class="td-mono">credentialsCertifications[].trustTier</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>Credential confidence</td></tr>
+                  <tr><td class="td-mono">thirdPartyAudits[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Third-party audit results</td></tr>
+                  <tr><td class="td-mono">thirdPartyAudits[].auditor</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-required">Required</span></td><td>Auditor name</td></tr>
+                  <tr><td class="td-mono">thirdPartyAudits[].auditType</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Audit type (SOC2, ISO, etc)</td></tr>
+                  <tr><td class="td-mono">thirdPartyAudits[].date</td><td class="td-mono" style="font-size:11px;opacity:0.7">String (Date)</td><td><span class="pill pill-optional">Optional</span></td><td>Audit date</td></tr>
+                  <tr><td class="td-mono">thirdPartyAudits[].validUntil</td><td class="td-mono" style="font-size:11px;opacity:0.7">String (Date)</td><td><span class="pill pill-optional">Optional</span></td><td>Audit valid until</td></tr>
+                  <tr><td class="td-mono">thirdPartyAudits[].status</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>Audit result status</td></tr>
+                  <tr><td class="td-mono">thirdPartyAudits[].url</td><td class="td-mono" style="font-size:11px;opacity:0.7">URL</td><td><span class="pill pill-optional">Optional</span></td><td>Audit report URL</td></tr>
+                  <tr><td class="td-mono">thirdPartyAudits[].trustTier</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>Audit data confidence</td></tr>
+                  <tr><td class="td-mono">canonicalQuotes[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Authoritative quotes</td></tr>
+                  <tr><td class="td-mono">canonicalQuotes[].quote</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-required">Required</span></td><td>Exact quoted text</td></tr>
+                  <tr><td class="td-mono">canonicalQuotes[].context</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Full context or publication</td></tr>
+                  <tr><td class="td-mono">canonicalQuotes[].date</td><td class="td-mono" style="font-size:11px;opacity:0.7">String (Date)</td><td><span class="pill pill-optional">Optional</span></td><td>Quote date</td></tr>
+                  <tr><td class="td-mono">canonicalQuotes[].source</td><td class="td-mono" style="font-size:11px;opacity:0.7">URL</td><td><span class="pill pill-optional">Optional</span></td><td>Source URL or publication</td></tr>
+                  <tr><td class="td-mono">canonicalQuotes[].speaker</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Speaker name</td></tr>
+                  <tr><td class="td-mono">canonicalQuotes[].trustTier</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>Quote confidence</td></tr>
+                  <tr><td class="td-mono">misattributedQuotes[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Commonly misquoted statements</td></tr>
+                  <tr><td class="td-mono">misattributedQuotes[].misquote</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-required">Required</span></td><td>False quote text</td></tr>
+                  <tr><td class="td-mono">misattributedQuotes[].originalSource</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Actual source</td></tr>
+                  <tr><td class="td-mono">misattributedQuotes[].frequency</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>How often misquoted</td></tr>
+                  <tr><td class="td-mono">misattributedQuotes[].url</td><td class="td-mono" style="font-size:11px;opacity:0.7">URL</td><td><span class="pill pill-optional">Optional</span></td><td>Reference/debunking URL</td></tr>
+                  <tr><td class="td-mono">misattributedQuotes[].trustTier</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>Misquote data confidence</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="acc-item">
+          <button class="acc-trigger" onclick="toggleAccordion(event)">
+            <span class="acc-chevron">▶</span>
+            <span class="acc-title">People & Credentials</span>
+            <span class="acc-jsonkey">people</span>
+            <span class="acc-meta">49 fields</span>
+          </button>
+          <div class="acc-body">
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Field</th><th>Type</th><th>Status</th><th>Purpose</th></tr></thead>
+                <tbody>
+                  <tr><td class="td-mono">team[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Core team members or staff</td></tr>
+                  <tr><td class="td-mono">team[].name</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-required">Required</span></td><td>Team member name</td></tr>
+                  <tr><td class="td-mono">team[].role</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-required">Required</span></td><td>Job title or role</td></tr>
+                  <tr><td class="td-mono">team[].title</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Honorifics (Dr., Prof., etc)</td></tr>
+                  <tr><td class="td-mono">team[].bio</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Short biography</td></tr>
+                  <tr><td class="td-mono">team[].email</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Team member email</td></tr>
+                  <tr><td class="td-mono">team[].phone</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Team member phone</td></tr>
+                  <tr><td class="td-mono">team[].photo</td><td class="td-mono" style="font-size:11px;opacity:0.7">URL</td><td><span class="pill pill-optional">Optional</span></td><td>Professional photo URL</td></tr>
+                  <tr><td class="td-mono">team[].specializations[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Areas of expertise</td></tr>
+                  <tr><td class="td-mono">team[].startDate</td><td class="td-mono" style="font-size:11px;opacity:0.7">String (Date)</td><td><span class="pill pill-optional">Optional</span></td><td>Employment start date</td></tr>
+                  <tr><td class="td-mono">team[].endDate</td><td class="td-mono" style="font-size:11px;opacity:0.7">String (Date)</td><td><span class="pill pill-optional">Optional</span></td><td>Employment end date</td></tr>
+                  <tr><td class="td-mono">currentRole.title</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Current position title</td></tr>
+                  <tr><td class="td-mono">currentRole.organization</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Current organization</td></tr>
+                  <tr><td class="td-mono">currentRole.url</td><td class="td-mono" style="font-size:11px;opacity:0.7">URL</td><td><span class="pill pill-optional">Optional</span></td><td>Position description URL</td></tr>
+                  <tr><td class="td-mono">currentRole.startDate</td><td class="td-mono" style="font-size:11px;opacity:0.7">String (Date)</td><td><span class="pill pill-optional">Optional</span></td><td>Role start date</td></tr>
+                  <tr><td class="td-mono">currentRole.endDate</td><td class="td-mono" style="font-size:11px;opacity:0.7">String (Date)</td><td><span class="pill pill-optional">Optional</span></td><td>Role end date if not current</td></tr>
+                  <tr><td class="td-mono">professionalCredentials[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Licenses and certifications</td></tr>
+                  <tr><td class="td-mono">professionalCredentials[].type</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>Credential type</td></tr>
+                  <tr><td class="td-mono">professionalCredentials[].name</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-required">Required</span></td><td>Credential name</td></tr>
+                  <tr><td class="td-mono">professionalCredentials[].issuer</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Issuing organization</td></tr>
+                  <tr><td class="td-mono">professionalCredentials[].issueDate</td><td class="td-mono" style="font-size:11px;opacity:0.7">String (Date)</td><td><span class="pill pill-optional">Optional</span></td><td>Issue date</td></tr>
+                  <tr><td class="td-mono">professionalCredentials[].expirationDate</td><td class="td-mono" style="font-size:11px;opacity:0.7">String (Date)</td><td><span class="pill pill-optional">Optional</span></td><td>Expiration date</td></tr>
+                  <tr><td class="td-mono">professionalCredentials[].credentialId</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Credential number</td></tr>
+                  <tr><td class="td-mono">professionalCredentials[].url</td><td class="td-mono" style="font-size:11px;opacity:0.7">URL</td><td><span class="pill pill-optional">Optional</span></td><td>Verification URL</td></tr>
+                  <tr><td class="td-mono">professionalCredentials[].trustTier</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>Credential confidence</td></tr>
+                  <tr><td class="td-mono">education[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Educational history</td></tr>
+                  <tr><td class="td-mono">education[].institution</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-required">Required</span></td><td>School or university</td></tr>
+                  <tr><td class="td-mono">education[].degree</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Degree earned</td></tr>
+                  <tr><td class="td-mono">education[].field</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Field of study</td></tr>
+                  <tr><td class="td-mono">education[].graduationDate</td><td class="td-mono" style="font-size:11px;opacity:0.7">String (Date)</td><td><span class="pill pill-optional">Optional</span></td><td>Graduation date</td></tr>
+                  <tr><td class="td-mono">education[].url</td><td class="td-mono" style="font-size:11px;opacity:0.7">URL</td><td><span class="pill pill-optional">Optional</span></td><td>Institution website</td></tr>
+                  <tr><td class="td-mono">publications[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Published works</td></tr>
+                  <tr><td class="td-mono">publications[].title</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-required">Required</span></td><td>Publication title</td></tr>
+                  <tr><td class="td-mono">publications[].type</td><td class="td-mono" style="font-size:11px;opacity:0.7">Enum</td><td><span class="pill pill-optional">Optional</span></td><td>Publication type</td></tr>
+                  <tr><td class="td-mono">publications[].publisher</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Publisher name</td></tr>
+                  <tr><td class="td-mono">publications[].date</td><td class="td-mono" style="font-size:11px;opacity:0.7">String (Date)</td><td><span class="pill pill-optional">Optional</span></td><td>Publication date</td></tr>
+                  <tr><td class="td-mono">publications[].url</td><td class="td-mono" style="font-size:11px;opacity:0.7">URL</td><td><span class="pill pill-optional">Optional</span></td><td>Publication URL</td></tr>
+                  <tr><td class="td-mono">speakingEngagements[]</td><td class="td-mono" style="font-size:11px;opacity:0.7">Array</td><td><span class="pill pill-optional">Optional</span></td><td>Conference speaking events</td></tr>
+                  <tr><td class="td-mono">speakingEngagements[].event</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-required">Required</span></td><td>Event name</td></tr>
+                  <tr><td class="td-mono">speakingEngagements[].title</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Talk title</td></tr>
+                  <tr><td class="td-mono">speakingEngagements[].date</td><td class="td-mono" style="font-size:11px;opacity:0.7">String (Date)</td><td><span class="pill pill-optional">Optional</span></td><td>Event date</td></tr>
+                  <tr><td class="td-mono">speakingEngagements[].location</td><td class="td-mono" style="font-size:11px;opacity:0.7">String</td><td><span class="pill pill-optional">Optional</span></td><td>Event location</td></tr>
+                  <tr><td class="td-mono">speakingEngagements[].url</td><td class="td-mono" style="font-size:11px;opacity:0.7">URL</td><td><span class="pill pill-optional">Optional</span></td><td>Event URL</td></tr>
+                  <tr><td class="td-mono">speakingEngagements[].videoUrl</td><td class="td-mono" style="font-size:11px;opacity:0.7">URL</td><td><span class="pill pill-optional">Optional</span></td><td>Recording video URL</td></tr>
+                  <tr><td class="td-mono">socialProfiles.twitter</td><td class="td-mono" style="font-size:11px;opacity:0.7">URL</td><td><span class="pill pill-optional">Optional</span></td><td>Twitter/X profile URL</td></tr>
+                  <tr><td class="td-mono">socialProfiles.linkedin</td><td class="td-mono" style="font-size:11px;opacity:0.7">URL</td><td><span class="pill pill-optional">Optional</span></td><td>LinkedIn profile URL</td></tr>
+                  <tr><td class="td-mono">socialProfiles.github</td><td class="td-mono" style="font-size:11px;opacity:0.7">URL</td><td><span class="pill pill-optional">Optional</span></td><td>GitHub profile URL</td></tr>
+                  <tr><td class="td-mono">socialProfiles.instagram</td><td class="td-mono" style="font-size:11px;opacity:0.7">URL</td><td><span class="pill pill-optional">Optional</span></td><td>Instagram profile URL</td></tr>
+                  <tr><td class="td-mono">socialProfiles.youtube</td><td class="td-mono" style="font-size:11px;opacity:0.7">URL</td><td><span class="pill pill-optional">Optional</span></td><td>YouTube profile URL</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── FOOTER ── -->
+    <footer>
+      <div class="footer-logo">
+        citemap<span>.json</span>
+      </div>
+      <div class="footer-sub">
+        The open standard for AI entity identity. 21 modules, 450+ fields, every major entity type on the internet.
+      </div>
+      <div class="footer-links">
+        <a href="/">Home</a>
+        <a href="https://github.com/citemaps/citemap" target="_blank">GitHub</a>
+        <a href="https://www.npmjs.com/org/citemap" target="_blank">npm</a>
+        <a href="https://citemaps.ai">CiteMaps.ai</a>
+        <a href="mailto:hello@citemaps.ai">Contact</a>
+      </div>
+      <div class="footer-copy">
+        CC BY 4.0 • Free to implement • citemaps.org • March 2026
+      </div>
+    </footer>
+
+  </main>
+
+</div>
+
+<script>
+function toggleAccordion(event) {
+  const trigger = event.currentTarget;
+  const item = trigger.closest('.acc-item');
+  const body = item.querySelector('.acc-body');
+  const chevron = trigger.querySelector('.acc-chevron');
+
+  // Close other open items in the same accordion
+  const accordion = item.closest('.accordion');
+  accordion.querySelectorAll('.acc-item').forEach(el => {
+    if (el !== item) {
+      el.querySelector('.acc-trigger').classList.remove('open');
+      el.querySelector('.acc-chevron').classList.remove('open');
+      el.querySelector('.acc-body').classList.remove('open');
+    }
+  });
+
+  // Toggle current item
+  trigger.classList.toggle('open');
+  chevron.classList.toggle('open');
+  body.classList.toggle('open');
+}
+</script>
+
+</body>
+</html>
