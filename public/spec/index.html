@@ -617,20 +617,47 @@ footer {
   <aside class="sidebar">
     <a href="/" class="sidebar-logo">citemaps<span>.org</span></a>
     <p class="sidebar-tagline">The open standard for AI entity identity</p>
+    <div class="sidebar-badge">v3.0 &#xB7; CC BY 4.0</div>
 
-    <div class="sidebar-badge">v3.0 · CC BY 4.0</div>
+    <div class="nav-section-label">Spec</div>
+    <a href="/" class="nav-link nav-page" data-page="/">The Spec</a>
+    <div class="page-anchors" data-for="/">
+      <a href="#concept" class="nav-link nav-anchor">The Concept</a>
+      <a href="#structure" class="nav-link nav-anchor">File Structure</a>
+      <a href="#modules" class="nav-link nav-anchor">Modules</a>
+      <a href="#trust" class="nav-link nav-anchor">Trust Architecture</a>
+      <a href="#deployment" class="nav-link nav-anchor">Implementation</a>
+      <a href="#examples" class="nav-link nav-anchor">Examples</a>
+      <a href="#governance" class="nav-link nav-anchor">Governance</a>
+    </div>
+    <a href="/spec/" class="nav-link nav-page" data-page="/spec/">Field Reference</a>
+    <div class="page-anchors" data-for="/spec/">
+      <a href="#universal-core" class="nav-link nav-anchor">Universal Core</a>
+      <a href="#all-modules" class="nav-link nav-anchor">All Modules</a>
+      <a href="#breakthrough" class="nav-link nav-anchor">Novel Fields</a>
+      <a href="#trust-tiers" class="nav-link nav-anchor">Trust Tiers</a>
+      <a href="#core-fields" class="nav-link nav-anchor">Core Fields</a>
+    </div>
 
-    <div class="nav-section-label">The Standard</div>
-    <a href="/" class="nav-link">Concept & Overview</a>
-    <a href="#universal-core" class="nav-link">Universal Core</a>
-    <a href="#all-modules" class="nav-link">All 21 Modules</a>
-    <a href="#breakthrough" class="nav-link">Breakthrough Fields</a>
-    <a href="#trust-tiers" class="nav-link">Trust Architecture</a>
-    <a href="#core-fields" class="nav-link">Complete Reference</a>
+    <div class="nav-section-label">Examples</div>
+    <a href="/examples/when-cited-isnt-a-citation.html" class="nav-link nav-page" data-page="/examples/when-cited-isnt-a-citation.html">When &#8220;Cited&#8221; Isn&#8217;t a Citation</a>
 
-    <div class="nav-section-label">Developer</div>
-    <a href="https://github.com/citemaps/citemap" class="nav-link" target="_blank">GitHub Repository</a>
-    <a href="https://www.npmjs.com/org/citemap" class="nav-link" target="_blank">npm Packages</a>
+    <div class="nav-section-label">Proposals</div>
+    <a href="/spec/proposals/module-22-b2b-supply-chain.html" class="nav-link nav-page" data-page="/spec/proposals/module-22-b2b-supply-chain.html">Module 22: B2B Supply Chain</a>
+    <div class="page-anchors" data-for="/spec/proposals/module-22-b2b-supply-chain.html">
+      <a href="#abstract" class="nav-link nav-anchor">Abstract</a>
+      <a href="#why-needed" class="nav-link nav-anchor">Why Needed</a>
+      <a href="#field-reference" class="nav-link nav-anchor">Field Reference</a>
+      <a href="#example-json" class="nav-link nav-anchor">Example JSON</a>
+      <a href="#implementation" class="nav-link nav-anchor">Implementation</a>
+    </div>
+
+    <div class="nav-section-label">About</div>
+    <a href="/citemaps-ai-collaboration.html" class="nav-link nav-page" data-page="/citemaps-ai-collaboration.html">Collaboration</a>
+
+    <div class="nav-divider"></div>
+    <a href="https://citemaps.ai/studio/generator" class="nav-link nav-external" target="_blank">Generator &#8599;</a>
+    <a href="https://github.com/citemaps/citemap" class="nav-link nav-external" target="_blank">GitHub &#8599;</a>
   </aside>
 
   <!-- MAIN CONTENT -->
@@ -2003,5 +2030,47 @@ function toggleAccordion(event) {
 }
 </script>
 
+<script>
+(function() {
+  var path = window.location.pathname.replace(/index\.html$/, '/');
+  if (path !== '/' && path.endsWith('/')) path = path.slice(0, -1);
+
+  document.querySelectorAll('.page-anchors').forEach(function(el) {
+    var forPath = el.getAttribute('data-for');
+    if (forPath === path || (path === '' && forPath === '/')) {
+      el.classList.add('is-active');
+    }
+  });
+
+  document.querySelectorAll('.nav-page').forEach(function(el) {
+    var pg = el.getAttribute('data-page');
+    if (pg === path || (path === '' && pg === '/')) {
+      el.classList.add('active');
+    }
+  });
+
+  var anchors = document.querySelectorAll('.nav-anchor');
+  if (!anchors.length) return;
+
+  var sectionIds = Array.from(anchors).map(function(a) {
+    return a.getAttribute('href').replace('#', '');
+  });
+
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        anchors.forEach(function(a) { a.classList.remove('anchor-active'); });
+        var match = document.querySelector('.nav-anchor[href="#' + entry.target.id + '"]');
+        if (match) match.classList.add('anchor-active');
+      }
+    });
+  }, { rootMargin: '0px 0px -60% 0px', threshold: 0 });
+
+  sectionIds.forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) observer.observe(el);
+  });
+})();
+</script>
 </body>
 </html>
