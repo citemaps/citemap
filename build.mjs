@@ -24,10 +24,14 @@ const read = (p) => fs.readFileSync(path.join(ROOT, p), "utf8");
 const md = (p) => marked.parse(read(p));
 
 // ── shared layout ────────────────────────────────────────────
+// "Registry" = the public entity catalog at registry.citemaps.org
+// (distinct from the /spec/registry/ vocabulary registry, which is
+// linked from the spec page + footer to avoid a naming collision).
 const NAV_LINKS = [
   { href: "/spec/", label: "Spec" },
+  { href: "/tools/", label: "Tools" },
+  { href: "https://registry.citemaps.org", label: "Registry", ext: true },
   { href: "/examples/when-cited-isnt-a-citation.html", label: "Examples" },
-  { href: "/spec/registry/", label: "Registry" },
   { href: "/#governance", label: "Governance" },
 ];
 
@@ -35,9 +39,11 @@ const nav = (current) => `
 <nav class="nav"><div class="nav-inner">
   <a href="/" class="brand"><span class="brand-mark">{ }</span><span>citemap.json</span></a>
   <div class="nav-links">
-    ${NAV_LINKS.map((l) => `<a href="${l.href}" class="nav-link${current === l.href ? " active" : ""}">${l.label}</a>`).join("")}
+    ${NAV_LINKS.map((l) => l.ext
+      ? `<a href="${l.href}" target="_blank" rel="noopener" class="nav-link nav-ext">${l.label} &#8599;</a>`
+      : `<a href="${l.href}" class="nav-link${current === l.href ? " active" : ""}">${l.label}</a>`).join("")}
     <a href="https://github.com/citemaps/citemap" target="_blank" rel="noopener" class="nav-link nav-ext">GitHub &#8599;</a>
-    <a href="https://entitygraph.ai" target="_blank" rel="noopener" class="nav-cta">Build one with EntityGraph &#8599;</a>
+    <a href="/generator/" class="nav-cta">Build one now</a>
   </div>
 </div></nav>`;
 
@@ -51,11 +57,14 @@ const footer = () => `
     <div class="foot-cols">
       <div class="foot-col"><h5>Standard</h5>
         <a href="/spec/">Specification (v${SPEC_VERSION})</a>
+        <a href="https://registry.citemaps.org" target="_blank" rel="noopener">Registry &#8599;</a>
         <a href="/spec/registry/">Vocabulary registry</a>
         <a href="/examples/when-cited-isnt-a-citation.html">Examples</a>
         <a href="/#governance">Governance</a>
       </div>
       <div class="foot-col"><h5>Build</h5>
+        <a href="/generator/">Generator</a>
+        <a href="/tools/">Tools directory</a>
         <a href="https://github.com/citemaps/citemap" target="_blank" rel="noopener">GitHub &#8599;</a>
         <a href="https://www.npmjs.com/package/@citemap/cli" target="_blank" rel="noopener">@citemap/cli &#8599;</a>
         <a href="https://entitygraph.ai/citemap" target="_blank" rel="noopener">EntityGraph &#8599;</a>
@@ -268,11 +277,21 @@ const CONTENT_PAGES = [
     title: 'When "Cited" Isn\'t Really a Citation — citemap.json example',
     description: "How a missing disambiguation field caused an AI engine to hallucinate an energy company in place of a natural stone supplier — and the single citemap.json field that prevents it.",
   },
+  {
+    out: "generator/index.html", src: "content/generator.html", current: "/generator/", raw: true,
+    title: "citemap.json Generator — build a file free, in your browser",
+    description: "Build a ready-to-publish citemap.json for free, right in your browser — pick an entity type, fill the fields, download. Plus a one-way validator. No account, nothing uploaded.",
+  },
+  {
+    out: "tools/index.html", src: "content/tools.html", current: "/tools/", raw: true,
+    title: "Tools — generate & validate citemap.json | citemaps.org",
+    description: "Known and verified tools that build and validate a citemap.json — the free generator, the CLI, hand-authoring, and the EntityGraph reference implementation. Submit your own tool.",
+  },
 ];
 for (const p of CONTENT_PAGES) {
   writeHtml(p.out, layout({
     title: p.title, description: p.description, current: p.current,
-    body: `<section class="wrap"><article class="article">${read(p.src)}</article></section>`,
+    body: p.raw ? read(p.src) : `<section class="wrap"><article class="article">${read(p.src)}</article></section>`,
   }));
 }
 
@@ -283,6 +302,8 @@ const SKIP = new Set([
   // regenerated through the layout by CONTENT_PAGES above — don't
   // let the old hand-authored copy overwrite it
   "examples/when-cited-isnt-a-citation.html",
+  // outdated proposal — kept in repo, not published to the site
+  "spec/proposals/module-22-b2b-supply-chain.html",
 ]);
 const PUB = path.join(ROOT, "public");
 if (fs.existsSync(PUB)) {

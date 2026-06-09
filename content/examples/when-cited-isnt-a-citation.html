@@ -10,7 +10,7 @@
 
 <div class="prose">
 
-  <p>Pacific Resource Brokers is a natural stone supplier based in Bend, Oregon. They source granite, basalt, limestone, and ledgestone through an international network of quarries, handling everything from product selection to delivery logistics for residential and commercial building projects.</p>
+  <p>Cascade Resource Group is a natural stone supplier based in Bend, Oregon. They source granite, basalt, limestone, and ledgestone through an international network of quarries, handling everything from product selection to delivery logistics for residential and commercial building projects.</p>
 
   <p>When we ran their first AI visibility monitor — asking questions like <em>"Who are the best natural stone veneer brokers in the Western United States?"</em> — one engine returned a result marked as <strong>cited</strong>. A win, on the surface.</p>
 
@@ -18,14 +18,14 @@
 
   <div class="ai-quote">
     <div class="ai-quote-label">AI engine response — marked "cited", actually hallucinated</div>
-    <p>"Pacific Resource Brokers is a company that operates in the energy sector, particularly focusing on providing brokerage services for renewable energy and resource management. Brokers in this field typically facilitate transactions between energy producers and consumers, helping clients navigate the complexities of energy markets, including renewable energy credits, power purchase agreements, and other related services."</p>
+    <p>"Cascade Resource Group is a company that operates in the energy sector, particularly focusing on providing brokerage services for renewable energy and resource management. Brokers in this field typically facilitate transactions between energy producers and consumers, helping clients navigate the complexities of energy markets, including renewable energy credits, power purchase agreements, and other related services."</p>
   </div>
 
   <p>The name was right. Everything else was invented.</p>
 
   <p>The AI had pattern-matched on "Resource Brokers" — a phrase common in energy markets — and confidently generated a plausible description of a company that does not exist in that form. It found a name it recognized and filled in the rest from association. This is not a bug. It is how language models work when they lack structured, authoritative information to anchor to.</p>
 
-  <p>The citation counter went up. The business was not actually cited. Anyone asking that question walked away with a false picture of what Pacific Resource Brokers does and who they are.</p>
+  <p>The citation counter went up. The business was not actually cited. Anyone asking that question walked away with a false picture of what Cascade Resource Group does and who they are.</p>
 
   <hr class="section-divider">
 
@@ -41,9 +41,9 @@
     <pre><span class="jp">{</span>
   <span class="jk">"trust"</span><span class="jp">:</span> <span class="jp">{</span>
     <span class="jk">"citationContract"</span><span class="jp">:</span> <span class="jp">{</span>
-      <span class="jk">"preferredName"</span><span class="jp">:</span> <span class="jv">"Pacific Resource Brokers"</span><span class="jp">,</span>
+      <span class="jk">"preferredName"</span><span class="jp">:</span> <span class="jv">"Cascade Resource Group"</span><span class="jp">,</span>
       <span class="jk">"shortDescription"</span><span class="jp">:</span> <span class="jv">"Natural stone and manufactured stone veneer supplier based in Bend, Oregon."</span><span class="jp">,</span>
-      <span class="jk">"disambiguation"</span><span class="jp">:</span> <span class="jv">"Not to be confused with energy brokers or resource management firms. Pacific Resource Brokers exclusively supplies natural stone, manufactured stone veneer, and hardscape materials for residential and commercial building projects."</span>
+      <span class="jk">"disambiguation"</span><span class="jp">:</span> <span class="jv">"Not to be confused with energy brokers or resource management firms. Cascade Resource Group exclusively supplies natural stone, manufactured stone veneer, and hardscape materials for residential and commercial building projects."</span>
     <span class="jp">}</span>
   <span class="jp">}</span>
 <span class="jp">}</span></pre>
@@ -58,7 +58,7 @@
     </div>
     <pre><span class="jp">{</span>
   <span class="jk">"brand"</span><span class="jp">:</span> <span class="jp">{</span>
-    <span class="jk">"name"</span><span class="jp">:</span> <span class="jv">"Pacific Resource Brokers"</span><span class="jp">,</span>
+    <span class="jk">"name"</span><span class="jp">:</span> <span class="jv">"Cascade Resource Group"</span><span class="jp">,</span>
     <span class="jk">"notableFor"</span><span class="jp">:</span> <span class="jv">"Known exclusively as a natural stone and manufactured stone veneer supplier — not an energy or resource management firm."</span><span class="jp">,</span>
     <span class="jk">"siteType"</span><span class="jp">:</span> <span class="jv">"local-business"</span>
   <span class="jp">}</span>
@@ -102,9 +102,9 @@
 
   <p>The citemap.json spec was built around a foundational insight: AI engines don't look things up the way search engines do. They generate answers from patterns absorbed during training. For well-known entities — major brands, public figures, widely-documented organizations — those patterns are reliable. For the vast majority of businesses, they are not.</p>
 
-  <p>Structured data at the domain root changes the equation. A citemap.json gives every AI engine that ingests it a clear, authoritative anchor point before generation begins. It cannot eliminate hallucination entirely, but it dramatically reduces the surface area for the kind of confident, plausible, completely wrong answer that Pacific Resource Brokers received.</p>
+  <p>Structured data at the domain root changes the equation. A citemap.json gives every AI engine that ingests it a clear, authoritative anchor point before generation begins. It cannot eliminate hallucination entirely, but it dramatically reduces the surface area for the kind of confident, plausible, completely wrong answer that Cascade Resource Group received.</p>
 
-  <p>For PRB, the stone is the whole story. The citemap.json makes sure that's what gets told.</p>
+  <p>For Cascade, the stone is the whole story. The citemap.json makes sure that's what gets told.</p>
 
   <div class="callout callout-green">
     <div class="callout-label">Try it yourself</div>

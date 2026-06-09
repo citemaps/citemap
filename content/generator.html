@@ -1,0 +1,58 @@
+<section class="doc-head"><div class="wrap">
+  <p class="eyebrow">Generator</p>
+  <h1>Build your citemap.json</h1>
+  <p class="doc-sub">Pick your entity type, fill the fields that fit, and download a ready-to-publish citemap.json — free, in your browser, nothing leaves the page. Then drop it at <code>yourdomain.com/citemap.json</code>.</p>
+  <div class="eg-tabs">
+    <button type="button" id="eg-tab-gen" class="eg-tab sel">Generator</button>
+    <button type="button" id="eg-tab-val" class="eg-tab">Validator</button>
+  </div>
+</div></section>
+
+<section class="wrap eg-wrap">
+  <!-- GENERATOR -->
+  <div id="eg-panel-gen">
+    <div class="eg-step">
+      <div class="eg-step-label">1 · Entity type</div>
+      <div id="eg-entities" class="eg-entities"></div>
+    </div>
+
+    <div id="eg-form-wrap" class="eg-grid">
+      <div class="eg-col-form">
+        <div class="eg-step">
+          <div class="eg-step-label">2 · Modules</div>
+          <p class="eg-step-hint">Universal Core is always included. Add the modules that fit — they unlock the fields AI looks for in your domain.</p>
+          <div id="eg-modules" class="eg-mods"></div>
+        </div>
+        <div class="eg-step">
+          <div class="eg-step-label">3 · Fields</div>
+          <div id="eg-form" class="eg-form"></div>
+        </div>
+      </div>
+      <div class="eg-col-out">
+        <div class="eg-out-head">
+          <span>citemap.json</span>
+          <span class="eg-out-actions">
+            <button type="button" id="eg-copy" class="eg-btn-sm">Copy</button>
+            <button type="button" id="eg-download" class="eg-btn-sm primary">Download</button>
+          </span>
+        </div>
+        <pre id="eg-output" class="eg-output">{}</pre>
+        <p class="eg-out-note">Built entirely in your browser — no account, nothing uploaded. <a href="/spec/">Field reference →</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- VALIDATOR -->
+  <div id="eg-panel-val" style="display:none">
+    <div class="eg-step">
+      <div class="eg-step-label">Validate a citemap.json</div>
+      <p class="eg-step-hint">Paste a citemap.json to check its structure and deployment level. A quick structural read — for authoritative schema validation, use the CLI below.</p>
+      <textarea id="eg-val-input" class="eg-val-input" rows="14" placeholder='Paste your citemap.json here…'></textarea>
+      <div id="eg-val-result" class="eg-val"></div>
+      <p class="eg-out-note">Authoritative validation: <code>npx @citemap/cli validate ./citemap.json</code></p>
+    </div>
+  </div>
+</section>
+
+<script src="/generator/gen-data.js"></script>
+<script src="/generator/gen-app.js"></script>
