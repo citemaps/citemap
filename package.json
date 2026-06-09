@@ -13,7 +13,7 @@
   },
   "keywords": ["citemap", "aeo", "ai", "schema", "entity", "standard"],
   "author": "Brian Pofahl",
-  "license": "CC-BY-4.0",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/citemaps/citemap/issues"
   },

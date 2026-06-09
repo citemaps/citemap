@@ -216,14 +216,19 @@ node packages/cli/dist/index.js validate ./public/examples/local-business.json
 
 ## License
 
-MIT — Free to use, modify, and distribute. See [LICENSE](./LICENSE) for details.
+Dual-licensed by layer:
+
+- **Code** (the generator, build tooling, validator, CLI, and schema packages) — **MIT**. Free to use, modify, distribute, and fork.
+- **Specification** (the prose and vocabulary-registry documents under `spec/`) — **CC BY 4.0**.
+
+See [LICENSE](./LICENSE) for details.
 
 ## Credits
 
-Created by [Brian Pofahl](https://citemaps.ai) at [CiteMaps](https://github.com/citemaps). Maintained by the citemap community.
+Created by Brian Pofahl at [CiteMaps](https://github.com/citemaps). Maintained by the citemap community.
 
 ---
 
-**Questions?** Read the [v2.0 spec](./spec/v2.0.md), the [v3.0 addendum](./spec/v3.0.md), or [open an issue](https://github.com/citemaps/citemap/issues).
+**Questions?** Read the [current spec](./spec/v3.4.md) or [open an issue](https://github.com/citemaps/citemap/issues).
 
-**Want to stay updated?** Star the repo, watch for releases, or visit [citemaps.ai](https://citemaps.ai).
+**Want to stay updated?** Star the repo, watch for releases, or visit [citemaps.org](https://citemaps.org).

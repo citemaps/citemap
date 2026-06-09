@@ -201,7 +201,7 @@ const landingBody = `
 <section class="band alt" id="governance"><div class="wrap">
   <p class="eyebrow">Open governance</p>
   <h2>An open standard — owned by no one, usable by everyone.</h2>
-  <p class="body wide">citemap.json is published free under <strong>CC BY 4.0</strong>. The specification, JSON schema, vocabulary registry, and validator are all open source on GitHub. Anyone can implement it, by hand or with any tool; your record is yours, hosted at your domain and portable forever. The standard evolves in the open through versioned proposals — additively, so older files keep validating.</p>
+  <p class="body wide">The specification is published free under <strong>CC BY 4.0</strong>; the tooling — generator, validator, CLI, and schema — is open source under <strong>MIT</strong>, free to use and fork. Anyone can implement the standard, by hand or with any tool; your record is yours, hosted at your domain and portable forever. The standard evolves in the open through versioned proposals — additively, so older files keep validating.</p>
   <div class="hero-actions">
     <a class="btn btn-ghost" href="https://github.com/citemaps/citemap" target="_blank" rel="noopener">Contribute on GitHub &#8599;</a>
     <a class="btn btn-ghost" href="/spec/registry/">Vocabulary registry &#8594;</a>
