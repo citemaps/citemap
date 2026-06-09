@@ -259,10 +259,30 @@ writeHtml("spec/registry/index.html", layout({
   current: "/spec/registry/", body: registryBody,
 }));
 
+// ── content pages: rich HTML fragments wrapped in the layout ──
+const CONTENT_PAGES = [
+  {
+    out: "examples/when-cited-isnt-a-citation.html",
+    src: "content/examples/when-cited-isnt-a-citation.html",
+    current: "/examples/when-cited-isnt-a-citation.html",
+    title: 'When "Cited" Isn\'t Really a Citation — citemap.json example',
+    description: "How a missing disambiguation field caused an AI engine to hallucinate an energy company in place of a natural stone supplier — and the single citemap.json field that prevents it.",
+  },
+];
+for (const p of CONTENT_PAGES) {
+  writeHtml(p.out, layout({
+    title: p.title, description: p.description, current: p.current,
+    body: `<section class="wrap"><article class="article">${read(p.src)}</article></section>`,
+  }));
+}
+
 // ── copy static assets from public/ (skip superseded/stale) ──
 const SKIP = new Set([
   "index.html", "spec/index.html", "spec/v3.3.md", "spec/v3.3.md.bak",
   "spec/registry/v3.3-vocabulary.md", ".DS_Store",
+  // regenerated through the layout by CONTENT_PAGES above — don't
+  // let the old hand-authored copy overwrite it
+  "examples/when-cited-isnt-a-citation.html",
 ]);
 const PUB = path.join(ROOT, "public");
 if (fs.existsSync(PUB)) {

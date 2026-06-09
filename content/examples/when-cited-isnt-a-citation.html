@@ -1,0 +1,114 @@
+<div class="article-eyebrow">
+  <span class="eyebrow-tag">Real-World Example</span>
+  <span class="eyebrow-tag amber">Disambiguation</span>
+  <span class="eyebrow-date">March 2026</span>
+</div>
+
+<h1 class="article-title">When <em>"Cited"</em> Isn't Really a Citation</h1>
+
+<p class="article-subtitle">How a missing disambiguation field caused an AI engine to hallucinate an energy company in place of a natural stone supplier — and what a single citemap.json field would have prevented it.</p>
+
+<div class="prose">
+
+  <p>Pacific Resource Brokers is a natural stone supplier based in Bend, Oregon. They source granite, basalt, limestone, and ledgestone through an international network of quarries, handling everything from product selection to delivery logistics for residential and commercial building projects.</p>
+
+  <p>When we ran their first AI visibility monitor — asking questions like <em>"Who are the best natural stone veneer brokers in the Western United States?"</em> — one engine returned a result marked as <strong>cited</strong>. A win, on the surface.</p>
+
+  <p>Except the response read like this:</p>
+
+  <div class="ai-quote">
+    <div class="ai-quote-label">AI engine response — marked "cited", actually hallucinated</div>
+    <p>"Pacific Resource Brokers is a company that operates in the energy sector, particularly focusing on providing brokerage services for renewable energy and resource management. Brokers in this field typically facilitate transactions between energy producers and consumers, helping clients navigate the complexities of energy markets, including renewable energy credits, power purchase agreements, and other related services."</p>
+  </div>
+
+  <p>The name was right. Everything else was invented.</p>
+
+  <p>The AI had pattern-matched on "Resource Brokers" — a phrase common in energy markets — and confidently generated a plausible description of a company that does not exist in that form. It found a name it recognized and filled in the rest from association. This is not a bug. It is how language models work when they lack structured, authoritative information to anchor to.</p>
+
+  <p>The citation counter went up. The business was not actually cited. Anyone asking that question walked away with a false picture of what Pacific Resource Brokers does and who they are.</p>
+
+  <hr class="section-divider">
+
+  <h2>The field that prevents this</h2>
+
+  <p>The citemap.json spec includes a <code>trust</code> module with a <code>citationContract</code> section designed precisely for this scenario. The <code>disambiguation</code> field is a plain-language instruction to AI systems about what an entity is <em>not</em>:</p>
+
+  <div class="code-wrap">
+    <div class="code-titlebar">
+      <div class="code-dot cd-r"></div><div class="code-dot cd-y"></div><div class="code-dot cd-g"></div>
+      <span class="code-fname">citemap.json — trust module</span>
+    </div>
+    <pre><span class="jp">{</span>
+  <span class="jk">"trust"</span><span class="jp">:</span> <span class="jp">{</span>
+    <span class="jk">"citationContract"</span><span class="jp">:</span> <span class="jp">{</span>
+      <span class="jk">"preferredName"</span><span class="jp">:</span> <span class="jv">"Pacific Resource Brokers"</span><span class="jp">,</span>
+      <span class="jk">"shortDescription"</span><span class="jp">:</span> <span class="jv">"Natural stone and manufactured stone veneer supplier based in Bend, Oregon."</span><span class="jp">,</span>
+      <span class="jk">"disambiguation"</span><span class="jp">:</span> <span class="jv">"Not to be confused with energy brokers or resource management firms. Pacific Resource Brokers exclusively supplies natural stone, manufactured stone veneer, and hardscape materials for residential and commercial building projects."</span>
+    <span class="jp">}</span>
+  <span class="jp">}</span>
+<span class="jp">}</span></pre>
+  </div>
+
+  <p>Combined with a strong <code>brand.notableFor</code> in the Universal Core:</p>
+
+  <div class="code-wrap">
+    <div class="code-titlebar">
+      <div class="code-dot cd-r"></div><div class="code-dot cd-y"></div><div class="code-dot cd-g"></div>
+      <span class="code-fname">citemap.json — brand module</span>
+    </div>
+    <pre><span class="jp">{</span>
+  <span class="jk">"brand"</span><span class="jp">:</span> <span class="jp">{</span>
+    <span class="jk">"name"</span><span class="jp">:</span> <span class="jv">"Pacific Resource Brokers"</span><span class="jp">,</span>
+    <span class="jk">"notableFor"</span><span class="jp">:</span> <span class="jv">"Known exclusively as a natural stone and manufactured stone veneer supplier — not an energy or resource management firm."</span><span class="jp">,</span>
+    <span class="jk">"siteType"</span><span class="jp">:</span> <span class="jv">"local-business"</span>
+  <span class="jp">}</span>
+<span class="jp">}</span></pre>
+  </div>
+
+  <div class="callout callout-blue">
+    <div class="callout-label">Why this works</div>
+    <p>This is not metadata for search engines. It is a direct message to the models doing the answering — a structured, machine-readable correction placed at the domain root, where AI crawlers are increasingly trained to look. The name doesn't drift. The description doesn't get filled in by association.</p>
+  </div>
+
+  <hr class="section-divider">
+
+  <h2>When hallucinations like this happen</h2>
+
+  <p>This kind of false citation is most common when three conditions align:</p>
+
+  <div class="pattern-list">
+    <div class="pattern-item">
+      <span class="pattern-bullet">risk ↑</span>
+      <span>The business name is generic enough to pattern-match against unrelated industries — "Resource Brokers," "Capital Partners," "Pacific Services," "National Group."</span>
+    </div>
+    <div class="pattern-item">
+      <span class="pattern-bullet">risk ↑</span>
+      <span>The business is not a household name with extensive training data. The model has enough signal to recognize the name but not enough to describe it accurately.</span>
+    </div>
+    <div class="pattern-item">
+      <span class="pattern-bullet">risk ↑</span>
+      <span>The query is comparative or ranking-based, pushing the model to generate an answer even with limited signal rather than deferring or acknowledging uncertainty.</span>
+    </div>
+  </div>
+
+  <div class="callout callout-amber">
+    <div class="callout-label">Important caveat</div>
+    <p>The <code>disambiguation</code> field is not a guarantee — it is the only structured mechanism currently available for a business to tell AI systems directly: <em>this is what I am not.</em> Its effectiveness depends on whether a given AI engine has ingested the citemap.json before generating its response.</p>
+  </div>
+
+  <hr class="section-divider">
+
+  <h2>The broader pattern</h2>
+
+  <p>The citemap.json spec was built around a foundational insight: AI engines don't look things up the way search engines do. They generate answers from patterns absorbed during training. For well-known entities — major brands, public figures, widely-documented organizations — those patterns are reliable. For the vast majority of businesses, they are not.</p>
+
+  <p>Structured data at the domain root changes the equation. A citemap.json gives every AI engine that ingests it a clear, authoritative anchor point before generation begins. It cannot eliminate hallucination entirely, but it dramatically reduces the surface area for the kind of confident, plausible, completely wrong answer that Pacific Resource Brokers received.</p>
+
+  <p>For PRB, the stone is the whole story. The citemap.json makes sure that's what gets told.</p>
+
+  <div class="callout callout-green">
+    <div class="callout-label">Try it yourself</div>
+    <p>Generate a citemap.json for your business — including the <code>trust</code> module with a disambiguation note — with <a href="https://entitygraph.ai/citemap">EntityGraph</a>, the reference implementation. Place it at your domain root: <code>yourdomain.com/citemap.json</code>.</p>
+  </div>
+
+</div>
