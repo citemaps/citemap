@@ -95,8 +95,8 @@ const MODULE_FORMS = {
       {
         title: 'Brand Identity',
         fields: [
-          { id:'brand.name',     label:'Brand Name',   type:'text', required:true, placeholder:'Acme Co.' },
-          { id:'brand.url',      label:'Website URL',  type:'url',  required:true, placeholder:'https://example.com' },
+          { id:'brand.name',     label:'Brand Name',   type:'text', required:true, placeholder:'CiteMaps.ai' },
+          { id:'brand.url',      label:'Website URL',  type:'url',  required:true, placeholder:'https://citemaps.ai' },
           { id:'brand.established', label:'Year Founded', type:'text', placeholder:'2024' },
           { id:'brand.siteType', label:'Site Type',    type:'select', required:true,
             options:['saas','ecommerce','local-business','publisher','nonprofit','government','science-research',
@@ -139,9 +139,9 @@ const MODULE_FORMS = {
             hint:'Recommended: 5–10 pairs. Questions AI engines are most likely to ask about you. Write answers as complete, citable sentences.',
             itemLabel:'Q&A',
             subfields: [
-              { id:'question', label:'Question', type:'text', placeholder:'What is Acme Co.?',
+              { id:'question', label:'Question', type:'text', placeholder:'What is CiteMaps.ai?',
                 counter: { type:'chars', target:100, hint:'Under 100 characters — match how users actually phrase queries.' } },
-              { id:'answer',   label:'Answer',   type:'textarea', placeholder:'Acme Co. is...',
+              { id:'answer',   label:'Answer',   type:'textarea', placeholder:'CiteMaps.ai is...',
                 counter: { type:'words', target:60, min:20, hint:'20–60 words. Short enough to extract as a citation snippet, long enough to be authoritative.' } },
             ]
           }
@@ -267,7 +267,7 @@ const MODULE_FORMS = {
       {
         title: 'Business Identity',
         fields: [
-          { id:'localBusiness.businessName',  label:'Business Name',    type:'text', placeholder:'Riverside Hardware Co.' },
+          { id:'localBusiness.businessName',  label:'Business Name',    type:'text', placeholder:'Pacific Resource Brokers' },
           { id:'localBusiness.description',   label:'Business Description', type:'textarea', full:true,
             placeholder:'60–100 words. Quotable by AI — write it to be cited directly.',
             counter: { type:'words', target:80, min:40, hint:'40–100 words. This is the paragraph AI uses when summarising what this business does.' } },
@@ -386,7 +386,7 @@ const MODULE_FORMS = {
       {
         title: 'Product Identity',
         fields: [
-          { id:'software.productName',   label:'Product Name',   type:'text', required:true, placeholder:'Acme Co.' },
+          { id:'software.productName',   label:'Product Name',   type:'text', required:true, placeholder:'CiteMaps.ai' },
           { id:'software.description',   label:'Description',    type:'textarea', full:true,
             placeholder:'Primary use case and key capabilities in one paragraph.',
             counter: { type:'chars', target:500, min:100, hint:'Up to 500 characters. State what it does, who it is for, and the primary use case.' } },
@@ -804,7 +804,7 @@ const MODULE_FORMS = {
         title: 'Career',
         fields: [
           { id:'person.currentRole.title',        label:'Current Title',   type:'text', placeholder:'Founder & CEO' },
-          { id:'person.currentRole.organization', label:'Organization',    type:'text', placeholder:'Acme Co.' },
+          { id:'person.currentRole.organization', label:'Organization',    type:'text', placeholder:'CiteMaps.ai' },
           { id:'person.currentRole.startDate',    label:'Start Date',      type:'text', placeholder:'2024-01',
             hint:'With start date, AI can correctly state "current" vs "former" role.' },
           { id:'person.education',                label:'Education',        type:'tags', full:true, placeholder:'Harvard Law School, MIT' },
@@ -1048,7 +1048,7 @@ const MODULE_FORMS = {
         title: 'Citation Contract',
         fields: [
           { id:'trust.citationContract.preferredName', label:'Preferred Name', type:'text', required:true,
-            placeholder:'Lakeside Brewing Co.',
+            placeholder:'3rd Street Beverage',
             hint:'The exact name AI should use when citing you — not your legal name unless they match.' },
           { id:'trust.citationContract.shortDescription', label:'Short Description', type:'textarea', full:true,
             placeholder:'Award-winning beverage retailer in Bend, Oregon with 1,000+ beers, 500+ wines.',
@@ -1075,8 +1075,10 @@ const MODULE_FORMS = {
         ]
       },
       {
-        title: 'Verification & Trust',
+        title: 'Citemap Level',
         fields: [
+          { id:'trust.citemapLevel', label:'Citemap Level', type:'select', options:['1','2','3'],
+            hint:'Level 1: brand + contact. Level 2: + module + answerContent + citationContract. Level 3: + verifiedClaims. Validator computes actual level and flags mismatches.' },
           { id:'trust.verification.externalVerifiers', label:'External Verifiers', type:'tags', full:true,
             placeholder:'google-business, linkedin, wikidata, orcid',
             hint:'Registry IDs that independently verify your identity. Adds trust tier weight.' },

@@ -185,7 +185,21 @@ code{font-family:var(--mono);font-size:.9em;background:var(--surface-2);padding:
 .eg-out-actions{display:flex;gap:6px}
 .eg-btn-sm{font-family:var(--sans);font-size:12px;font-weight:600;padding:5px 12px;border:1px solid var(--border);background:var(--bg);color:var(--heading);cursor:pointer}
 .eg-btn-sm.primary{background:var(--heading);color:var(--bg);border-color:var(--heading)}
-.eg-output{background:#1a1a2e;color:#c9d1d9;font-family:var(--mono);font-size:12px;line-height:1.7;padding:18px;overflow:auto;max-height:560px;margin:0;border:1px solid var(--border);white-space:pre}
+.eg-output{background:#1a1a2e;color:#c9d1d9;font-family:var(--mono);font-size:12px;line-height:1.7;padding:18px;overflow:auto;max-height:560px;margin:0;border:1px solid var(--border);white-space:pre-wrap;overflow-wrap:anywhere}
+.eg-level{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:0.04em;padding:2px 7px;border:1px solid var(--border);color:var(--text-dim);margin-left:6px;border-radius:3px}
+.eg-level.lv1{border-color:var(--border-strong);color:var(--text)}
+.eg-level.lv2{border-color:var(--accent);color:var(--accent)}
+.eg-level.lv3{border-color:var(--accent);background:var(--accent-bg);color:var(--accent)}
+.eg-rep{display:flex;flex-direction:column;gap:12px}
+.eg-rep-row{border:1px solid var(--border);border-radius:4px;padding:14px;background:var(--surface)}
+.eg-rep-row-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-family:var(--mono);font-size:11px;font-weight:600;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em}
+.eg-rep-del{font-family:var(--sans);font-size:11px;font-weight:600;text-transform:none;letter-spacing:0;color:var(--text);background:none;border:1px solid var(--border);padding:3px 9px;cursor:pointer;border-radius:3px}
+.eg-rep-del:hover{border-color:#dc2626;color:#dc2626}
+.eg-rep-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.eg-subfield{display:flex;flex-direction:column;gap:4px}
+.eg-sublabel{font-size:12px;font-weight:600;color:var(--heading)}
+.eg-rep-add{align-self:flex-start;font-family:var(--sans);font-size:12.5px;font-weight:600;padding:8px 14px;border:1px dashed var(--border);background:transparent;color:var(--heading);cursor:pointer;border-radius:3px}
+.eg-rep-add:hover{border-color:var(--accent);border-style:solid;color:var(--accent)}
 .eg-out-note{font-size:11.5px;color:var(--text-dim);margin-top:10px}
 .eg-val-input{min-height:200px;white-space:pre;font-family:var(--mono);font-size:12.5px}
 .eg-val{margin-top:16px;font-size:13.5px;line-height:1.6;padding:0}
