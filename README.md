@@ -2,233 +2,150 @@
 
 > Machine-readable business identity for AI citation accuracy.
 
-`citemap.json` is an open standard that lets businesses tell AI assistants the accurate, verified facts about themselves. Place it on your website, and AI tools like ChatGPT, Perplexity, and Gemini can read it to give customers correct information—no hallucinations, no outdated data, no competitor confusion.
+[![Spec](https://img.shields.io/badge/spec-v3.4-blue)](./spec/v3.4.md)
+[![Spec License: CC BY 4.0](https://img.shields.io/badge/spec-CC%20BY%204.0-lightgrey)](./LICENSE)
+[![Code License: MIT](https://img.shields.io/badge/code-MIT-green)](./LICENSE)
+[![npm: @citemap/cli](https://img.shields.io/npm/v/@citemap/cli?label=%40citemap%2Fcli)](https://www.npmjs.com/package/@citemap/cli)
 
-## The Problem
+**Status: Stable** · Current version **v3.4** · **First published March 2026** · [Changelog](./CHANGELOG.md)
 
-AI assistants hallucinate business details. They recommend competitors instead of you. They cite information that's years out of date. There's no standard way for businesses to push back and say, "Here's what's actually true about us."
+`citemap.json` is an open standard that lets a business tell AI assistants the accurate, verified facts about itself. Place the file on your website and AI tools like ChatGPT, Perplexity, and Gemini can read it to give people correct information — no hallucinations, no outdated data, no competitor confusion. Think of it as `robots.txt` for AI accuracy.
 
-## The Solution
+It is an **open, vendor-neutral standard.** The spec is CC BY 4.0, the tooling is MIT, and anyone may produce or consume citemap.json. See [GOVERNANCE.md](./GOVERNANCE.md) for how the standard is stewarded and evolved.
 
-`citemap.json` — a structured file you place on your website, similar to `robots.txt` for AI accuracy. AI assistants can read it to get verified, current, authoritative information about your business. Think of it as a "citation map" that helps AI understand your business identity.
+## The problem
 
-## Quick Start
+AI assistants hallucinate business details, recommend competitors instead of you, and cite information that's years out of date. There has been no standard way for a business to push back and say: *here is what is actually true about us, structured for a machine to read.*
 
-### Validate your citemap.json
+## The solution
 
-```bash
-# Using npx (no install required)
-npx @citemap/cli validate ./citemap.json
+A single structured file at your domain root that declares your entity — who you are, what you offer, the people behind you, how it all connects, and which claims are externally verifiable — so AI systems have one authoritative, current source of truth for your business.
 
-# Install globally for repeated use
-npm install -g @citemap/cli
-citemap validate ./citemap.json
+## Quick start
 
-# Full diagnostic with level assessment
-citemap diagnose ./citemap.json
-```
+**1. Build your file** from the [specification](#specification) or the [examples](./public/examples/).
 
-### Use the validator in your code
-
-```bash
-npm install @citemap/validator
-```
-
-```javascript
-import { validate, diagnose } from '@citemap/validator';
-import data from './citemap.json';
-
-// Quick validation with level assessment
-const result = validate(data);
-console.log(result.valid);        // true or false
-console.log(result.level.badge);  // "Level 2 ★★☆"
-console.log(result.score.overall); // 0-100
-
-// Detailed analysis with next-level coaching
-const analysis = diagnose(data);
-console.log(analysis.level.nextLevelHints); // ["Add verifiedClaims with..."]
-```
-
-## Specification
-
-- **[Full Specification (v2.0)](./spec/v2.0.md)** — Foundation spec: all fields, modules, and design rationale
-- **[v3.0 Addendum](./spec/v3.0.md)** — Five backward-compatible additions: Citation Contract, Formal Levels, Entity IDs, Module Meta, Verified Claims
-- **[JSON Schema (v3.0)](./public/schema/v3.0/citemap.schema.json)** — Machine-readable schema for validation and tooling
-- **[JSON Schema (v2.0)](./public/schema/v2.0/citemap.schema.json)** — Legacy v2.0 schema
-
-## Packages
-
-| Package | Description | Version | Install |
-|---------|-------------|---------|---------|
-| [@citemap/schema](./packages/schema) | JSON Schema + TypeScript types for v2.0/v3.0 | ![npm](https://img.shields.io/npm/v/@citemap/schema) | `npm i @citemap/schema` |
-| [@citemap/validator](./packages/validator) | Validation engine, quality scoring, level assessment | ![npm](https://img.shields.io/npm/v/@citemap/validator) | `npm i @citemap/validator` |
-| [@citemap/cli](./packages/cli) | Command-line validator & analyzer | ![npm](https://img.shields.io/npm/v/@citemap/cli) | `npx @citemap/cli` |
-
-## What's New in v3.0
-
-CiteMap v3.0 (March 2026) adds five backward-compatible features. Every valid v2.0 file also validates against v3.0.
-
-| Feature | Field | Description |
-|---------|-------|-------------|
-| **Citation Contract** | `citationContract` | Tell AI how to introduce your brand: `preferredName`, `shortDescription`, `disambiguation` |
-| **Formal Levels** | `citemapLevel` | 1 = core profile, 2 = modules + Q&A + contract, 3 = full verification + claims |
-| **Entity IDs** | `id` on nested objects | Stable `type:slug` identifiers on services, people, products, etc. |
-| **Module Meta** | `meta` on each module | `lastUpdated` and `updateFrequency` per module |
-| **Verified Claims** | `verifiedClaims[]` | Externally checkable identifiers: NPI, EIN, DUNS, bar licenses, DOIs, etc. |
-
-## Levels
-
-The v3.0 Level system gives businesses a clear path from basic to comprehensive:
-
-| Level | Badge | What's Included |
-|-------|-------|-----------------|
-| **1** | ★☆☆ | Core profile: brand, contact, lastVerified |
-| **2** | ★★☆ | + at least 1 module + answerContent + citationContract |
-| **3** | ★★★ | + verification block + verifiedClaims |
-
-```
-$ citemap diagnose ./citemap.json
-
-✓ Valid citemap.json  v3.0
-  Level 3 ★★★
-
-Quality Scores:
-  Overall        85% [█████████████████░░░]
-  Completeness  100% [████████████████████]
-  Modules       100% [████████████████████]
-  Trust          50% [██████████░░░░░░░░░░]
-```
-
-## Examples
-
-Browse real-world citemap.json examples in the [examples/](./public/examples/) directory:
-
-- [Local Business](./public/examples/local-business.json) — Retail store with v3.0 features
-- [E-commerce](./public/examples/ecommerce.json) — Online retailer
-- [SaaS](./public/examples/saas.json) — Software company
-- [B2B](./public/examples/b2b.json) — Business-to-business company
-
-## Deployment
-
-### Step 1: Create your citemap.json
-
-Use the specification or examples above to build your file. Validate it with the CLI:
+**2. Validate it:**
 
 ```bash
 npx @citemap/cli validate ./citemap.json
+npx @citemap/cli diagnose ./citemap.json   # full level + quality assessment
 ```
 
-### Step 2: Place it on your website
-
-Add the file to your web server in one of these locations (preferred first):
+**3. Publish it** at your domain root (preferred first):
 
 ```
 https://yourdomain.com/.well-known/citemap.json
 https://yourdomain.com/citemap.json
 ```
 
-### Step 3: Advertise it (optional but recommended)
-
-Add a reference to your `robots.txt`:
+**4. Advertise it (recommended)** via robots.txt or an HTTP Link header:
 
 ```
 Citemap: /.well-known/citemap.json
-```
-
-Or add an HTTP `Link` header:
-
-```
 Link: <https://yourdomain.com/.well-known/citemap.json>; rel="citemap"
 ```
 
-## Trust Architecture
+## Specification
 
-citemap.json includes a trust system to help AI assistants weight and verify information:
+The standard evolves in backward-compatible versions — every valid older file validates against every newer version, at most with a `version` bump.
 
-1. **Self-Reported** — Information you provide directly in the file
-2. **Self-Verified** — Information you provide with evidence (links, dates)
-3. **Third-Party Verified** — Information verified by third parties (certifications, awards)
-4. **Public Record** — Information from public registries (business license, SEC filings)
-5. **Cryptographically Signed** — Information signed with DNSSEC or other cryptographic proof
-6. **AI-Audited** — Information fact-checked by external AI tools
+- **[Current — v3.4](./spec/v3.4.md)** ← start here
+- [v3.3](./spec/v3.3.md) — consolidation: `@graph` extension + foundational sections
+- [v3.2](./spec/v3.2.md) · [v3.1](./spec/v3.1.md) · [v3.0](./spec/v3.0.md) — addenda
+- [v2.0](./spec/v2.0.md) — foundation spec (all fields, modules, rationale)
+- [Full version history → CHANGELOG.md](./CHANGELOG.md)
+- **JSON Schema:** [v3.4](./public/schema/) (machine-readable, for validation + tooling)
+- **Vocabulary registry:** [`spec/registry/`](./spec/registry/)
 
-v3.0's `verifiedClaims` field lets businesses point to externally checkable identifiers (NPI, EIN, DUNS, bar licenses) that AI systems can verify independently.
+## Levels
 
-## Why It Matters
+A clear path from basic to comprehensive — surfaced by the validator:
 
-### For Businesses
-- **Accurate AI Presence**: Control your narrative in AI search
-- **Better Customer Discovery**: Customers find you with confidence
-- **Competitive Edge**: Stand out in Answer Engine Optimization (AEO)
-- **Reduced Misinformation**: Prevent AI from spreading false information about you
+| Level | Badge | What's included |
+|-------|-------|-----------------|
+| **1** | ★☆☆ | Core profile: brand, contact, lastVerified |
+| **2** | ★★☆ | + at least one module + answerContent + citationContract |
+| **3** | ★★★ | + verification block + verifiedClaims |
 
-### For AI Developers
-- **Reliable Data Source**: Get authoritative business facts
-- **Reduced Hallucinations**: Cross-reference AI-generated text against citemap
-- **Better Attribution**: Know exactly where information comes from
-- **Scalable Verification**: Machine-readable trust scores and verified claims
-
-### For Users
-- **More Accurate Answers**: AI assistants cite correct information
-- **Better Recommendations**: AI can distinguish between similar companies
-- **Source Verification**: See where a recommendation came from
-
-## Contributing
-
-We welcome contributions! Here's how to help:
-
-### Report Issues
-Found a problem with the spec or tools? [Open an issue](https://github.com/citemaps/citemap/issues).
-
-### Suggest Improvements
-Have ideas for new modules, fields, or features? [Start a discussion](https://github.com/citemaps/citemap/discussions).
-
-### Submit Pull Requests
-- Fork the repository
-- Create a feature branch (`git checkout -b feature/your-feature`)
-- Make your changes
-- Add tests if applicable
-- Commit with clear messages
-- Push and open a pull request
-
-### Development Setup
-
-```bash
-# Clone the repo
-git clone https://github.com/citemaps/citemap.git
-cd citemap
-
-# Install and build packages
-cd packages/schema && npm install && npm run build && cd ..
-cd validator && npm install && npm run build && cd ..
-cd cli && npm install && npm run build && cd ../..
-
-# Run the CLI locally
-node packages/cli/dist/index.js validate ./public/examples/local-business.json
 ```
+$ citemap diagnose ./citemap.json
+✓ Valid citemap.json  v3.4   Level 3 ★★★
+  Overall 85%  ·  Completeness 100%  ·  Modules 100%  ·  Trust 50%
+```
+
+## Trust architecture
+
+citemap.json carries a trust model so AI systems can weight and verify claims rather than take everything at face value — from self-reported, through self-verified (evidence + dates) and third-party / public-record, up to cryptographically signed. The `verifiedClaims[]` field points to externally checkable identifiers (NPI, EIN, DUNS, bar licenses, DOIs) that systems can confirm independently. Full model in the [spec](./spec/v3.4.md).
+
+## Implementations
+
+citemap.json is an open standard — anyone can build a generator, validator, or consumer. Current implementations and tooling:
+
+| Implementation | What it is |
+|----------------|-----------|
+| **Reference implementation** — [EntityGraph](https://entitygraph.ai) | Generates, publishes, and monitors citemap.json end to end. Maintained by the standard's original author; tracks the spec as the conformance reference. |
+| **Registry** — [registry.citemaps.org](https://registry.citemaps.org) | Public registry with claim/verify for published files. |
+| **Generator** — [citemaps.org](https://citemaps.org) | Free, no-signup file builder. |
+| **WordPress plugin** | Publishes a static citemap.json from WordPress. |
+| `@citemap/cli` · `@citemap/validator` · `@citemap/schema` | Open-source npm tooling (below). |
+
+Built an implementation? [Open a PR](./CONTRIBUTING.md) to list it here — the standard is stronger with more independent producers and consumers.
+
+## Packages
+
+| Package | Description | Install |
+|---------|-------------|---------|
+| [@citemap/schema](./packages/schema) | JSON Schema + TypeScript types | `npm i @citemap/schema` |
+| [@citemap/validator](./packages/validator) | Validation, quality scoring, level assessment | `npm i @citemap/validator` |
+| [@citemap/cli](./packages/cli) | Command-line validator & analyzer | `npx @citemap/cli` |
+
+```js
+import { validate, diagnose } from '@citemap/validator';
+import data from './citemap.json';
+
+validate(data).level.badge;      // "Level 2 ★★☆"
+diagnose(data).level.nextLevelHints;  // ["Add verifiedClaims with…"]
+```
+
+## Why it matters
+
+- **For businesses** — control your narrative in AI search, prevent misinformation, and stand out in Answer Engine Optimization (AEO).
+- **For AI developers** — an authoritative, machine-readable source of business facts with built-in trust scoring to cross-check generated text and reduce hallucinations.
+- **For users** — more accurate answers, better disambiguation between similar companies, and traceable attribution.
+
+## Governance & contributing
+
+citemap.json is stewarded as a vendor-neutral open standard. Changes are proposed and discussed in the open; the spec evolves additively, with backward compatibility as a hard rule for minor versions.
+
+- **[GOVERNANCE.md](./GOVERNANCE.md)** — stewardship, neutrality, the change process, and the versioning/stability policy.
+- **[CONTRIBUTING.md](./CONTRIBUTING.md)** — how to propose a change, file an issue, or submit a PR, plus local development setup.
+
+Have an idea or found a problem? [Open an issue](https://github.com/citemaps/citemap/issues) or [start a discussion](https://github.com/citemaps/citemap/discussions).
 
 ## Roadmap
 
-- **v3.0** (March 2026) ✅ — Citation Contract, Formal Levels, Entity IDs, Module Meta, Verified Claims
-- **v3.1** — WordPress plugin for one-click citemap generation
-- **v3.2** — AI Crawler Integration: formal acknowledgment by major AI systems
-- **v4.0** — Cryptographic Trust Layer: W3C Verifiable Credentials integration
+citemap.json ships small, backward-compatible releases and batches larger changes into deliberate consolidation versions (the v3.3 model). Direction for the next cycle (in open consultation):
+
+- **Richer entity graph** — product/variant nodes, geo + location modeling, and a unified entity-connection model across the `@graph`.
+- **Deeper verification & trust** — expanded verifiable-claim types and registry-backed verification.
+- **Agent interface layer** — optional, opt-in declarations for AI agents and retrieval pipelines.
+
+Proposals and discussion happen in the open — see [CONTRIBUTING.md](./CONTRIBUTING.md).
 
 ## License
 
 Dual-licensed by layer:
 
-- **Code** (the generator, build tooling, validator, CLI, and schema packages) — **MIT**. Free to use, modify, distribute, and fork.
-- **Specification** (the prose and vocabulary-registry documents under `spec/`) — **CC BY 4.0**.
+- **Specification** (prose + vocabulary-registry documents under `spec/`) — **CC BY 4.0**.
+- **Code** (generator, build tooling, validator, CLI, schema packages) — **MIT**.
 
-See [LICENSE](./LICENSE) for details.
+See [LICENSE](./LICENSE).
 
 ## Credits
 
-Created by Brian Pofahl at [CiteMaps](https://github.com/citemaps). Maintained by the citemap community.
+Created by **Brian Pofahl** and first published in **March 2026**. Stewarded as an open standard by the [citemaps](https://github.com/citemaps) community.
 
 ---
 
-**Questions?** Read the [current spec](./spec/v3.4.md) or [open an issue](https://github.com/citemaps/citemap/issues).
-
-**Want to stay updated?** Star the repo, watch for releases, or visit [citemaps.org](https://citemaps.org).
+**Questions?** Read the [current spec](./spec/v3.4.md), the [changelog](./CHANGELOG.md), or [open an issue](https://github.com/citemaps/citemap/issues). · [citemaps.org](https://citemaps.org)
