@@ -22,7 +22,35 @@ const SPEC_SRC = `spec/v${SPEC_VERSION}.md`;
 const VOCAB_SRC = `spec/registry/v${SPEC_VERSION}-vocabulary.md`;
 
 const read = (p) => fs.readFileSync(path.join(ROOT, p), "utf8");
-const md = (p) => marked.parse(read(p));
+
+// Heading ids, GitHub-style, so in-page links (#9-citemap-level) and links
+// from GitHub land on the same anchors. marked stopped adding ids in v8.
+// Slug: lowercase, strip punctuation (keep letters, digits, spaces, - _),
+// each space → "-"; repeats on a page get -1, -2…
+let slugCounts = new Map();
+const slugify = (raw) => raw
+  .replace(/<[^>]*>/g, "")
+  .toLowerCase()
+  .trim()
+  .replace(/[^\p{L}\p{N}\s_-]/gu, "")
+  .replace(/ /g, "-");
+marked.use({
+  renderer: {
+    heading(text, level, raw) {
+      const base = slugify(raw);
+      const n = slugCounts.get(base) ?? 0;
+      slugCounts.set(base, n + 1);
+      const id = n ? `${base}-${n}` : base;
+      return `<h${level} id="${id}">${text}</h${level}>\n`;
+    },
+  },
+});
+// Links between the current spec and its vocabulary registry go to the
+// rendered pages, not the raw Markdown files.
+const sitePaths = (html) => html
+  .replaceAll(`href="./registry/v${SPEC_VERSION}-vocabulary.md`, `href="/spec/registry/`)
+  .replaceAll(`href="../v${SPEC_VERSION}.md`, `href="/spec/`);
+const md = (p) => { slugCounts = new Map(); return sitePaths(marked.parse(read(p))); };
 
 // ── shared layout ────────────────────────────────────────────
 // "Registry" = the public entity catalog at registry.citemaps.org
