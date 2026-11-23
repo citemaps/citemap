@@ -63,6 +63,12 @@ export function parseVersion(v: unknown): [number, number] | null {
   return m ? [Number(m[1]), Number(m[2])] : null;
 }
 
+/** v3.5 and later: v3.5 schema findings are errors, not warnings. */
+export function isV35OrLater(v: unknown): boolean {
+  const p = parseVersion(v);
+  return !!p && (p[0] > 3 || (p[0] === 3 && p[1] >= 5));
+}
+
 /** v3.3 and later are checked structurally (not with the v3.0 schema). */
 export function isModernVersion(v: unknown): boolean {
   const p = parseVersion(v);
@@ -145,9 +151,12 @@ export function checkModernCitemap(data: unknown): { errors: Issue[]; warnings: 
       if (!Number.isInteger(f.count) || f.count < 0) errors.push({ path: `${p}/count`, message: 'count must be a whole number ≥ 0', keyword: 'type' });
       if (f.year !== undefined && !/^(\d{4}|undated)$/.test(String(f.year))) warnings.push({ path: `${p}/year`, message: 'year should be YYYY or "undated"' });
       if (f.lastUpdated !== undefined && !isDate(f.lastUpdated)) warnings.push({ path: `${p}/lastUpdated`, message: 'lastUpdated should be a date (YYYY-MM-DD)' });
+      if (f.part !== undefined && !(Number.isInteger(f.part) && f.part >= 1)) errors.push({ path: `${p}/part`, message: 'part must be a whole number ≥ 1', keyword: 'type' });
     });
     // Content moved out shouldn't also be inline.
     if (hasContentFiles && isObj(data.brand)) {
+      if ((data.contentFiles as Doc[]).some(f => f?.type === 'product') && Array.isArray(data.brand.products) && data.brand.products.length === 0)
+        warnings.push({ path: '/brand/products', message: 'brand.products is an empty array while products are in content files', suggestion: 'Leave brand.products out of the main file; an empty array reads as "no products" (v3.5 §2.1)' });
       for (const f of data.contentFiles as Doc[]) {
         const key = CONTENT_BRAND_KEY[f?.type as ContentFileType];
         if (key && Array.isArray(data.brand[key]) && data.brand[key].length) {
@@ -156,6 +165,12 @@ export function checkModernCitemap(data: unknown): { errors: Issue[]; warnings: 
         }
       }
     }
+  }
+
+  // brand.products is always-on (v3.3 §3); a product content file satisfies it (v3.5 §2.1).
+  if (isObj(data.brand) && data.brand.products === undefined && !(Array.isArray(data.contentFiles) && data.contentFiles.some((f: Doc) => f?.type === 'product'))) {
+    const issue = { path: '/brand/products', message: 'brand.products is missing (always-on section; [] when the entity has no products)', keyword: 'required' };
+    if (isV35OrLater(versionOf(data))) errors.push(issue); else warnings.push(issue);
   }
 
   const bytes = byteLen(JSON.stringify(data, null, 2));
@@ -173,7 +188,7 @@ export interface ContentFileResult {
 }
 
 /** A single content file ("@type": "CitemapContentFile"). */
-export function validateContentFile(data: unknown, ref?: { type?: string; count?: number }): ContentFileResult {
+export function validateContentFile(data: unknown, ref?: { type?: string; count?: number; part?: number }): ContentFileResult {
   const errors: Issue[] = [];
   const warnings: Issue[] = [];
   if (!isObj(data)) return { valid: false, errors: [{ path: '/', message: 'content file must be a JSON object', keyword: 'type' }], warnings, count: 0 };
@@ -195,7 +210,11 @@ export function validateContentFile(data: unknown, ref?: { type?: string; count?
   }
   if (ref?.type && data.contentType !== ref.type) errors.push({ path: '/contentType', message: `main file lists this as ${ref.type}, file says ${data.contentType}`, keyword: 'const' });
   if (ref && Number.isInteger(ref.count) && ref.count !== count) errors.push({ path: '/count', message: `main file lists ${ref.count} items, file has ${count}`, keyword: 'const' });
+  if (data.part !== undefined && !(Number.isInteger(data.part) && data.part >= 1)) errors.push({ path: '/part', message: 'part must be a whole number ≥ 1', keyword: 'type' });
+  if (ref && (ref as Doc).part !== undefined && data.part !== (ref as Doc).part) errors.push({ path: '/part', message: `main file lists part ${(ref as Doc).part}, file says ${data.part}`, keyword: 'const' });
   checkGraph(data, errors, warnings, { endpointsMayBeElsewhere: true });
+  const bytes = byteLen(JSON.stringify(data, null, 2));
+  if (bytes >= RECOMMENDED_MAX_BYTES) warnings.push({ path: '/', message: `content file is ${Math.round(bytes / 1024)} KB; the spec recommends under 100 KB`, suggestion: 'Split it further (by year, category, or numbered parts; v3.5 §8.6)' });
   return { valid: errors.length === 0, errors, warnings, contentType: data.contentType, count };
 }
 
@@ -237,9 +256,14 @@ export function mergeContentFiles(main: Doc, files: Doc[]): Doc {
 }
 
 /** Checks across the main file and its content files (after fetching them). */
-export function checkAcrossFiles(main: Doc, files: Array<{ url: string; data: unknown }>): { errors: Issue[]; warnings: Issue[] } {
+export function checkAcrossFiles(main: Doc, files: Array<{ url: string; data: unknown }>): { errors: Issue[]; warnings: Issue[]; merged: Doc } {
   const errors: Issue[] = [];
   const warnings: Issue[] = [];
+  const mainId = isObj(main?.brand) ? main.brand['@id'] : undefined;
+  for (const f of files) {
+    const about = (f.data as Doc)?.about;
+    if (typeof mainId === 'string' && about !== mainId) errors.push({ path: '/about', message: `${f.url.split('/').pop()}: about is ${about ?? 'missing'}, not the main file's brand @id ${mainId}`, keyword: 'const', suggestion: 'Readers discard content files about a different entity (v3.5 §8.7)' });
+  }
   const refs: Doc[] = Array.isArray(main?.contentFiles) ? main.contentFiles : [];
   const fetched = new Set(files.map(f => f.url));
   for (const r of refs) if (isHttps(r?.url) && !fetched.has(r.url)) warnings.push({ path: '/contentFiles', message: `not read: ${r.url}` });
@@ -260,5 +284,5 @@ export function checkAcrossFiles(main: Doc, files: Array<{ url: string; data: un
   let dangling = 0;
   for (const r of merged.relationships ?? []) for (const k of ['from', 'to']) if (typeof r?.[k] === 'string' && r[k].includes('#') && !ids.has(r[k])) dangling++;
   if (dangling) warnings.push({ path: '/relationships', message: `${dangling} relationship endpoint(s) don't match any @id across the files` });
-  return { errors, warnings };
+  return { errors, warnings, merged };
 }

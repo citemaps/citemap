@@ -4,7 +4,7 @@ import { readFileSync } from 'fs';
 import { resolve } from 'path';
 import { validate, validateAndDiagnose, validateContentFile, checkAcrossFiles } from '@citemap/validator';
 
-const VERSION = '0.4.1';
+const VERSION = '0.5.0';
 
 // ANSI color codes
 const colors = {
@@ -86,7 +86,7 @@ function formatValidationOutput(result: ReturnType<typeof validate>): boolean {
 
   // Level badge
   const lvl = result.level;
-  const levelColor = lvl.current === 3 ? colors.green : lvl.current === 2 ? colors.cyan : colors.yellow;
+  const levelColor = lvl.current === 3 ? colors.green : lvl.current === 2 ? colors.cyan : lvl.current === 0 ? colors.red : colors.yellow;
   console.log(`  ${levelColor}${colors.bright}${lvl.badge}${colors.reset}`);
   if (!lvl.claimAccurate && lvl.claimed != null) {
     console.log(`  ${colors.yellow}⚠ Claimed Level ${lvl.claimed}, actual Level ${lvl.current}${colors.reset}`);
@@ -138,7 +138,7 @@ function formatDiagnosticOutput(data: unknown): boolean {
 
   // Level badge
   const lvl = result.level;
-  const levelColor = lvl.current === 3 ? colors.green : lvl.current === 2 ? colors.cyan : colors.yellow;
+  const levelColor = lvl.current === 3 ? colors.green : lvl.current === 2 ? colors.cyan : lvl.current === 0 ? colors.red : colors.yellow;
   console.log(`  ${levelColor}${colors.bright}${lvl.badge}${colors.reset}`);
   if (!lvl.claimAccurate && lvl.claimed != null) {
     console.log(`  ${colors.yellow}⚠ Claimed Level ${lvl.claimed}, actual Level ${lvl.current}${colors.reset}`);
@@ -260,6 +260,7 @@ async function checkContentFiles(main: any): Promise<boolean> {
   const across = checkAcrossFiles(main, read);
   for (const e of across.errors) { ok = false; console.log(`  ${colors.red}✗${colors.reset} ${e.message}`); }
   for (const w of across.warnings) console.log(`  ${colors.yellow}⚠${colors.reset} ${w.message}`);
+  if (read.length) console.log(`  ${colors.dim}Joined record (main + ${read.length} file${read.length === 1 ? '' : 's'}):${colors.reset} ${across.level.badge}`);
   console.log('');
   return ok;
 }

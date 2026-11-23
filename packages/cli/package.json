@@ -1,6 +1,6 @@
 {
   "name": "@citemap/cli",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "description": "Command-line tool for validating citemap.json files",
   "bin": {
     "citemap": "bin/citemap.js"
@@ -30,7 +30,7 @@
     "node": ">=18.0.0"
   },
   "dependencies": {
-    "@citemap/validator": "^0.4.0"
+    "@citemap/validator": "^0.5.0"
   },
   "devDependencies": {
     "@types/node": "^25.5.0",

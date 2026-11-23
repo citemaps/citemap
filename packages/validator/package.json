@@ -1,7 +1,7 @@
 {
   "name": "@citemap/validator",
-  "version": "0.4.0",
-  "description": "Validate citemap.json files — schema checks, quality scoring, level assessment, field diagnostics",
+  "version": "0.5.0",
+  "description": "Validate citemap.json files (v2.0 to v3.5): JSON Schema, spec rules, content files, level assessment, field diagnostics",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
@@ -16,7 +16,8 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsup src/index.ts --format cjs,esm --dts",
+    "prebuild": "node scripts/copy-schemas.mjs",
+    "build": "tsup src/index.ts --format cjs,esm --dts --clean",
     "prepublishOnly": "npm run build"
   },
   "keywords": [

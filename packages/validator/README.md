@@ -2,9 +2,15 @@
 
 Validate [citemap.json](https://citemaps.org) files against the official schema, with quality scoring, level assessment, and diagnostic recommendations.
 
-Supports CiteMap v2.0 and v3.0 (JSON Schema), and v3.3 / v3.4 (structural checks per the spec, including content files).
+Supports citemap v2.0 and v3.0 (JSON Schema) and v3.3 to v3.5 (the v3.5 JSON Schema plus the spec's rules, including content files).
 
-> **0.4.0:** v3.3+ files are checked against the spec's structural rules (identity, `@graph` ids, relationship endpoints, `contentFiles`, the 100 KB size recommendation) instead of the strict v3.0 schema, which rejected every v3.3 addition as an "additional property".
+> **0.5.0 (spec v3.5):**
+> - v3.3+ files are checked against the [v3.5 JSON Schema](https://citemaps.org/schema/v3.5/citemap.schema.json). Findings are errors for v3.5 files and warnings ("would fail v3.5") for v3.3 / v3.4 files, so existing files keep validating.
+> - Edge types: the 16 graduated in v3.5 are accepted as short names or `https://citemaps.org/ext/v1/types/{name}` (the same type).
+> - Reachability: every `@graph` node needs a path to the primary entity (edges in either direction, through other nodes), checked on the joined record when content files are listed.
+> - Level: computed from foundational data per [spec §9](https://citemaps.org/spec/) (Level 1 identity, Level 2 citation guidance + Q&A, Level 3 a registered identifier). `level.current` is 0 when Level 1 isn't met.
+> - Warnings for deprecations (vertical aliases, legacy `verifiedClaims` rows, page-valued video `contentUrl`, deprecated publication types) and the spec's SHOULD rules (discontinued without `endDate`, `openingHours` form, location brands, duplicate edges, files over 100 KB).
+> - `checkAcrossFiles` also returns the joined record's `level` and checks each file's `about`.
 
 ## Install
 
@@ -158,7 +164,7 @@ MIT
 
 ### Content files (v3.3+)
 
-A citemap can keep Media and products in separate files so the main file stays small: `contentFiles[]` in the main file lists them (`type`, `url`, `count`, optional `year` / `category` / `lastUpdated`), and each file is `"@type": "CitemapContentFile"` with `contentType`, `isPartOf`, the type's `brand.<key>` rows, its `@graph` nodes and its `relationships`. Concatenating the arrays gives the one-file record back.
+A citemap can keep Media and products in separate files so the main file stays small: `contentFiles[]` in the main file lists them (`type`, `url`, `count`, optional `year` / `category` / `part` / `lastUpdated`), and each file is `"@type": "CitemapContentFile"` with `contentType`, `isPartOf`, the type's `brand.<key>` rows, its `@graph` nodes and its `relationships`. Concatenating the arrays gives the one-file record back.
 
 ```typescript
 import { validate, validateContentFile, checkAcrossFiles, mergeContentFiles } from '@citemap/validator';
@@ -166,7 +172,7 @@ import { validate, validateContentFile, checkAcrossFiles, mergeContentFiles } fr
 const main = validate(citemap);                          // checks the contentFiles entries too
 const files = await Promise.all(citemap.contentFiles.map(async (ref) => ({ url: ref.url, data: await (await fetch(ref.url)).json() })));
 files.forEach((f, i) => validateContentFile(f.data, citemap.contentFiles[i])); // shape, count vs the main file's entry
-const across = checkAcrossFiles(citemap, files);         // duplicate @ids across files, endpoints resolve, files not read
+const across = checkAcrossFiles(citemap, files);         // @ids across files, about, endpoints, reachability; across.level = joined record's level
 const record = mergeContentFiles(citemap, files.map(f => f.data)); // the one-file record
 ```
 

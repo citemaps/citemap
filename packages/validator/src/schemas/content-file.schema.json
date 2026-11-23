@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://citemaps.org/schema/v3.5/content-file.schema.json",
+  "title": "citemap.json v3.5 content file",
+  "description": "A content file listed in a main citemap's contentFiles[] (spec v3.5 \u00a78.5).",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "@type",
+    "contentType",
+    "isPartOf",
+    "about",
+    "count",
+    "brand"
+  ],
+  "anyOf": [
+    {
+      "required": [
+        "version"
+      ]
+    },
+    {
+      "required": [
+        "citemapVersion"
+      ]
+    }
+  ],
+  "properties": {
+    "@context": {
+      "type": "string"
+    },
+    "@type": {
+      "const": "CitemapContentFile"
+    },
+    "version": {
+      "type": "string"
+    },
+    "citemapVersion": {
+      "type": "string"
+    },
+    "contentType": {
+      "$ref": "citemap.schema.json#/$defs/contentFileRef/properties/type"
+    },
+    "year": {
+      "type": "string",
+      "pattern": "^(\\d{4}|undated)$"
+    },
+    "category": {
+      "type": "string"
+    },
+    "part": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "isPartOf": {
+      "$ref": "citemap.schema.json#/$defs/url"
+    },
+    "about": {
+      "type": "string"
+    },
+    "count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "lastUpdated": {
+      "$ref": "citemap.schema.json#/$defs/date"
+    },
+    "brand": {
+      "type": "object",
+      "required": [
+        "@id"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "@id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "publications": {
+          "type": "array",
+          "items": {
+            "$ref": "citemap.schema.json#/$defs/publication"
+          }
+        },
+        "video": {
+          "type": "array",
+          "items": {
+            "$ref": "citemap.schema.json#/$defs/video"
+          }
+        },
+        "podcasts": {
+          "type": "array",
+          "items": {
+            "$ref": "citemap.schema.json#/$defs/podcast"
+          }
+        },
+        "speaking": {
+          "type": "array",
+          "items": {
+            "$ref": "citemap.schema.json#/$defs/speaking"
+          }
+        },
+        "products": {
+          "type": "array",
+          "items": {
+            "$ref": "citemap.schema.json#/$defs/product"
+          }
+        }
+      }
+    },
+    "@graph": {
+      "type": "array",
+      "items": {
+        "$ref": "citemap.schema.json#/$defs/node"
+      }
+    },
+    "relationships": {
+      "type": "array",
+      "items": {
+        "$ref": "citemap.schema.json#/$defs/relationship"
+      }
+    }
+  }
+}

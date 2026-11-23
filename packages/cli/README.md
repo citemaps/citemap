@@ -104,6 +104,11 @@ If a citemap claims a level via `citemapLevel` that doesn't match actual content
 MIT
 
 
+## 0.5.0
+
+- Uses @citemap/validator 0.5.0: v3.5 schema and rules (v3.3 / v3.4 files get v3.5 findings as warnings), the v3.5 level formula, reachability on the joined record.
+- After reading content files, prints the joined record's level.
+
 ## 0.4.1
 
 - The `citemap` command runs the current build (0.4.0's bin still loaded an old 0.3.x file, so URLs read as "File not found").

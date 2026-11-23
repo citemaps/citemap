@@ -8,19 +8,49 @@ import {
   MODULE_KEYS,
   CITEMAP_SUPPORTED_VERSIONS,
 } from '@citemap/schema';
-import { checkModernCitemap, isModernVersion, versionOf } from './structural';
+import {
+  checkModernCitemap, isModernVersion, isV35OrLater, versionOf,
+  validateContentFile as validateContentFileStructure, checkAcrossFiles as checkAcrossFilesStructure,
+} from './structural';
+import type { Issue, ContentFileResult } from './structural';
+import { checkV35, checkContentFileV35, computeLevel, findOrphans, type Level } from './v35';
 
 export {
-  validateContentFile,
   mergeContentFiles,
-  checkAcrossFiles,
   checkModernCitemap,
   isModernVersion,
+  isV35OrLater,
   CONTENT_FILE_TYPES,
   CONTENT_BRAND_KEY,
   RECOMMENDED_MAX_BYTES,
 } from './structural';
 export type { Issue, ContentFileResult, ContentFileType } from './structural';
+export {
+  computeLevel, findOrphans, normalizeEdgeType, schemaIssues, checkV35,
+  EDGE_TYPES_V33, EDGE_TYPES_V35, EXT_PREFIX, VERTICALS,
+} from './v35';
+export type { Level } from './v35';
+
+/** A content file on its own: structure + the v3.5 content-file schema. */
+export function validateContentFile(data: unknown, ref?: { type?: string; count?: number; part?: number }): ContentFileResult {
+  const r = validateContentFileStructure(data, ref);
+  const v = checkContentFileV35(data, isV35OrLater(versionOf(data as any)));
+  const errors = [...r.errors, ...v.errors];
+  return { ...r, errors, warnings: [...r.warnings, ...v.warnings], valid: errors.length === 0 };
+}
+
+/**
+ * Checks across a main file and its content files (after fetching them):
+ * @id ownership, about, endpoints, reachability and the level of the joined
+ * record (v3.5 §8.7: every rule applies to the joined record).
+ */
+export function checkAcrossFiles(main: Record<string, any>, files: Array<{ url: string; data: unknown }>): { errors: Issue[]; warnings: Issue[]; level: LevelAssessment } {
+  const r = checkAcrossFilesStructure(main, files);
+  const errors = [...r.errors];
+  const orphans = findOrphans(r.merged);
+  if (orphans.length) errors.push({ path: '/@graph', message: `${orphans.length} @graph node(s) in the joined record have no path to the primary entity: ${orphans.slice(0, 5).join(', ')}${orphans.length > 5 ? '…' : ''}`, keyword: 'reachability' });
+  return { errors, warnings: r.warnings, level: assessLevel(r.merged) };
+}
 
 /**
  * Represents a validation error from schema checking
@@ -55,7 +85,8 @@ export interface QualityScore {
  * v3 Level assessment
  */
 export interface LevelAssessment {
-  current: CitemapLevel;
+  /** 0 = Level 1 not met (v3.3+ documents only, spec v3.5 §9). */
+  current: Level;
   claimed?: CitemapLevel;
   claimAccurate: boolean;
   nextLevelHints: string[];
@@ -309,7 +340,8 @@ function calculateModuleScore(data: any, applicableModules: string[]): number {
 /**
  * Generate a level badge string
  */
-function levelBadge(level: CitemapLevel): string {
+function levelBadge(level: Level): string {
+  if (level === 0) return 'No level (Level 1 not met) ☆☆☆';
   const stars = '★'.repeat(level) + '☆'.repeat(3 - level);
   return `Level ${level} ${stars}`;
 }
@@ -318,6 +350,12 @@ function levelBadge(level: CitemapLevel): string {
  * Assess the CiteMap Level using @citemap/schema helpers
  */
 function assessLevel(data: any): LevelAssessment {
+  if (isModernVersion(versionOf(data))) {
+    // v3.5 §9: computed from foundational data, applies to v3.3+ documents.
+    const { level, missing } = computeLevel(data);
+    const claimed = data?.citemapLevel as CitemapLevel | undefined;
+    return { current: level, claimed: claimed ?? undefined, claimAccurate: claimed == null || claimed === level, nextLevelHints: missing, badge: levelBadge(level) };
+  }
   const current = calculateLevel(data as any);
   const claimed = data?.citemapLevel as CitemapLevel | undefined;
   const claimAccurate = claimed == null || claimed === current;
@@ -422,8 +460,12 @@ export function validate(data: unknown): ValidationResult {
     // addition as an "additional property". Check the spec's structural
     // rules in code instead (structural.ts), including contentFiles.
     const s = checkModernCitemap(data);
-    errors = s.errors.map(e => ({ path: e.path, message: e.message, keyword: e.keyword ?? 'structure' }));
-    warnings.push(...s.warnings.map(w => ({ path: w.path, message: w.message, suggestion: w.suggestion ?? '' })));
+    // v3.5 rules (0.5.0): schema, edge types, reachability, claims, deprecations.
+    // Reachability waits for the joined record when content files are listed.
+    const complete = !(Array.isArray(citemapData?.contentFiles) && citemapData.contentFiles.length);
+    const v = checkV35(data, { strict: isV35OrLater(version), complete });
+    errors = [...s.errors, ...v.errors].map(e => ({ path: e.path, message: e.message, keyword: e.keyword ?? 'structure' }));
+    warnings.push(...[...s.warnings, ...v.warnings].map(w => ({ path: w.path, message: w.message, suggestion: w.suggestion ?? '' })));
     isValid = errors.length === 0;
   } else {
     const validateFn = createValidator();
@@ -431,8 +473,9 @@ export function validate(data: unknown): ValidationResult {
     errors = formatValidationErrors(validateFn.errors ?? null);
   }
 
-  // Generate warnings for quality issues
-  if (citemapData?.brand) {
+  // Generate warnings for quality issues (v3.0 module recommendations; v3.3+
+  // replaced modules with verticals + foundational sections).
+  if (citemapData?.brand && !isModernVersion(version)) {
     const { siteType } = citemapData.brand;
     const applicableModules = getApplicableModules(siteType);
 
@@ -468,7 +511,8 @@ export function validate(data: unknown): ValidationResult {
 
   // v3.3+ carries contact on the entity (brand.email / telephone / contactPoint).
   const b = citemapData?.brand ?? {};
-  const hasModernContact = isModernVersion(version) && (b.email || b.telephone || b.contactPoint || b.contact);
+  const hasModernContact = isModernVersion(version) && (b.email || b.telephone || b.contactPoint || b.contact
+    || (Array.isArray(b.locations) && b.locations.some((l: any) => l?.phone)) || citemapData?.citationContract?.contactForCorrections);
   if (!citemapData?.contact && !hasModernContact) {
     warnings.push({
       path: '/contact',
@@ -504,7 +548,7 @@ export function validate(data: unknown): ValidationResult {
   }
 
   // Calculate quality score
-  const applicableModules = getApplicableModules(citemapData?.brand?.siteType || 'general');
+  const applicableModules = isModernVersion(version) ? [] : getApplicableModules(citemapData?.brand?.siteType || 'general');
   const completenessScore = calculateCompletenessScore(citemapData);
   const moduleScore = calculateModuleScore(citemapData, applicableModules);
   const trustScore = calculateTrustSignals(citemapData);
@@ -546,7 +590,7 @@ export function validate(data: unknown): ValidationResult {
 export function diagnose(data: unknown): Diagnosis {
   const citemapData = data as Record<string, any>;
   const siteType = citemapData?.brand?.siteType || 'unknown';
-  const applicableModules = getApplicableModules(siteType);
+  const applicableModules = isModernVersion(versionOf(citemapData)) ? [] : getApplicableModules(siteType);
 
   const presentModules = applicableModules.filter((moduleName) => {
     const propertyName = MODULE_PROPERTY_NAMES[moduleName];
