@@ -4,6 +4,8 @@ Validate [citemap.json](https://citemaps.org) files against the official schema,
 
 Supports citemap v2.0 and v3.0 (JSON Schema) and v3.3 to v3.5 (the v3.5 JSON Schema plus the spec's rules, including content files).
 
+> **0.5.1:** fixes the ESM build (0.5.0 imported `ajv/dist/2020` without `.js`, which Node's ESM loader rejects; the CLI crashed on start).
+>
 > **0.5.0 (spec v3.5):**
 > - v3.3+ files are checked against the [v3.5 JSON Schema](https://citemaps.org/schema/v3.5/citemap.schema.json). Findings are errors for v3.5 files and warnings ("would fail v3.5") for v3.3 / v3.4 files, so existing files keep validating.
 > - Edge types: the 16 graduated in v3.5 are accepted as short names or `https://citemaps.org/ext/v1/types/{name}` (the same type).

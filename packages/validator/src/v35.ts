@@ -11,7 +11,7 @@
  * - Level (§9): computed from the file alone, 0 when Level 1 isn't met.
  * - Warnings for deprecations (§12) and the §13 SHOULD list.
  */
-import Ajv2020 from 'ajv/dist/2020';
+import Ajv2020 from 'ajv/dist/2020.js'; // .js: ajv has no exports map, Node ESM needs the full path
 import addFormats from 'ajv-formats';
 import mainSchema from './schemas/citemap.schema.json';
 import contentSchema from './schemas/content-file.schema.json';

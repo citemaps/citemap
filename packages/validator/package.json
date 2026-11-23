@@ -1,6 +1,6 @@
 {
   "name": "@citemap/validator",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Validate citemap.json files (v2.0 to v3.5): JSON Schema, spec rules, content files, level assessment, field diagnostics",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
