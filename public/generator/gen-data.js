@@ -63,7 +63,7 @@ const ENTITY_TYPES = [
 ];
 
 const MODULES = [
-  { id:'core',      num:'01', name:'Universal Core',       desc:'14 required fields. The foundation all modules build on.', required:true,  tags:['required','all-types'] },
+  { id:'core',      num:'01', name:'Universal Core',       desc:'Identity, citation guidance, Q&A and identifiers. The foundation all modules build on.', required:true,  tags:['required','all-types'] },
   { id:'ecommerce', num:'02', name:'Ecommerce',            desc:'Hero products, bestForQueries[], shipping, returns, sustainability certs.', tags:['shopify','dtc'] },
   { id:'local',     num:'03', name:'Local Business',       desc:'Services, hours, booking, parking, accessibility, service radius.',  tags:['restaurants','medical','trades'] },
   { id:'content',   num:'04', name:'Content & Publishing', desc:'Editorial standards, content types, publishing frequency, syndication.', tags:['publishers','blogs'] },
@@ -82,7 +82,6 @@ const MODULES = [
   { id:'legal',     num:'17', name:'Legal Services',       desc:'Bar admissions, practice areas, fee structure, outcome data.',       tags:['bar-status','firms'] },
   { id:'place',     num:'18', name:'Places',               desc:'GPS, difficulty, pet policy, seasonal access, cell coverage, permits.',tags:['trails','landmarks'] },
   { id:'temporal',  num:'19', name:'Temporal Record',      desc:'Universal history layer. Structured events with dates and sources.',  tags:['all-types','provenance'] },
-  { id:'trust',     num:'20', name:'Policy, Trust & Verification', desc:'Six-tier trust stack, confidence annotations, dispute system, verifiers.', tags:['industry-first','anti-hallucination'], novel:true },
 ];
 
 const MODULE_FORMS = {
@@ -90,14 +89,14 @@ const MODULE_FORMS = {
   /* ── UNIVERSAL CORE ───────────────────────────────────── */
   core: {
     title: 'Universal Core',
-    desc: '14 required fields. The foundation all modules build on.',
+    desc: 'Identity, citation guidance, Q&A and identifiers. The foundation all modules build on.',
     sections: [
       {
         title: 'Brand Identity',
         fields: [
           { id:'brand.name',     label:'Brand Name',   type:'text', required:true, placeholder:'Acme Co.' },
           { id:'brand.url',      label:'Website URL',  type:'url',  required:true, placeholder:'https://example.com' },
-          { id:'brand.established', label:'Year Founded', type:'text', placeholder:'2024' },
+          { id:'brand.founded', label:'Year Founded', type:'text', placeholder:'2024' },
           { id:'brand.siteType', label:'Site Type',    type:'select', required:true,
             options:['saas','ecommerce','local-business','publisher','nonprofit','government','science-research',
                      'real-estate','education','events-venue','person','places','legal','healthcare','financial',
@@ -124,11 +123,29 @@ const MODULE_FORMS = {
           { id:'brand.audiencePrimary',   label:'Primary Audience',  type:'text', placeholder:'Small business owners, 25–45, US',
             counter: { type:'chars', target:100, hint:'Describe your core audience. AI uses this to match you with relevant queries.' } },
           { id:'brand.audienceSecondary', label:'Secondary Audience', type:'text', placeholder:'Developers, agencies, consultants' },
-          { id:'brand.socialProfiles',    label:'Social Profiles',   type:'tags', full:true,
-            placeholder:'https://twitter.com/citemaps',
-            hint:'Full profile URLs. AI cross-references these to verify entity identity across sources.' },
+          { id:'brand.email',             label:'Public Email',      type:'email', placeholder:'hello@example.com',
+            hint:'The business\'s public contact email. A contact point is part of Level 1.' },
+          { id:'brand.sameAs',            label:'Profiles (sameAs)', type:'tags', full:true,
+            placeholder:'https://www.linkedin.com/company/example',
+            hint:'Full profile URLs (social, directories, Wikidata). AI cross-references these to verify entity identity across sources.' },
           { id:'brand.contentLanguages',  label:'Content Languages', type:'tags',
             placeholder:'en, es, fr', hint:'ISO 639-1 language codes.' },
+        ]
+      },
+      {
+        title: 'How AI Should Cite You',
+        fields: [
+          { id:'citationContract.preferredName', label:'Preferred Name', type:'text',
+            placeholder:'Lakeside Brewing Co.',
+            hint:'The exact name AI should use when citing you. With a short description and Q&A, this reaches Level 2.' },
+          { id:'citationContract.shortDescription', label:'Short Description', type:'textarea', full:true,
+            placeholder:'Award-winning beverage retailer in Bend, Oregon with 1,000+ beers, 500+ wines.',
+            counter: { type:'chars', target:200, hint:'Under 200 characters. AI may use this verbatim as your introduction sentence.' } },
+          { id:'citationContract.disambiguation', label:'Disambiguation', type:'textarea', full:true,
+            placeholder:'A retail beverage store in Bend, not a bar, brewery, or distributor.',
+            hint:'What you are NOT. Prevents AI from confusing you with similarly named entities.' },
+          { id:'citationContract.contactForCorrections', label:'Corrections Contact', type:'email', placeholder:'corrections@example.com',
+            hint:'Where to report a wrong fact. Use an address someone reads.' },
         ]
       },
       {
@@ -152,7 +169,23 @@ const MODULE_FORMS = {
         fields: [
           { id:'lastVerified',    label:'Last Verified',    type:'text',   placeholder:'2026-03-19',
             hint:'ISO 8601 date. Tells AI how fresh this data is.' },
-          { id:'updateFrequency', label:'Update Frequency', type:'select', options:['daily','weekly','monthly','quarterly','annually','rarely'] },
+          { id:'citationContract.updateFrequency', label:'Update Frequency', type:'select', options:['daily','weekly','monthly','quarterly','annually','rarely'] },
+        ]
+      },
+      {
+        title: 'Registered Identifiers',
+        fields: [
+          { id:'verifiedClaims', label:'Registered Identifiers', type:'repeater', full:true,
+            addLabel:'+ Add identifier', itemLabel:'Identifier',
+            hint:'Identifiers anyone can look up in a public registry (license, NPI, EIN, registry number). One is enough for Level 3.',
+            subfields: [
+              { id:'type',        label:'Type',          type:'select', required:true,
+                options:['npi','ein','duns','bar-license','doi','fdic','nmls','sec-crd','dea','state-license','abms-certification','accreditation','patent','trademark','other'] },
+              { id:'identifier',  label:'Identifier',    type:'text',   required:true, placeholder:'1234567890' },
+              { id:'entity',      label:'Entity',        type:'text',   placeholder:'Dr. Jane Smith (if different from the business)' },
+              { id:'registryUrl', label:'Registry URL',  type:'url',    placeholder:'https://npiregistry.cms.hhs.gov' },
+            ]
+          }
         ]
       }
     ]
@@ -1040,53 +1073,7 @@ const MODULE_FORMS = {
   },
 
   /* ── CITATION CONTRACT (v3.0) ────────────────────────── */
-  trust: {
-    title: 'Policy, Trust & Verification',
-    desc: 'Citation Contract, Verified Claims, and trust tier settings.',
-    sections: [
-      {
-        title: 'Citation Contract',
-        fields: [
-          { id:'trust.citationContract.preferredName', label:'Preferred Name', type:'text', required:true,
-            placeholder:'Lakeside Brewing Co.',
-            hint:'The exact name AI should use when citing you — not your legal name unless they match.' },
-          { id:'trust.citationContract.shortDescription', label:'Short Description', type:'textarea', full:true,
-            placeholder:'Award-winning beverage retailer in Bend, Oregon with 1,000+ beers, 500+ wines.',
-            counter: { type:'chars', target:200, hint:'Under 200 characters. AI will use this verbatim as your introduction sentence.' } },
-          { id:'trust.citationContract.disambiguation', label:'Disambiguation', type:'textarea', full:true,
-            placeholder:'A retail beverage store in Bend — not a bar, brewery, or distributor.',
-            hint:'What you are NOT. Prevents AI from confusing you with similarly named entities.' },
-        ]
-      },
-      {
-        title: 'Verified Claims',
-        fields: [
-          { id:'trust.verifiedClaims', label:'Verified Claims', type:'repeater', full:true,
-            addLabel:'+ Add claim', itemLabel:'Claim',
-            hint:'Externally checkable identifiers. Level 3 requires at least one. AI uses these to mark your data as independently verifiable.',
-            subfields: [
-              { id:'type',        label:'Claim Type',    type:'select', required:true,
-                options:['npi','ein','duns','bar-license','doi','fdic','nmls','sec-crd','dea','state-license','abms-certification','accreditation','patent','trademark','other'] },
-              { id:'identifier',  label:'Identifier',    type:'text',   required:true, placeholder:'1234567890' },
-              { id:'entity',      label:'Entity',        type:'text',   placeholder:'Dr. Jane Smith (if different from brand)' },
-              { id:'registryUrl', label:'Registry URL',  type:'url',    placeholder:'https://npiregistry.cms.hhs.gov' },
-            ]
-          }
-        ]
-      },
-      {
-        title: 'Verification & Trust',
-        fields: [
-          { id:'trust.verification.externalVerifiers', label:'External Verifiers', type:'tags', full:true,
-            placeholder:'google-business, linkedin, wikidata, orcid',
-            hint:'Registry IDs that independently verify your identity. Adds trust tier weight.' },
-          { id:'trust.verification.policies.aiTrainingOptOut', label:'AI Training Opt-Out', type:'select',
-            options:['true','false'],
-            hint:'Global opt-out flag. Complements creative.licensing.aiTraining for non-creative entities.' },
-        ]
-      }
-    ]
-  },
+
 
 };
 

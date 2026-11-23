@@ -2,12 +2,12 @@
 
 > Machine-readable business identity for AI citation accuracy.
 
-[![Spec](https://img.shields.io/badge/spec-v3.4-blue)](./spec/v3.4.md)
+[![Spec](https://img.shields.io/badge/spec-v3.5-blue)](./spec/v3.5.md)
 [![Spec License: CC BY 4.0](https://img.shields.io/badge/spec-CC%20BY%204.0-lightgrey)](./LICENSE)
 [![Code License: MIT](https://img.shields.io/badge/code-MIT-green)](./LICENSE)
 [![npm: @citemap/cli](https://img.shields.io/npm/v/@citemap/cli?label=%40citemap%2Fcli)](https://www.npmjs.com/package/@citemap/cli)
 
-**Status: Stable** · Current version **v3.4** · **First published March 2026** · [Changelog](./CHANGELOG.md)
+**Status: Stable** · Current version **v3.5** · **First published March 2026** · [Changelog](./CHANGELOG.md)
 
 `citemap.json` is an open standard that lets a business tell AI assistants the accurate, verified facts about itself. Place the file on your website and AI tools like ChatGPT, Perplexity, and Gemini can read it to give people correct information — no hallucinations, no outdated data, no competitor confusion. Think of it as `robots.txt` for AI accuracy.
 
@@ -50,12 +50,13 @@ Link: <https://yourdomain.com/.well-known/citemap.json>; rel="citemap"
 
 The standard evolves in backward-compatible versions — every valid older file validates against every newer version, at most with a `version` bump.
 
-- **[Current — v3.4](./spec/v3.4.md)** ← start here
+- **[Current — v3.5](./spec/v3.5.md)** ← start here: graph vocabulary, Media, evidence, content files, computable levels
+- [v3.4](./spec/v3.4.md) — vocabulary expansion (14 verticals)
 - [v3.3](./spec/v3.3.md) — consolidation: `@graph` extension + foundational sections
 - [v3.2](./spec/v3.2.md) · [v3.1](./spec/v3.1.md) · [v3.0](./spec/v3.0.md) — addenda
 - [v2.0](./spec/v2.0.md) — foundation spec (all fields, modules, rationale)
 - [Full version history → CHANGELOG.md](./CHANGELOG.md)
-- **JSON Schema:** [v3.4](./public/schema/) (machine-readable, for validation + tooling)
+- **JSON Schema:** [v3.5](./public/schema/v3.5/) (machine-readable, for validation + tooling)
 - **Vocabulary registry:** [`spec/registry/`](./spec/registry/)
 
 ## Levels
@@ -64,19 +65,21 @@ A clear path from basic to comprehensive — surfaced by the validator:
 
 | Level | Badge | What's included |
 |-------|-------|-----------------|
-| **1** | ★☆☆ | Core profile: brand, contact, lastVerified |
-| **2** | ★★☆ | + at least one module + answerContent + citationContract |
-| **3** | ★★★ | + verification block + verifiedClaims |
+| **1** | ★☆☆ | Identity: name, website, a description, a contact point, lastVerified |
+| **2** | ★★☆ | + citation guidance (preferredName or shortDescription) + at least one Q&A answer |
+| **3** | ★★★ | + a registered identifier in verifiedClaims (license, NPI, EIN, registry number) |
+
+Computed from the file alone ([v3.5 §9](./spec/v3.5.md#9-citemap-level)), so every reader gets the same level.
 
 ```
 $ citemap diagnose ./citemap.json
-✓ Valid citemap.json  v3.4   Level 3 ★★★
+✓ Valid citemap.json  v3.5   Level 3 ★★★
   Overall 85%  ·  Completeness 100%  ·  Modules 100%  ·  Trust 50%
 ```
 
 ## Trust architecture
 
-citemap.json carries a trust model so AI systems can weight and verify claims rather than take everything at face value — from self-reported, through self-verified (evidence + dates) and third-party / public-record, up to cryptographically signed. The `verifiedClaims[]` field points to externally checkable identifiers (NPI, EIN, DUNS, bar licenses, DOIs) that systems can confirm independently. Full model in the [spec](./spec/v3.4.md).
+citemap.json carries a trust model so AI systems can weight and verify claims rather than take everything at face value — from self-reported, through self-verified (evidence + dates) and third-party / public-record, up to cryptographically signed. The `verifiedClaims[]` field points to externally checkable identifiers (NPI, EIN, DUNS, bar licenses, DOIs) that systems can confirm independently. Full model in the [spec](./spec/v3.5.md).
 
 ## Implementations
 
@@ -125,11 +128,11 @@ Have an idea or found a problem? [Open an issue](https://github.com/citemaps/cit
 
 ## Roadmap
 
-citemap.json ships small, backward-compatible releases and batches larger changes into deliberate consolidation versions (the v3.3 model). Direction for the next cycle (in open consultation):
+citemap.json ships small, backward-compatible releases and batches larger changes into deliberate consolidation versions (the v3.3 model). v3.5 shipped the richer entity graph (product, brand and Media nodes, location geo and hours, connections) and content files. Direction for the next cycle (in open consultation; see [v3.5 §15](./spec/v3.5.md#15-not-in-v35)):
 
-- **Richer entity graph** — product/variant nodes, geo + location modeling, and a unified entity-connection model across the `@graph`.
-- **Deeper verification & trust** — expanded verifiable-claim types and registry-backed verification.
+- **Deeper verification & trust** — per-claim corroboration, registry pair-matching for business relationships, signed attestation.
 - **Agent interface layer** — optional, opt-in declarations for AI agents and retrieval pipelines.
+- **Product spec profiles, typed memberships, edge confidence.**
 
 Proposals and discussion happen in the open — see [CONTRIBUTING.md](./CONTRIBUTING.md).
 
@@ -148,4 +151,4 @@ Created by **Brian Pofahl** and first published in **March 2026**. Stewarded as 
 
 ---
 
-**Questions?** Read the [current spec](./spec/v3.4.md), the [changelog](./CHANGELOG.md), or [open an issue](https://github.com/citemaps/citemap/issues). · [citemaps.org](https://citemaps.org)
+**Questions?** Read the [current spec](./spec/v3.5.md), the [changelog](./CHANGELOG.md), or [open an issue](https://github.com/citemaps/citemap/issues). · [citemaps.org](https://citemaps.org)

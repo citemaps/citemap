@@ -9,6 +9,9 @@
    select, tags (chip OR comma-separated/paste), repeater
    (multi-instance add-row groups with subfields). Citemap level
    is COMPUTED from filled fields (read-only badge), never picked.
+   v3.5 (2026-11-23): emits a full v3.5 document: header,
+   citationContract, brand with always-on arrays, the foundational
+   sections (empty when unused), modules, identifiers, level.
    ============================================================ */
 (function () {
   "use strict";
@@ -200,16 +203,19 @@
     });
   }
 
-  // ── assemble citemap.json (v3.4) ──
+  // ── assemble citemap.json (v3.5, spec/v3.5.md) ──
   function setPath(obj, path, val) {
     const ks = path.split(".");
     let o = obj;
     for (let i = 0; i < ks.length - 1; i++) { o[ks[i]] = o[ks[i]] || {}; o = o[ks[i]]; }
     o[ks[ks.length - 1]] = val;
   }
+  const today = () => new Date().toISOString().slice(0, 10);
+  const SITE_TYPE_TO_TYPE = { person: "Person", government: "GovernmentOrganization", "local-business": "LocalBusiness", restaurant: "Restaurant" };
 
-  function assemble() {
-    const out = { version: "3.4" };
+  /** Form values → the fields the user filled, by path. */
+  function filled() {
+    const out = {};
     const ordered = MODULES.filter((m) => state.modules.has(m.id)).map((m) => m.id);
     for (const mid of ordered) {
       const form = MODULE_FORMS[mid];
@@ -238,19 +244,73 @@
     return out;
   }
 
-  // ── computed citemap level (read-only; CLI is authoritative) ──
+  /** The full v3.5 document: header, citation contract, brand with its
+   *  always-on arrays, the foundational sections (empty when unused),
+   *  modules, identifiers, level. Key order follows spec §1.1. */
+  function assemble() {
+    const f = filled();
+    const brandIn = f.brand || {};
+    const url = typeof brandIn.url === "string" ? brandIn.url.trim() : "";
+    let origin = "";
+    try { origin = url ? new URL(url).origin : ""; } catch (e) { origin = ""; }
+    const brand = Object.assign({ "@type": SITE_TYPE_TO_TYPE[brandIn.siteType] || "Organization" }, origin ? { "@id": origin + "/#org" } : {}, brandIn);
+    if (!Array.isArray(brand.sameAs)) brand.sameAs = [];
+    if (!Array.isArray(brand.team)) brand.team = [];
+    if (!Array.isArray(brand.products)) brand.products = [];
+    const cc = Object.assign({ lastUpdated: today() }, origin ? { canonicalSource: origin + "/citemap.json" } : {}, f.citationContract || {});
+    const lastVerified = typeof f.lastVerified === "string" && f.lastVerified ? f.lastVerified : today();
+    // Temporal module rows become temporalRecord events (spec §2.3).
+    const timeline = f.temporal && Array.isArray(f.temporal.timeline) ? f.temporal.timeline : [];
+    const temporalRecord = timeline.filter((r) => r.date && r.title).map((r) => Object.assign(
+      { type: "milestone", date: r.date, label: r.title },
+      r.description ? { description: r.description } : {},
+      r.sourceUrl ? { sources: [r.sourceUrl] } : {}));
+    const doc = {
+      "@context": "https://citemaps.org/v3.5",
+      "@type": "Citemap",
+      version: "3.5",
+      citemapVersion: "3.5",
+      $schema: "https://citemaps.org/schema/v3.5/citemap.schema.json",
+      generatedBy: "citemaps.org generator",
+      citationContract: cc,
+      brand,
+      lastVerified,
+      answerContent: Array.isArray(f.answerContent) ? f.answerContent : [],
+      trust: { perField: {} },
+      temporalRecord,
+      policy: {},
+      verification: { claims: [] },
+    };
+    const skip = new Set(["brand", "citationContract", "lastVerified", "answerContent", "verifiedClaims", "temporal"]);
+    for (const k of Object.keys(f)) if (!skip.has(k)) doc[k] = f[k];
+    if (Array.isArray(f.verifiedClaims) && f.verifiedClaims.length) doc.verifiedClaims = f.verifiedClaims;
+    const lv = computeLevel(doc);
+    if (lv) doc.citemapLevel = lv;
+    doc.citemap = { authorizedBy: "self" };
+    return doc;
+  }
+
+  // ── computed citemap level, spec v3.5 §9 (read-only; the CLI is authoritative) ──
   function computeLevel(doc) {
-    const b = doc.brand || {};
-    if (!(b.name && b.url)) return 0;
-    const moduleKeys = Object.keys(doc).filter((k) => !["version", "brand", "trust", "@context", "@graph", "relationships"].includes(k));
-    const hasModule = moduleKeys.length > 0;
-    const hasAnswer = Array.isArray(doc.answerContent) ? doc.answerContent.length > 0 : !!doc.answerContent;
-    const hasContract = !!(doc.trust && doc.trust.citationContract) || !!(b.notableFor);
-    const hasVerified = Array.isArray(doc.verifiedClaims) ? doc.verifiedClaims.length > 0 : !!doc.verifiedClaims;
-    let level = 1;
-    if (hasModule && hasAnswer && hasContract) level = 2;
-    if (level === 2 && hasVerified) level = 3;
-    return level;
+    const s = (v) => typeof v === "string" && v.trim().length > 0;
+    const b = doc.brand || {}, cc = doc.citationContract || {};
+    const phone = Array.isArray(b.locations) && b.locations.some((l) => l && s(l.phone));
+    const l1 = s(b.name) && s(b.url) && (s(b.aiSummary) || s(cc.shortDescription))
+      && (s(b.email) || phone || s(cc.contactForCorrections)) && s(doc.lastVerified);
+    if (!l1) return 0;
+    const qa = Array.isArray(doc.answerContent) && doc.answerContent.length > 0;
+    if (!qa || !(s(cc.preferredName) || s(cc.shortDescription))) return 1;
+    const claims = Array.isArray(doc.verifiedClaims) ? doc.verifiedClaims : [];
+    return claims.some((c) => c && s(c.type || c.claimType) && s(c.identifier)) ? 3 : 2;
+  }
+
+  /** What the next level needs, in plain words. */
+  function nextLevelHint(doc) {
+    const n = computeLevel(doc);
+    if (n === 0) return "Level 1 needs a name, website, AI summary and a contact email.";
+    if (n === 1) return "Level 2 needs a preferred name or short description, and at least one Q&A pair.";
+    if (n === 2) return "Level 3 needs one registered identifier.";
+    return "";
   }
 
   function renderOutput() {
@@ -262,7 +322,7 @@
       const n = computeLevel(doc);
       lv.textContent = n ? "Level " + n : "Level —";
       lv.className = "eg-level" + (n ? " lv" + n : "");
-      lv.title = "Computed from what you've filled in. Run npx @citemap/cli for an authoritative level.";
+      lv.title = (nextLevelHint(doc) ? nextLevelHint(doc) + " " : "") + "Computed from what you've filled in (spec v3.5 §9). Run npx @citemap/cli for an authoritative level.";
     }
   }
 
@@ -306,8 +366,9 @@
         (missing.length ? "<ul>" + missing.map((m) => `<li>${esc(m.label)} <code>${esc(m.id)}</code></li>`).join("") + "</ul>" : "") + note;
       return;
     }
+    const lvl = computeLevel(doc);
     out.className = "eg-val ok";
-    out.innerHTML = `<strong>Valid structure — Level ${computeLevel(doc)}.</strong> All required core fields present.` + note;
+    out.innerHTML = `<strong>Valid structure, ${lvl ? "Level " + lvl : "no level yet"}.</strong> All required core fields present. ${esc(nextLevelHint(doc))}` + note;
   }
 
   // ── tabs ──
@@ -328,5 +389,6 @@
     $("eg-val-input").addEventListener("input", validate);
     window.__assemble = assemble;
     window.__computeLevel = computeLevel;
+    window.__state = state;
   });
 })();

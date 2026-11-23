@@ -12,6 +12,25 @@ The format is loosely based on [Keep a Changelog](https://keepachangelog.com/).
 
 ---
 
+## v3.5 — 2026-11-23
+
+**Catch-up release (additive).** Writes down everything citemaps have published since
+v3.4. 16 edge types graduate from the `ext/v1` namespace (`brand`, `manufacturer`,
+`makesOffer`, `creator`, `about`, `recordedIn`, `authored`, `featuredIn`, `mentionedIn`,
+`publishedOn`, `channelOf`, `producedAt`, `featuring`, `client`, `agency`, `partner`;
+the extension URL stays a valid alias). Brand, Product, ProductGroup, MediaChannel and
+media graph nodes with a recommended `@id` scheme; reachability counted in either
+direction. New brand fields, catalog `lifecycle` (dated discontinuation) and product
+variants, location coordinates / time zone / `openingHours` / brands made there. Media
+arrays (channels, video, podcasts, speaking, social posts) with shared fields and
+connections. Evidence: `corroboratedBy[]`, `subjectOf` on the brand and on nodes,
+memberships with context, `businessRelationships[]`. Content files for large records.
+First full definitions of `citationContract`, the `citemap` block, `trust.perField`
+tiers (T1–T6) and `temporalRecord` rows. A citemap level computable from the file
+alone. Registry conventions for DNS verification and publisher-submitted copies.
+Real JSON Schema at `schema/v3.5`; registry vocabulary `2026-11`; validator / CLI 0.5.
+Deprecations warn, never fail.
+
 ## v3.4 — 2026-06-02
 
 **Vocabulary expansion (additive).** 14 new canonical `primaryVertical` values

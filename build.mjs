@@ -16,7 +16,7 @@ const ROOT = path.dirname(new URL(import.meta.url).pathname);
 const OUT = process.env.OUT || path.join(ROOT, "dist");
 
 // ── single source of truth: bump these to publish a new version ──
-const SPEC_VERSION = "3.4";
+const SPEC_VERSION = "3.5";
 const SPEC_SRC = `spec/v${SPEC_VERSION}.md`;
 const VOCAB_SRC = `spec/registry/v${SPEC_VERSION}-vocabulary.md`;
 
@@ -120,18 +120,20 @@ const STEPS = [
 
 const JSON_SAMPLE = `<span class="c">// citemap.json — published at your domain root</span>
 {
-  <span class="k">"version"</span>: <span class="s">"3.4"</span>,
+  <span class="k">"@type"</span>: <span class="s">"Citemap"</span>,
+  <span class="k">"version"</span>: <span class="s">"3.5"</span>,
   <span class="k">"citationContract"</span>: {
     <span class="k">"preferredName"</span>: <span class="s">"Acme Co."</span>,
     <span class="k">"contactForCorrections"</span>: <span class="s">"hello@acme.com"</span>
   },
-  <span class="k">"identity"</span>: {
+  <span class="k">"brand"</span>: {
+    <span class="k">"@type"</span>: <span class="s">"LocalBusiness"</span>,
     <span class="k">"name"</span>: <span class="s">"Acme Co."</span>,
-    <span class="k">"type"</span>: <span class="s">"LocalBusiness"</span>,
-    <span class="k">"established"</span>: <span class="n">2014</span>
+    <span class="k">"url"</span>: <span class="s">"https://acme.example"</span>,
+    <span class="k">"founded"</span>: <span class="s">"2014"</span>
   },
-  <span class="k">"verifiedClaims"</span>: [ <span class="s">"Licensed since 2014"</span> ],
-  <span class="k">"trust"</span>: { <span class="k">"perField"</span>: { <span class="s">"npi"</span>: <span class="s">"authority-verified"</span> } }
+  <span class="k">"verifiedClaims"</span>: [ { <span class="k">"type"</span>: <span class="s">"state-license"</span>, <span class="k">"identifier"</span>: <span class="s">"CCB-123456"</span> } ],
+  <span class="k">"trust"</span>: { <span class="k">"perField"</span>: { <span class="s">"name"</span>: <span class="s">"T1"</span> } }
 }`;
 
 const TERM_SAMPLE = `<span class="c"># validate — no install needed</span>
@@ -139,8 +141,8 @@ const TERM_SAMPLE = `<span class="c"># validate — no install needed</span>
 
 <span class="c"># full diagnostic + level assessment</span>
 <span class="g">$</span> npx @citemap/cli diagnose ./citemap.json
-  <span class="ok">&#10003; valid against v3.4 schema</span>
-  <span class="ok">&#10003; Level 2 — DNS-verified</span>`;
+  <span class="ok">&#10003; valid against the v3.5 schema</span>
+  <span class="ok">&#10003; Level 3 &#9733;&#9733;&#9733;</span>`;
 
 const landingBody = `
 <section class="hero"><div class="wrap">
