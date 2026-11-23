@@ -17,6 +17,7 @@ const OUT = process.env.OUT || path.join(ROOT, "dist");
 
 // ── single source of truth: bump these to publish a new version ──
 const SPEC_VERSION = "3.5";
+const SPEC_RELEASED = "Released 2026-11-23"; // update with SPEC_VERSION
 const SPEC_SRC = `spec/v${SPEC_VERSION}.md`;
 const VOCAB_SRC = `spec/registry/v${SPEC_VERSION}-vocabulary.md`;
 
@@ -230,7 +231,7 @@ const docHead = ({ eyebrow, h1, sub, actions }) => `
 const specBody = docHead({
   eyebrow: "Specification",
   h1: `citemap.json — v${SPEC_VERSION}`,
-  sub: "The normative specification, rendered straight from the canonical Markdown source. Released 2026-06-02 &#183; MIT &#183; backward-compatible with v2.0–v3.3.",
+  sub: `The normative specification, rendered straight from the canonical Markdown source. ${SPEC_RELEASED} &#183; CC BY 4.0 &#183; backward-compatible with v2.0–v3.4.`,
   actions: `<a class="btn btn-ghost" href="https://github.com/citemaps/citemap/blob/main/${SPEC_SRC}" target="_blank" rel="noopener">View source on GitHub &#8599;</a><a class="btn btn-ghost" href="/spec/registry/">Vocabulary registry &#8594;</a>`,
 }) + `<section class="wrap"><article class="prose">${md(SPEC_SRC)}</article></section>`;
 
