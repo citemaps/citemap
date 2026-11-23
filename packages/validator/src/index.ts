@@ -8,6 +8,19 @@ import {
   MODULE_KEYS,
   CITEMAP_SUPPORTED_VERSIONS,
 } from '@citemap/schema';
+import { checkModernCitemap, isModernVersion, versionOf } from './structural';
+
+export {
+  validateContentFile,
+  mergeContentFiles,
+  checkAcrossFiles,
+  checkModernCitemap,
+  isModernVersion,
+  CONTENT_FILE_TYPES,
+  CONTENT_BRAND_KEY,
+  RECOMMENDED_MAX_BYTES,
+} from './structural';
+export type { Issue, ContentFileResult, ContentFileType } from './structural';
 
 /**
  * Represents a validation error from schema checking
@@ -397,13 +410,26 @@ function validateEntityIds(data: any): ValidationWarning[] {
  * @returns ValidationResult with errors, warnings, quality score, and level assessment
  */
 export function validate(data: unknown): ValidationResult {
-  const validate = createValidator();
-  const isValid = validate(data);
-  const errors = formatValidationErrors(validate.errors ?? null);
-
-  const warnings: ValidationWarning[] = [];
   const citemapData = data as Record<string, any>;
-  const version = citemapData?.citemapVersion || 'unknown';
+  const version = versionOf(citemapData);
+  const warnings: ValidationWarning[] = [];
+  let isValid: boolean;
+  let errors: ValidationError[];
+
+  if (isModernVersion(version)) {
+    // v3.3+ (0.4.0): the published v3.3 / v3.4 schemas are placeholders that
+    // defer to the spec, and the strict v3.0 schema rejects every v3.3
+    // addition as an "additional property". Check the spec's structural
+    // rules in code instead (structural.ts), including contentFiles.
+    const s = checkModernCitemap(data);
+    errors = s.errors.map(e => ({ path: e.path, message: e.message, keyword: e.keyword ?? 'structure' }));
+    warnings.push(...s.warnings.map(w => ({ path: w.path, message: w.message, suggestion: w.suggestion ?? '' })));
+    isValid = errors.length === 0;
+  } else {
+    const validateFn = createValidator();
+    isValid = validateFn(data) as boolean;
+    errors = formatValidationErrors(validateFn.errors ?? null);
+  }
 
   // Generate warnings for quality issues
   if (citemapData?.brand) {
@@ -424,7 +450,7 @@ export function validate(data: unknown): ValidationResult {
     }
   }
 
-  if (!citemapData?.citations) {
+  if (!citemapData?.citations && !citemapData?.citationContract) {
     warnings.push({
       path: '/citations',
       message: 'No citation preferences specified',
@@ -440,7 +466,10 @@ export function validate(data: unknown): ValidationResult {
     });
   }
 
-  if (!citemapData?.contact) {
+  // v3.3+ carries contact on the entity (brand.email / telephone / contactPoint).
+  const b = citemapData?.brand ?? {};
+  const hasModernContact = isModernVersion(version) && (b.email || b.telephone || b.contactPoint || b.contact);
+  if (!citemapData?.contact && !hasModernContact) {
     warnings.push({
       path: '/contact',
       message: 'No contact information provided',
@@ -549,8 +578,8 @@ export function diagnose(data: unknown): Diagnosis {
     recommendations.push('Add Q&A pairs in answerContent to guide AI responses');
   }
 
-  if (!citemapData?.citations) {
-    recommendations.push('Define citation preferences in the citations field');
+  if (!citemapData?.citations && !citemapData?.citationContract) {
+    recommendations.push('Define citation preferences (citationContract)');
   }
 
   if (!citemapData?.verification) {

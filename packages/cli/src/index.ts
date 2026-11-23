@@ -2,9 +2,9 @@
 
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
-import { validate, validateAndDiagnose } from '@citemap/validator';
+import { validate, validateAndDiagnose, validateContentFile, checkAcrossFiles } from '@citemap/validator';
 
-const VERSION = '0.3.3';
+const VERSION = '0.4.0';
 
 // ANSI color codes
 const colors = {
@@ -24,13 +24,18 @@ function printUsage() {
 ${colors.bright}citemap${colors.reset} — Validate citemap.json files for AI accuracy
 
 ${colors.bright}Usage:${colors.reset}
-  citemap validate <path>    Validate a citemap.json file
-  citemap diagnose <path>    Run detailed analysis with scores and level assessment
+  citemap validate <path|url>   Validate a citemap.json file or URL
+  citemap diagnose <path|url>   Run detailed analysis with scores and level assessment
+
+${colors.bright}Options:${colors.reset}
+  --no-follow   Don't read the content files a citemap lists in contentFiles
+                (followed by default: https only, up to 50 files)
   citemap --help             Show this help message
   citemap --version          Show version number
 
 ${colors.bright}Examples:${colors.reset}
   citemap validate ./citemap.json
+  citemap validate https://example.com/citemap.json
   citemap diagnose .well-known/citemap.json
 
 ${colors.bright}Learn more:${colors.reset}
@@ -73,7 +78,7 @@ function scoreColor(score: number): string {
   return colors.red;
 }
 
-function formatValidationOutput(result: ReturnType<typeof validate>) {
+function formatValidationOutput(result: ReturnType<typeof validate>): boolean {
   const statusIcon = result.valid ? `${colors.green}✓${colors.reset}` : `${colors.red}✗${colors.reset}`;
   const statusText = result.valid ? `${colors.green}Valid${colors.reset}` : `${colors.red}Invalid${colors.reset}`;
 
@@ -119,10 +124,10 @@ function formatValidationOutput(result: ReturnType<typeof validate>) {
     console.log(`${colors.green}All validations passed.${colors.reset}\n`);
   }
 
-  process.exit(result.valid ? 0 : 1);
+  return result.valid;
 }
 
-function formatDiagnosticOutput(data: unknown) {
+function formatDiagnosticOutput(data: unknown): boolean {
   const result = validateAndDiagnose(data);
   const diag = result.diagnosis;
 
@@ -206,7 +211,57 @@ function formatDiagnosticOutput(data: unknown) {
     console.log(`${colors.red}✗ Validation failed. See errors above.${colors.reset}\n`);
   }
 
-  process.exit(result.valid ? 0 : 1);
+  return result.valid;
+}
+
+// ── Content files (0.4.0) ──────────────────────────────────
+// A citemap may list Media and products in separate files
+// (contentFiles[], each "@type": "CitemapContentFile"). Read them (https
+// only, capped) and check each file plus the joined record.
+const MAX_FILES = 50;
+const MAX_BYTES = 4 * 1024 * 1024;
+
+async function fetchJSON(url: string): Promise<unknown> {
+  const ctrl = new AbortController();
+  const t = setTimeout(() => ctrl.abort(), 15000);
+  try {
+    const res = await fetch(url, { signal: ctrl.signal, headers: { Accept: 'application/json', 'User-Agent': `citemap-cli/${VERSION}` } });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const text = await res.text();
+    if (text.length > MAX_BYTES) throw new Error('larger than 4 MB');
+    return JSON.parse(text);
+  } finally {
+    clearTimeout(t);
+  }
+}
+
+async function checkContentFiles(main: any): Promise<boolean> {
+  const refs: any[] = Array.isArray(main?.contentFiles) ? main.contentFiles : [];
+  if (!refs.length) return true;
+  console.log(`${colors.bright}Content files${colors.reset} ${colors.dim}(${refs.length} listed)${colors.reset}`);
+  const read: Array<{ url: string; data: unknown }> = [];
+  let ok = true;
+  for (const ref of refs.slice(0, MAX_FILES)) {
+    const label = `${ref?.type ?? '?'}${ref?.year ? ' ' + ref.year : ''}${ref?.category ? ' · ' + ref.category : ''}`;
+    if (typeof ref?.url !== 'string' || !/^https:\/\//i.test(ref.url)) { console.log(`  ${colors.red}✗${colors.reset} ${label}: url isn't https`); ok = false; continue; }
+    try {
+      const data = await fetchJSON(ref.url);
+      const r = validateContentFile(data, ref);
+      read.push({ url: ref.url, data });
+      if (r.valid) console.log(`  ${colors.green}✓${colors.reset} ${label} ${colors.dim}(${r.count} item${r.count === 1 ? "" : "s"})${colors.reset}`);
+      else { ok = false; console.log(`  ${colors.red}✗${colors.reset} ${label}: ${r.errors.map((e: any) => e.message).join('; ')}`); }
+      for (const w of r.warnings) console.log(`    ${colors.yellow}⚠${colors.reset} ${w.message}`);
+    } catch (e) {
+      ok = false;
+      console.log(`  ${colors.red}✗${colors.reset} ${label}: couldn't read ${ref.url} (${e instanceof Error ? e.message : String(e)})`);
+    }
+  }
+  if (refs.length > MAX_FILES) console.log(`  ${colors.yellow}⚠${colors.reset} ${refs.length - MAX_FILES} more listed; only ${MAX_FILES} read`);
+  const across = checkAcrossFiles(main, read);
+  for (const e of across.errors) { ok = false; console.log(`  ${colors.red}✗${colors.reset} ${e.message}`); }
+  for (const w of across.warnings) console.log(`  ${colors.yellow}⚠${colors.reset} ${w.message}`);
+  console.log('');
+  return ok;
 }
 
 async function main() {
@@ -223,7 +278,8 @@ async function main() {
   }
 
   const command = args[0];
-  const filePath = args[1];
+  const follow = !args.includes('--no-follow');
+  const filePath = args.slice(1).find(a => !a.startsWith('--'));
 
   if (!filePath) {
     console.error(`${colors.red}Error: File path required${colors.reset}\n`);
@@ -237,14 +293,25 @@ async function main() {
     process.exit(1);
   }
 
-  const data = loadJSON(filePath);
+  let data: unknown;
+  if (/^https?:\/\//i.test(filePath)) {
+    try { data = await fetchJSON(filePath); }
+    catch (e) { console.error(`${colors.red}✗ Couldn't read ${filePath}${colors.reset}: ${e instanceof Error ? e.message : String(e)}`); process.exit(1); }
+  } else data = loadJSON(filePath);
 
-  if (command === 'validate') {
-    const result = validate(data);
-    formatValidationOutput(result);
-  } else if (command === 'diagnose') {
-    formatDiagnosticOutput(data);
+  // A content file given directly: check it on its own.
+  if ((data as any)?.['@type'] === 'CitemapContentFile') {
+    const r = validateContentFile(data);
+    console.log(`\n${r.valid ? colors.green + '✓ Valid' : colors.red + '✗ Invalid'}${colors.reset} content file ${colors.dim}(${r.contentType ?? '?'}, ${r.count} items)${colors.reset}`);
+    for (const e of r.errors) console.log(`  ${colors.red}✗${colors.reset} ${e.path}: ${e.message}`);
+    for (const w of r.warnings) console.log(`  ${colors.yellow}⚠${colors.reset} ${w.path}: ${w.message}`);
+    console.log('');
+    process.exit(r.valid ? 0 : 1);
   }
+
+  const valid = command === 'validate' ? formatValidationOutput(validate(data)) : formatDiagnosticOutput(data);
+  const filesOk = follow ? await checkContentFiles(data) : true;
+  process.exit(valid && filesOk ? 0 : 1);
 }
 
 main().catch((error) => {

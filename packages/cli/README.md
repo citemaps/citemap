@@ -102,3 +102,10 @@ If a citemap claims a level via `citemapLevel` that doesn't match actual content
 ## License
 
 MIT
+
+
+## 0.4.0
+
+- `citemap validate <url>` reads a citemap over https.
+- Content files: when a citemap lists `contentFiles`, the CLI reads each one (https only, up to 50, 4 MB each), checks it, and checks the joined record (duplicate `@id`s, relationship endpoints). `--no-follow` skips them.
+- v3.3 / v3.4 files are checked against the spec's structural rules instead of the strict v3.0 schema.

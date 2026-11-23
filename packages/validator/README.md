@@ -2,7 +2,9 @@
 
 Validate [citemap.json](https://citemaps.org) files against the official schema, with quality scoring, level assessment, and diagnostic recommendations.
 
-Supports CiteMap v2.0 and v3.0.
+Supports CiteMap v2.0 and v3.0 (JSON Schema), and v3.3 / v3.4 (structural checks per the spec, including content files).
+
+> **0.4.0:** v3.3+ files are checked against the spec's structural rules (identity, `@graph` ids, relationship endpoints, `contentFiles`, the 100 KB size recommendation) instead of the strict v3.0 schema, which rejected every v3.3 addition as an "additional property".
 
 ## Install
 
@@ -152,3 +154,20 @@ When `citemapVersion` is `"3.0"`, the validator also checks:
 ## License
 
 MIT
+
+
+### Content files (v3.3+)
+
+A citemap can keep Media and products in separate files so the main file stays small: `contentFiles[]` in the main file lists them (`type`, `url`, `count`, optional `year` / `category` / `lastUpdated`), and each file is `"@type": "CitemapContentFile"` with `contentType`, `isPartOf`, the type's `brand.<key>` rows, its `@graph` nodes and its `relationships`. Concatenating the arrays gives the one-file record back.
+
+```typescript
+import { validate, validateContentFile, checkAcrossFiles, mergeContentFiles } from '@citemap/validator';
+
+const main = validate(citemap);                          // checks the contentFiles entries too
+const files = await Promise.all(citemap.contentFiles.map(async (ref) => ({ url: ref.url, data: await (await fetch(ref.url)).json() })));
+files.forEach((f, i) => validateContentFile(f.data, citemap.contentFiles[i])); // shape, count vs the main file's entry
+const across = checkAcrossFiles(citemap, files);         // duplicate @ids across files, endpoints resolve, files not read
+const record = mergeContentFiles(citemap, files.map(f => f.data)); // the one-file record
+```
+
+Types: `publication`, `social-post`, `video`, `podcast`, `speaking`, `product`.
