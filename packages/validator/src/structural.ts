@@ -44,7 +44,18 @@ const isObj = (v: unknown): v is Doc => !!v && typeof v === 'object' && !Array.i
 const isHttps = (v: unknown) => typeof v === 'string' && /^https:\/\/[^\s]+$/i.test(v);
 const isHttp = (v: unknown) => typeof v === 'string' && /^https?:\/\/[^\s]+$/i.test(v);
 const isDate = (v: unknown) => typeof v === 'string' && /^\d{4}-\d{2}-\d{2}/.test(v) && !Number.isNaN(Date.parse(v.slice(0, 10)));
-const byteLen = (s: string) => (typeof TextEncoder !== 'undefined' ? new TextEncoder().encode(s).length : s.length);
+/** UTF-8 byte length without TextEncoder (not in the package's TS lib). */
+function byteLen(s: string): number {
+  let n = 0;
+  for (let i = 0; i < s.length; i++) {
+    const c = s.charCodeAt(i);
+    if (c < 0x80) n += 1;
+    else if (c < 0x800) n += 2;
+    else if (c >= 0xd800 && c < 0xdc00 && i + 1 < s.length) { n += 4; i++; }
+    else n += 3;
+  }
+  return n;
+}
 
 /** "3.4" → [3, 4]; null when it isn't a version string. */
 export function parseVersion(v: unknown): [number, number] | null {
