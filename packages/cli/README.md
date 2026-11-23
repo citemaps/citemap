@@ -104,6 +104,10 @@ If a citemap claims a level via `citemapLevel` that doesn't match actual content
 MIT
 
 
+## 0.4.1
+
+- The `citemap` command runs the current build (0.4.0's bin still loaded an old 0.3.x file, so URLs read as "File not found").
+
 ## 0.4.0
 
 - `citemap validate <url>` reads a citemap over https.

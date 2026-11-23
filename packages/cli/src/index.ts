@@ -4,7 +4,7 @@ import { readFileSync } from 'fs';
 import { resolve } from 'path';
 import { validate, validateAndDiagnose, validateContentFile, checkAcrossFiles } from '@citemap/validator';
 
-const VERSION = '0.4.0';
+const VERSION = '0.4.1';
 
 // ANSI color codes
 const colors = {
