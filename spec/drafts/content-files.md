@@ -1,6 +1,6 @@
 # Content files (draft for v3.5)
 
-Status: **draft**, shipped ahead by EntityGraph (2026-11-22). Validator / CLI 0.4.0 check it.
+Status: **superseded** by [v3.5 §8](../v3.5.md#8-content-files), which adds `version` in content files, numbered `part`s, the reading rules and the always-on rule for split products. Kept for history.
 
 ## Why
 
